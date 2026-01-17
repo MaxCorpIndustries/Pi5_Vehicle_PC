@@ -4,12 +4,71 @@ import time
 import os
 import asyncio
 import gpiod
+from datetime import datetime
 from gpiod.line import Direction, Value
 
-TripsVideoDirectory='/home/maximo/TRIP_VIDEOS'
+TripsVideoDirectory='/media/carpc/Main_Storage/test'
 
 tripFolderName='Trip_'
 videoFileName='Video_'
+
+#--------------------------------------
+# VIDEO RECORDER SYSTEM
+
+# This code is designed to take static hardware addresses and rtsp addresses,  and store them in a local SSD on the CarPC system on board the EV_PROJECT_1 Civic
+
+# This code serves as a multi angle redundant dash camera system/ autocross footage capturing system
+
+
+
+class Camera:
+    def __init__(self,name,camType,location,accessURL,ping):
+        self.name = name
+        self.camType = camType
+        self.location = location
+        self.accessURL = accessURL # for rtsp, this is the url, for usb this is the unique keyword to look for in --list-devices 
+        self.ping = ping
+        self.readytoload=False #this value will become true when ping successful 
+
+
+#The following are the planned cameras and their locations:
+#┌──────────┬───────────────┬───────────────┬───────────────────┬───────────────────────┐
+#│ CAM NUM  │ CAMERA COMS   | Camera Make   | vid Specs         | Vehicle location      |
+#├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
+#│ 1        │ RTSP PoE      | RLC-510A      | 2304x1296 30Fps   | Left outboard camera, | 
+#│          |               |               |                   | facing rear of vehicle|
+#├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
+#│ 2        | RTSP PoE      | RLC-510A      | 2304x1296 30Fps   | Right outboard camera,|  
+#│          |               |               |                   | facing rear of vehicle|
+#├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
+#│ 3        | RTSP PoE      | RLC-510A      | 2304x1296 30Fps   | Rear facing camera.   |
+#├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
+#│ 4        │ RTSP PoE      | unknown       | ~1080p 30Fps      | Front bumper camera   |
+#├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
+#│ 5        │ USB 3.0       | Logitech BRIO | ~1080p 30Fps      | Under mirror cam      |
+#│          |               |               |                   | facing front          |
+#├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
+#│ 6        │ RTSP PoE      | Unknown       | ~1080p 30Fps      | ClusterCam            |
+#└──────────┴───────────────┴───────────────┴───────────────────┴───────────────────────┘
+
+# These streams run simultaneously at once, and should all be recorded as separate video files stored in a collected folder
+
+
+# define all the cameras
+cameras = [
+    Camera("1_LFTBOARD","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
+    
+    Camera("2_RIGHTBOARD","RTSP","RIGHT OUTBOARD",'rtsp://cam2:test12345678@needed:554/h264Preview_01_main',"needed"),
+
+    Camera("3_REAR","RTSP","REAR FACING",'rtsp://cam4:test12345678@needed:554/h264Preview_01_main',"needed"),
+
+    Camera("4_BUMPER","RTSP","FRONT FACING",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed"),
+    
+    Camera("5_DASHCAM","USB","DASHBOARD FRONT",'Logitech BRIO (usb-xhci-hcd.1-1)',"/dev/video0"),
+    
+    Camera("6_CLUSTER","RTSP","CLUSTER GAUGE",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed")
+]
+
 
 GREEN_LED=14
 YELLOW_LED=15
@@ -18,6 +77,28 @@ RED_LED=18
 global_process_array=list()
 blinkcode=0
 GPIORequester= None
+
+# This function allows the pi to create an "internal network" so the system can use rtsp streams without needing an internet connection
+def initializeInternalNetwork():
+    useFixedIP = ["nmcli","con","mod","netplan-eth0","ipv4.addresses","192.168.1.200/24","ipv4.method","manual"]
+    
+    setUpIP = ["ip","link","set","eth0","up"]
+    try:
+        subprocess.run(useFixedIP) #execute step 1
+    except subprocess.CalledProcessError as e:
+        print("FAILURE WHILE INITIALIZING STATIC IP")
+        print(e)
+        return False #tell code that rtsp stream failed"
+    try:
+        subprocess.run(useFixedIP) #execute step 2
+    except subprocess.CalledProcessError as e:
+        print("FAILURE WHILE APPLYING STATIC IP")
+        print(e)
+        return False
+    
+    return True #tell code that rtsp stream ready"
+    
+
 with gpiod.request_lines(
     "/dev/gpiochip0",
     consumer="blink-example",
@@ -45,7 +126,8 @@ def create_NewTripFolder():
                          
     #Create the new folder 
     try:
-        directory=TripsVideoDirectory+'/'+tripFolderName+str(tripcount)
+        now = datetime.now() #timestamp the trip folder with a datetime 
+        directory=TripsVideoDirectory+'/'+tripFolderName+str(tripcount)+"_"+str(now)
         subprocess.run(['mkdir',directory]) #execute mkdir
         current_trip_directory=directory #update the returned directory to this new folder
     except subprocess.CalledProcessError as e:
@@ -111,8 +193,8 @@ def InitializeVideoProcessASYNC(streamlocation,currentdirectory):
         
         process = (
             ffmpeg
-            .input(streamlocation,format='v4l2',framerate=30,video_size='1920x1080')
-            .output(filename=videolocation, vcodec="libx264",t=10,loglevel="quiet")
+            .input(streamlocation,flags='nobuffer')#,format='v4l2',framerate=30,video_size='1920x1080')
+            .output(filename=videolocation,c="copy",t=3600,loglevel="quiet")#, vcodec="libx264",)
             .overwrite_output()
         )
         process = process.run_async(pipe_stdin=True)
@@ -137,7 +219,7 @@ def BlinkProgress():
             )            
         },
     ) as request:
-        print(blinkcode)
+        #print(blinkcode)
         request.set_value(GREEN_LED, Value.INACTIVE)
         request.set_value(YELLOW_LED, Value.INACTIVE)
         request.set_value(RED_LED, Value.INACTIVE)        
@@ -181,18 +263,18 @@ def main():
       #getCurrentCameras()
     BlinkProgress()
     
-    KillVideoProcess('/dev/video0')
+    #KillVideoProcess('/dev/video0')
     
     currentdirectory=create_NewTripFolder()
     print('trip '+currentdirectory+ ' created')
     
-    print('this should print immedietly')
+    #print('this should print immedietly')
     while True:    
         BlinkProgress()
         
         if(len(global_process_array) != 0):
             for a in global_process_array:
-                print(a[0].poll())
+                #print(a[0].poll())
                 
                 if(str(a[0].poll()) == "None"):
                     blinkcode=1                
@@ -207,7 +289,7 @@ def main():
                 if(a[0]._internal_poll(_deadstate=127) == 1):
                     blinkcode=3
         else:
-            process = InitializeVideoProcessASYNC('/dev/video0',currentdirectory)
+            process = InitializeVideoProcessASYNC(FILL ME IN,currentdirectory)
             allprocessesstatus=0
             blinkcode=0
             #CYCLIC BUFFER SYSTEM
