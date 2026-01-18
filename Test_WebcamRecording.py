@@ -290,7 +290,7 @@ def main():
                 if(a[0]._internal_poll(_deadstate=127) == 1):
                     blinkcode=3
         else:
-            process = InitializeVideoProcessASYNC("/dev/video0',currentdirectory)
+            process = InitializeVideoProcessASYNC('/dev/video0',currentdirectory)
             allprocessesstatus=0
             blinkcode=0
             #CYCLIC BUFFER SYSTEM
