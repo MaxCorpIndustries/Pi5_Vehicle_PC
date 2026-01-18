@@ -125,7 +125,7 @@ def testRTSP_Ping():
        # Returns true to update Camera.readytoload and confirm rtsp ready for recording
     for index, i in cameras: 
         try:
-            subprocess.run(["ping","-c","1" str(i.ping)], check=True)
+            subprocess.run(["ping","-c","1",str(i.ping)], check=True)
             print(i.name + " Camera Online" )
             cameras[index].readytoload = True
             
