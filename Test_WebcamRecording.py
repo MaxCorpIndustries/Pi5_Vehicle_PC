@@ -169,7 +169,7 @@ def create_NewTripFolder():
     try:
         now = datetime.now() #timestamp the trip folder with a datetime 
         directory=TripsVideoDirectory+'/'+tripFolderName+str(tripcount)+"_"+str(now)
-        subprocess.run(['mkdir',directory]) #execute mkdir
+        subprocess.run(['mkdir',directory],check=True) #execute mkdir
         current_trip_directory=directory #update the returned directory to this new folder
     except subprocess.CalledProcessError as e:
         print("Folder Error: " + e)
@@ -299,7 +299,8 @@ def BlinkProgress():
         
 def main():
     global blinkcode
-      #getCurrentCameras()
+
+    #getCurrentCameras()
     BlinkProgress()
 
     #attempt to set static IP within pi
