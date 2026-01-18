@@ -1,5 +1,6 @@
 import ffmpeg
 import subprocess
+from subprocess import DEVNULL
 import time
 import os
 import asyncio
@@ -127,12 +128,11 @@ def testRTSP_Ping():
     index =0
     for i in cameras:
         
-        print("checking: " + i.name)
+        #print("checking: " + i.name)
         match (i.camType):
             case "RTSP":
                 try:
-                    print("test: " + i.ping)
-                    pingOutput = subprocess.run(["ping","-c","1",str(i.ping)], check=True,capture_output=False,text=False)
+                    pingOutput = subprocess.run(["ping","-c","1",str(i.ping)], check=True,stdout=DEVNULL)
                     print(i.name + " Camera Online" )
                     cameras[index].readytoload = True
                 except:
