@@ -125,7 +125,7 @@ def testRTSP_Ping():
        # Returns true to update Camera.readytoload and confirm rtsp ready for
     index =0
     for i in cameras:
-        switch(i.camType):
+        match (i.camType):
             case "RTSP":
                 try:
                     subprocess.run(["ping","-c","1",str(i.ping)], check=True)
