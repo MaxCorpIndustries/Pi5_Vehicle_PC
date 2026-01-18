@@ -145,7 +145,7 @@ def testRTSP_Ping():
                         print(i.name + " Camera Online" )
                         cameras[index].readytoload = True
                     
-                except
+                except:
                     print(i.name + " Camera Offline" )
                     
                 break
