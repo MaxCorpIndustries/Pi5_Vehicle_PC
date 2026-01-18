@@ -320,8 +320,9 @@ def main():
     #print('this should print immedietly')
     while True:
 
-        if user_input.lower() == 'q':
-            break  # DEVELOPER KILLBIND
+        if keyboard.is_pressed('q'):
+            print(" 'q' pressed. Breaking loop.")
+            break
         
         BlinkProgress()
         
