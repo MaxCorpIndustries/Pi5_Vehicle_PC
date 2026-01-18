@@ -35,7 +35,7 @@ class Camera:
 #The following are the planned cameras and their locations:
 #┌──────────┬───────────────┬───────────────┬───────────────────┬───────────────────────┐
 #│ CAM NUM  │ CAMERA COMS   | Camera Make   | vid Specs         | Vehicle location      |
-#├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
+#├──────────┼───────────────┼────   ───────────┼───────────────────┼───────────────────────┤
 #│ 1        │ RTSP PoE      | RLC-510A      | 2304x1296 30Fps   | Left outboard camera, | 
 #│          |               |               |                   | facing rear of vehicle|
 #├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
@@ -56,19 +56,20 @@ class Camera:
 
 
 # define all the cameras
+'''
 cameras = [
     Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
     
-    Camera("2_RIGTCAM","RTSP","RIGHT OUTBOARD",'rtsp://cam1:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.207"),
+    Camera("2_RIGTCAM","RTSP","RIGHT OUTBOARD",'rtsp://cam1:test12345678@10.0.0.207:554/h264Preview_01_main',"10.0.0.207"),
 
     Camera("3_REARCAM","RTSP","REAR FACING",'rtsp://cam4:test12345678@needed:554/h264Preview_01_main',"needed"),
 
     Camera("4_BMPRCAM","RTSP","FRONT FACING",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed"),
     
-    Camera("5_DASHCAM","USB","DASHBOARD FRONT","/dev/video0","Logitech BRIO (usb-xhci-hcd.1-1)"),
+    Camera("5_DASHCAM","USB","DASHBOARD FRONT","/dev/video0","Logitech BRIO"),
     
     Camera("6_CLUSCAM","RTSP","CLUSTER GAUGE",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed")
-]
+]'''
 
 
 GREEN_LED=14
@@ -122,7 +123,7 @@ def initializeInternalNetwork():
     
     return True #tell code that rtsp stream ready"
     
-def testRTSP_Ping():
+def testRTSP_Ping(cameras):
        # This function attempts to ping the Camera.ping property to confirm rtsp stream successful
        # Returns true to update Camera.readytoload and confirm rtsp ready for
     index =0
@@ -153,8 +154,22 @@ def testRTSP_Ping():
                     
 
         index +=1
+    return cameras
                     
 #------------- get and create functions
+
+def get_config_info(filename):
+    
+    """Reads the INI file and returns a config object."""
+    config = configparser.ConfigParser()
+    
+    # Check if file exists
+    if os.path.exists(filename):
+        config.read(filename)
+        return config
+    else:
+        print(f"Error: Config file {filename} was not found.")
+        return None
 
  
 def create_NewTripFolder():
@@ -205,7 +220,22 @@ def get_CurrentCameras():
     results = subprocess.run(['v4l2-ctl','--list-devices'],encoding='utf-8',stdout=subprocess.PIPE)
     print(results)
 
-#---------------------- generic functions
+#---------------------- camera related functions
+
+def ConstructCameraObjects(configFile):
+    cameraArray = []
+    try:
+        for configItem in configFile:
+            cameraItem = Camera(configItem["name"],configItem["type"],configItem["location"],configItem["url"],configItem["ping"])
+            #Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
+            cameraArray.append(cameraItem)
+
+        return cameraArray
+    except:
+        print("Failure while reading camera config file")
+        return None
+    
+    
 
 def KillVideoProcess(streamlocation):
     try:
@@ -298,16 +328,23 @@ def BlinkProgress():
         
 def main():
     global blinkcode
-
+    cameraArray = []
     #getCurrentCameras()
     BlinkProgress()
 
     #attempt to set static IP within pi
     initNetworkStatus= initializeInternalNetwork()
-    
+
+    #load cameras.ini
+    cameraConfig = get_config_info("cameras.ini")
+    if(cameraConfig != None):
+        cameraArray = ConstructCameraObjects(cameraConfig)
+    else:
+        raise ValueError("Camera config could not be found")
+        
     if(initNetworkStatus):
         # Test all rtsp cameras for functionality
-        testRTSP_Ping()
+        cameraArray = testRTSP_Ping(cameraArray)
         
         for i in cameras:
             cameraStatus="offline"
