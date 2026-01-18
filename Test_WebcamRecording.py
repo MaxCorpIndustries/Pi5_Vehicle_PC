@@ -4,6 +4,7 @@ from subprocess import DEVNULL
 import time
 import os
 import asyncio
+import keyboard
 import gpiod
 from datetime import datetime
 from gpiod.line import Direction, Value
