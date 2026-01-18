@@ -225,6 +225,7 @@ def get_CurrentCameras():
 
 def ConstructCameraObjects(configFile):
     cameraArray = []
+    print(configFile)
     try:
         for configItem in configFile:
             cameraItem = Camera(configItem["name"],configItem["type"],configItem["location"],configItem["url"],configItem["ping"])
@@ -232,8 +233,8 @@ def ConstructCameraObjects(configFile):
             cameraArray.append(cameraItem)
 
         return cameraArray
-    except:
-        print("Failure while reading camera config file")
+    except Exception as e:
+        print("Failure while reading camera config file: \n" + e)
         return None
     
     
