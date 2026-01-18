@@ -56,17 +56,17 @@ class Camera:
 
 # define all the cameras
 cameras = [
-    Camera("1_LFTBOARD","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
+    Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
     
-    Camera("2_RIGHTBOARD","RTSP","RIGHT OUTBOARD",'rtsp://cam1:test12345678@needed:554/h264Preview_01_main',"10.0.0.207"),
+    Camera("2_RIGTCAM","RTSP","RIGHT OUTBOARD",'rtsp://cam1:test12345678@needed:554/h264Preview_01_main',"10.0.0.207"),
 
-    Camera("3_REAR","RTSP","REAR FACING",'rtsp://cam4:test12345678@needed:554/h264Preview_01_main',"needed"),
+    Camera("3_REARCAM","RTSP","REAR FACING",'rtsp://cam4:test12345678@needed:554/h264Preview_01_main',"needed"),
 
-    Camera("4_BUMPER","RTSP","FRONT FACING",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed"),
+    Camera("4_BMPRCAM","RTSP","FRONT FACING",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed"),
     
     Camera("5_DASHCAM","USB","DASHBOARD FRONT","/dev/video0","Logitech BRIO (usb-xhci-hcd.1-1)"),
     
-    Camera("6_CLUSTER","RTSP","CLUSTER GAUGE",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed")
+    Camera("6_CLUSCAM","RTSP","CLUSTER GAUGE",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed")
 ]
 
 
@@ -128,14 +128,14 @@ def testRTSP_Ping():
         match (i.camType):
             case "RTSP":
                 try:
-                    subprocess.run(["ping","-c","1",str(i.ping)], check=True)
+                    subprocess.run(["ping","-c","1",str(i.ping)], check=True,capture_output=False,text=False)
                     #print(i.name + " Camera Online" )
                     cameras[index].readytoload = True
                     
                 except subprocess.CalledProcessError as e:
                     #print(f"Command failed with error: {e}")
-                    #print(i.name + " Camera Offline" )
-                    pass
+                    print(i.name + " Camera Offline" )
+                    
                 break
             
             case "USB":
@@ -147,8 +147,8 @@ def testRTSP_Ping():
                     
                 except subprocess.CalledProcessError as e:
                     #print(f"Command failed with error: {e}")
-                    #print(i.name + " Camera Offline" )
-                    pass
+                    print(i.name + " Camera Offline" )
+                    
                 break
 
         index +=1
