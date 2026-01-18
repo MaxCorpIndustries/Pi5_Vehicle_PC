@@ -124,16 +124,16 @@ def testRTSP_Ping():
        # This function attempts to ping the Camera.ping property to confirm rtsp stream successful
        # Returns true to update Camera.readytoload and confirm rtsp ready for recording
     for index, i in cameras: 
-    try:
-        subprocess.run(["ping",,"-c","1" str(i.ping)], check=True)
-        print(i.name + " Camera Online" )
-        cameras[index].readytoload = True
-        
-    except subprocess.CalledProcessError as e:
-        print(f"Command failed with error: {e}")
-        print(i.name + " Camera Offline" )
-        
-                
+        try:
+            subprocess.run(["ping",,"-c","1" str(i.ping)], check=True)
+            print(i.name + " Camera Online" )
+            cameras[index].readytoload = True
+            
+        except subprocess.CalledProcessError as e:
+            print(f"Command failed with error: {e}")
+            print(i.name + " Camera Offline" )
+            
+                    
 #------------- get and create functions
 
  
