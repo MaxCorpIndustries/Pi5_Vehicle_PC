@@ -290,7 +290,10 @@ def main():
         testRTSP_Ping()
         
         for i in cameras:
-            print(i.name + " | Status: " + i.readytoload)
+            cameraStatus="offline"
+            if(i.readytoload):
+                cameraStatus = "ready"    
+            print(i.name + " | Status: " + cameraStatus)
         
     #KillVideoProcess('/dev/video0')
     
