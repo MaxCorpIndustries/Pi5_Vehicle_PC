@@ -122,8 +122,9 @@ def initializeInternalNetwork():
     
 def testRTSP_Ping():
        # This function attempts to ping the Camera.ping property to confirm rtsp stream successful
-       # Returns true to update Camera.readytoload and confirm rtsp ready for recording
-    for index, i in cameras: 
+       # Returns true to update Camera.readytoload and confirm rtsp ready for
+    index =0
+    for i in cameras:
         try:
             subprocess.run(["ping","-c","1",str(i.ping)], check=True)
             print(i.name + " Camera Online" )
@@ -132,7 +133,8 @@ def testRTSP_Ping():
         except subprocess.CalledProcessError as e:
             print(f"Command failed with error: {e}")
             print(i.name + " Camera Offline" )
-            
+
+        index +=1
                     
 #------------- get and create functions
 
