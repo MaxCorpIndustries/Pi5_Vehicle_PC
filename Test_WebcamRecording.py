@@ -113,6 +113,7 @@ def initializeInternalNetwork():
         return False #tell code that rtsp stream failed"
     try:
         subprocess.run(useFixedIP) #execute step 2
+        print("Ethernet forced enabled")
     except subprocess.CalledProcessError as e:
         print("FAILURE WHILE APPLYING STATIC IP")
         print(e)
@@ -125,15 +126,16 @@ def testRTSP_Ping():
        # Returns true to update Camera.readytoload and confirm rtsp ready for
     index =0
     for i in cameras:
+        print("checking: " + i.name)
         match (i.camType):
             case "RTSP":
                 try:
                     subprocess.run(["ping","-c","1",str(i.ping)], check=True,capture_output=False,text=False)
-                    #print(i.name + " Camera Online" )
+                    print(i.name + " Camera Online" )
                     cameras[index].readytoload = True
                     
                 except subprocess.CalledProcessError as e:
-                    #print(f"Command failed with error: {e}")
+                    print(f"Command failed with error: {e}")
                     print(i.name + " Camera Offline" )
                     
                 break
@@ -142,11 +144,11 @@ def testRTSP_Ping():
                 try:
                     pingOutput = subprocess.run(["v4l2-ctl","--list-devices","|","grep","-A","1",i.ping],check=True,capture_output=True,text=True)
                     if(i.accessURL in pingOutput):
-                        #print(i.name + " Camera Online" )
+                        print(i.name + " Camera Online" )
                         cameras[index].readytoload = True
                     
                 except subprocess.CalledProcessError as e:
-                    #print(f"Command failed with error: {e}")
+                    print(f"Command failed with error: {e}")
                     print(i.name + " Camera Offline" )
                     
                 break
