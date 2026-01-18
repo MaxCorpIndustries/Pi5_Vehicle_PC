@@ -318,12 +318,16 @@ def main():
     print('trip '+currentdirectory+ ' created')
     
     #print('this should print immedietly')
-    while True:    
+    while True:
+
+        if user_input.lower() == 'q':
+            break  # DEVELOPER KILLBIND
+        
         BlinkProgress()
         
         if(len(global_process_array) != 0):
             for a in global_process_array:
-                print(a[0].poll())
+                #print(a[0].poll())
                 
                 if(str(a[0].poll()) == "None"):
                     blinkcode=1                
@@ -356,7 +360,8 @@ def main():
         time.sleep(0.2)
         
 
-    print('finished!')
+    
     
 if __name__ == "__main__":
     main()
+    print('finished!')
