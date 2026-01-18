@@ -58,7 +58,7 @@ class Camera:
 cameras = [
     Camera("1_LFTBOARD","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
     
-    Camera("2_RIGHTBOARD","RTSP","RIGHT OUTBOARD",'rtsp://cam2:test12345678@needed:554/h264Preview_01_main',"needed"),
+    Camera("2_RIGHTBOARD","RTSP","RIGHT OUTBOARD",'rtsp://cam1:test12345678@needed:554/h264Preview_01_main',"10.0.0.207"),
 
     Camera("3_REAR","RTSP","REAR FACING",'rtsp://cam4:test12345678@needed:554/h264Preview_01_main',"needed"),
 
@@ -78,8 +78,30 @@ global_process_array=list()
 blinkcode=0
 GPIORequester= None
 
-# This function allows the pi to create an "internal network" so the system can use rtsp streams without needing an internet connection
+with gpiod.request_lines(
+    "/dev/gpiochip0",
+    consumer="blink-example",
+    config={
+        GREEN_LED: gpiod.LineSettings(
+            direction=Direction.OUTPUT, output_value=Value.INACTIVE
+        ),
+        YELLOW_LED: gpiod.LineSettings(
+            direction=Direction.OUTPUT, output_value=Value.INACTIVE
+        ),
+        RED_LED: gpiod.LineSettings(
+            direction=Direction.OUTPUT, output_value=Value.INACTIVE
+        )            
+    },
+) as request:
+    GPIORequester = request
+
+#------------- RTSP Functions
+
+
 def initializeInternalNetwork():
+    # This function allows the pi to create an "internal network" 
+    #so the system can use rtsp streams without needing an internet connection
+
     useFixedIP = ["nmcli","con","mod","netplan-eth0","ipv4.addresses","192.168.1.200/24","ipv4.method","manual"]
     
     setUpIP = ["ip","link","set","eth0","up"]
@@ -98,24 +120,22 @@ def initializeInternalNetwork():
     
     return True #tell code that rtsp stream ready"
     
-
-with gpiod.request_lines(
-    "/dev/gpiochip0",
-    consumer="blink-example",
-    config={
-        GREEN_LED: gpiod.LineSettings(
-            direction=Direction.OUTPUT, output_value=Value.INACTIVE
-        ),
-        YELLOW_LED: gpiod.LineSettings(
-            direction=Direction.OUTPUT, output_value=Value.INACTIVE
-        ),
-        RED_LED: gpiod.LineSettings(
-            direction=Direction.OUTPUT, output_value=Value.INACTIVE
-        )            
-    },
-) as request:
-    GPIORequester = request
+def testRTSP_Ping():
+       # This function attempts to ping the Camera.ping property to confirm rtsp stream successful
+       # Returns true to update Camera.readytoload and confirm rtsp ready for recording
+    for index, i in cameras: 
+    try:
+        subprocess.run(["ping",,"-c","1" str(i.ping)], check=True)
+        print(i.name + " Camera Online" )
+        cameras[index].readytoload = True
+        
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed with error: {e}")
+        print(i.name + " Camera Offline" )
+        
+                
 #------------- get and create functions
+
  
 def create_NewTripFolder():
     #Get current count of folders in the trip_videos folder
@@ -161,11 +181,9 @@ def get_OldestTripFolder():
     
     return str(TripsVideoDirectory+"/"+tripFolderName+currentfolderlist[0])
 
-
 def get_CurrentCameras():
     results = subprocess.run(['v4l2-ctl','--list-devices'],encoding='utf-8',stdout=subprocess.PIPE)
     print(results)
-
 
 #---------------------- generic functions
 
@@ -263,7 +281,15 @@ def main():
       #getCurrentCameras()
     BlinkProgress()
 
-    print(initializeInternalNetwork())
+    #attempt to set static IP within pi
+    initNetworkStatus= initializeInternalNetwork()
+    if(initNetworkStatus):
+        # Test all rtsp cameras for functionality
+        testRTSP_Ping()
+        
+        for i in cameras:
+            print(i.name + " | Status: " + i.readytoload)
+        
     #KillVideoProcess('/dev/video0')
     
     currentdirectory=create_NewTripFolder()
