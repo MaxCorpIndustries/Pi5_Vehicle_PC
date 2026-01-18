@@ -262,7 +262,8 @@ def main():
     global blinkcode
       #getCurrentCameras()
     BlinkProgress()
-    
+
+    print(initializeInternalNetwork())
     #KillVideoProcess('/dev/video0')
     
     currentdirectory=create_NewTripFolder()
@@ -274,7 +275,7 @@ def main():
         
         if(len(global_process_array) != 0):
             for a in global_process_array:
-                #print(a[0].poll())
+                print(a[0].poll())
                 
                 if(str(a[0].poll()) == "None"):
                     blinkcode=1                
@@ -289,7 +290,7 @@ def main():
                 if(a[0]._internal_poll(_deadstate=127) == 1):
                     blinkcode=3
         else:
-            process = InitializeVideoProcessASYNC(FILL ME IN,currentdirectory)
+            process = InitializeVideoProcessASYNC("/dev/video0',currentdirectory)
             allprocessesstatus=0
             blinkcode=0
             #CYCLIC BUFFER SYSTEM
