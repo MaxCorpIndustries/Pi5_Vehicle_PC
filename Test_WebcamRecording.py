@@ -126,18 +126,18 @@ def testRTSP_Ping():
        # Returns true to update Camera.readytoload and confirm rtsp ready for
     index =0
     for i in cameras:
+        
         print("checking: " + i.name)
         match (i.camType):
             case "RTSP":
                 try:
+                    print("test: " + i.ping)
                     pingOutput = subprocess.run(["ping","-c","1",str(i.ping)], check=True,capture_output=False,text=False)
                     print(i.name + " Camera Online" )
                     cameras[index].readytoload = True
                 except:
                     print(i.name + " Camera Offline" )
                     
-                break
-            
             case "USB":
                 try:
                     pingOutput = subprocess.run(["v4l2-ctl","--list-devices","|","grep","-A","1",i.ping],check=True,capture_output=True,text=True)
@@ -148,7 +148,6 @@ def testRTSP_Ping():
                 except:
                     print(i.name + " Camera Offline" )
                     
-                break
 
         index +=1
                     
