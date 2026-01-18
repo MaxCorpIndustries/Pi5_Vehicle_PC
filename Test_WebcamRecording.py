@@ -58,7 +58,7 @@ class Camera:
 cameras = [
     Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
     
-    Camera("2_RIGTCAM","RTSP","RIGHT OUTBOARD",'rtsp://cam1:test12345678@needed:554/h264Preview_01_main',"10.0.0.207"),
+    Camera("2_RIGTCAM","RTSP","RIGHT OUTBOARD",'rtsp://cam1:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.207"),
 
     Camera("3_REARCAM","RTSP","REAR FACING",'rtsp://cam4:test12345678@needed:554/h264Preview_01_main',"needed"),
 
@@ -130,12 +130,10 @@ def testRTSP_Ping():
         match (i.camType):
             case "RTSP":
                 try:
-                    subprocess.run(["ping","-c","1",str(i.ping)], check=True,capture_output=False,text=False)
+                    pingOutput = subprocess.run(["ping","-c","1",str(i.ping)], check=True,capture_output=False,text=False)
                     print(i.name + " Camera Online" )
                     cameras[index].readytoload = True
-                    
-                except subprocess.CalledProcessError as e:
-                    print(f"Command failed with error: {e}")
+                except:
                     print(i.name + " Camera Offline" )
                     
                 break
@@ -147,8 +145,7 @@ def testRTSP_Ping():
                         print(i.name + " Camera Online" )
                         cameras[index].readytoload = True
                     
-                except subprocess.CalledProcessError as e:
-                    print(f"Command failed with error: {e}")
+                except
                     print(i.name + " Camera Offline" )
                     
                 break
