@@ -140,7 +140,8 @@ def testRTSP_Ping():
                     
             case "USB":
                 try:
-                    pingOutput = subprocess.run(["v4l2-ctl","--list-devices","|","grep","-A","1",i.ping],check=True,capture_output=True,text=True)
+                    pingOutput = subprocess.run(["v4l2-ctl","--list-devices","|","grep","-A","1",i.ping],check=True,capture_output=True,text=True,stdout=DEVNULL)
+                    print(pingOutput)
                     if(i.accessURL in pingOutput):
                         print(i.name + " Camera Online" )
                         cameras[index].readytoload = True
