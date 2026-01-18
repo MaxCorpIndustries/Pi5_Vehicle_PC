@@ -132,7 +132,7 @@ def testRTSP_Ping():
         match (i.camType):
             case "RTSP":
                 try:
-                    pingOutput = subprocess.run(["ping","-c","1",str(i.ping)], check=True,stdout=DEVNULL)
+                    pingOutput = subprocess.run(["ping","-c","1",str(i.ping)], check=True,stdout=DEVNULL,stderr=DEVNULL)
                     print(i.name + " Camera Online" )
                     cameras[index].readytoload = True
                 except:
@@ -140,7 +140,9 @@ def testRTSP_Ping():
                     
             case "USB":
                 try:
-                    pingOutput = subprocess.run(["v4l2-ctl","--list-devices","|","grep","-A","1",i.ping],check=True,capture_output=True,text=True,stdout=DEVNULL)
+                    print(i.ping)
+                    print(i.accessURL)
+                    pingOutput = subprocess.run(["v4l2-ctl","--list-devices","|","grep","-A","1",i.ping],check=True,capture_output=True,text=True,stdout=DEVNULL,stderr=DEVNULL)
                     print(pingOutput)
                     if(i.accessURL in pingOutput):
                         print(i.name + " Camera Online" )
