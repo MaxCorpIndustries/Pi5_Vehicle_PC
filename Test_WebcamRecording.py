@@ -64,7 +64,7 @@ cameras = [
 
     Camera("4_BUMPER","RTSP","FRONT FACING",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed"),
     
-    Camera("5_DASHCAM","USB","DASHBOARD FRONT",'Logitech BRIO (usb-xhci-hcd.1-1)',"/dev/video0"),
+    Camera("5_DASHCAM","USB","DASHBOARD FRONT","/dev/video0","Logitech BRIO (usb-xhci-hcd.1-1)"),
     
     Camera("6_CLUSTER","RTSP","CLUSTER GAUGE",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed")
 ]
@@ -125,14 +125,31 @@ def testRTSP_Ping():
        # Returns true to update Camera.readytoload and confirm rtsp ready for
     index =0
     for i in cameras:
-        try:
-            subprocess.run(["ping","-c","1",str(i.ping)], check=True)
-            print(i.name + " Camera Online" )
-            cameras[index].readytoload = True
+        switch(i.camType):
+            case "RTSP":
+                try:
+                    subprocess.run(["ping","-c","1",str(i.ping)], check=True)
+                    #print(i.name + " Camera Online" )
+                    cameras[index].readytoload = True
+                    
+                except subprocess.CalledProcessError as e:
+                    #print(f"Command failed with error: {e}")
+                    #print(i.name + " Camera Offline" )
+                    pass
+                break
             
-        except subprocess.CalledProcessError as e:
-            print(f"Command failed with error: {e}")
-            print(i.name + " Camera Offline" )
+            case "USB":
+                try:
+                    pingOutput = subprocess.run(["v4l2-ctl","--list-devices","|","grep","-A","1",i.ping, check=True,capture_output=True,text=True)
+                    if(i.accessURL in pingOutput):
+                        #print(i.name + " Camera Online" )
+                        cameras[index].readytoload = True
+                    
+                except subprocess.CalledProcessError as e:
+                    #print(f"Command failed with error: {e}")
+                    #print(i.name + " Camera Offline" )
+                    pass
+                break
 
         index +=1
                     
@@ -285,6 +302,7 @@ def main():
 
     #attempt to set static IP within pi
     initNetworkStatus= initializeInternalNetwork()
+    
     if(initNetworkStatus):
         # Test all rtsp cameras for functionality
         testRTSP_Ping()
@@ -293,7 +311,7 @@ def main():
             cameraStatus="offline"
             if(i.readytoload):
                 cameraStatus = "ready"    
-            print(i.name + " | Status: " + cameraStatus)
+            print(i.name + "    | Status: " + cameraStatus)
         
     #KillVideoProcess('/dev/video0')
     
