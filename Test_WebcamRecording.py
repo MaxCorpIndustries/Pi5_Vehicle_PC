@@ -4,7 +4,6 @@ from subprocess import DEVNULL
 import time
 import os
 import asyncio
-import keyboard
 import gpiod
 from datetime import datetime
 from gpiod.line import Direction, Value
@@ -319,48 +318,47 @@ def main():
     print('trip '+currentdirectory+ ' created')
     
     #print('this should print immedietly')
-    while True:
-
-        if keyboard.is_pressed('q'):
-            print(" 'q' pressed. Breaking loop.")
-            break
-        
-        BlinkProgress()
-        
-        if(len(global_process_array) != 0):
-            for a in global_process_array:
-                #print(a[0].poll())
-                
-                if(str(a[0].poll()) == "None"):
-                    blinkcode=1                
-                
-                if(a[0].poll() == 0):
-                    blinkcode=2
-                    
-                    #this process has finished, and is being removed from the pool
-                    allprocessesstatus+=1
-                    global_process_array.remove(a)
-                
-                if(a[0]._internal_poll(_deadstate=127) == 1):
-                    blinkcode=3
-        else:
-            process = InitializeVideoProcessASYNC('/dev/video0',currentdirectory)
-            allprocessesstatus=0
-            blinkcode=0
-            #CYCLIC BUFFER SYSTEM
-            currentdirectorysize=os.path.getsize(currentdirectory)
+    try:
+        while True:
             
-            #This may need to run more than once
-            print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
-            while(currentdirectorysize>20971520):#20 megbytes #1073741824): 1 gig
-                blinkcode=4
-                BlinkProgress()
-                print("Trip directory exceeded size limit! Deleting trip: " + get_OldestTripFolder)
-                DeleteTripFolder(get_OldestTripFolder)
+            BlinkProgress()
+            
+            if(len(global_process_array) != 0):
+                for a in global_process_array:
+                    #print(a[0].poll())
+                    
+                    if(str(a[0].poll()) == "None"):
+                        blinkcode=1                
+                    
+                    if(a[0].poll() == 0):
+                        blinkcode=2
+                        
+                        #this process has finished, and is being removed from the pool
+                        allprocessesstatus+=1
+                        global_process_array.remove(a)
+                    
+                    if(a[0]._internal_poll(_deadstate=127) == 1):
+                        blinkcode=3
+            else:
+                process = InitializeVideoProcessASYNC('/dev/video0',currentdirectory)
+                allprocessesstatus=0
+                blinkcode=0
+                #CYCLIC BUFFER SYSTEM
+                currentdirectorysize=os.path.getsize(currentdirectory)
                 
-                
-        time.sleep(0.2)
-        
+                #This may need to run more than once
+                print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
+                while(currentdirectorysize>20971520):#20 megbytes #1073741824): 1 gig
+                    blinkcode=4
+                    BlinkProgress()
+                    print("Trip directory exceeded size limit! Deleting trip: " + get_OldestTripFolder)
+                    DeleteTripFolder(get_OldestTripFolder)
+                    
+                    
+            time.sleep(0.2)
+            
+    except KeyboardInterrupt:
+        pass
 
     
     
