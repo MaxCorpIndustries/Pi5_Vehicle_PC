@@ -253,7 +253,7 @@ def ConstructCameraObjects(cameraObject):
 
         return cameraArray
     except Exception as e:
-        print("Failure while reading camera config file: \n" + e)
+        print("Failure while reading camera config file: \n" + str(e))
         return None
     
     
