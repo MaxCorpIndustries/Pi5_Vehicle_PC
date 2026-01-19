@@ -135,17 +135,17 @@ def testRTSP_Ping(cameras):
             case "RTSP":
                 try:
                     pingOutput = subprocess.run(["ping","-c","1",str(i.ping)], check=True,stdout=DEVNULL,stderr=DEVNULL)
-                    print(i.name + " Camera Online" )
+                    #print(i.name + " Camera Online" )
                     cameras[index].readytoload = True
                 except:
-                    print(i.name + " Camera Offline" )
+                    #print(i.name + " Camera Offline" )
                     
             case "USB":
                 try:
                     print(i.ping)
                     print(i.accessURL)
                     pingOutput = subprocess.run(["v4l2-ctl","--list-devices","|","grep","-A","1",i.ping],check=True,capture_output=True,text=True,stdout=DEVNULL,stderr=DEVNULL)
-                    print(pingOutput)
+                    print("pingoutput:  " + pingOutput)
                     if(i.accessURL in pingOutput):
                         print(i.name + " Camera Online" )
                         cameras[index].readytoload = True
@@ -227,9 +227,9 @@ def ConstructCameraObjects(cameraObject):
     cameraArray = []
 
     config = cameraObject[0]
-    print(config)
+    #print(config)
     configFile=cameraObject[1]
-    print(configFile)
+    #print(configFile)
     #try:
     for section in config.sections():
         camera_data = {}
@@ -360,6 +360,7 @@ def main():
 
     #load cameras.ini
     cameraConfig = get_config_info("cameras.ini")
+    
     if(cameraConfig != None):
         cameraArray = ConstructCameraObjects(cameraConfig)
     else:
