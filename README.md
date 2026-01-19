@@ -6,25 +6,17 @@ This system should include the following features as the MVP:
 - Working screen output of the camera system
 - Working aux or bluetooth integration with the phone 
 
-The following are the planned cameras and their locations:
-┌──────────┬───────────────┬───────────────┬───────────────────┬───────────────────────┐
-│ CAM NUM  │ CAMERA COMS   | Camera Make   | vid Specs         | Vehicle location      |
-├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
-│ 1        │ RTSP PoE      | RLC-510A      | 2304x1296 30Fps   | Left outboard camera, | 
-│          |               |               |                   | facing rear of vehicle|
-├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
-│ 2        | RTSP PoE      | RLC-510A      | 2304x1296 30Fps   | Right outboard camera,|  
-│          |               |               |                   | facing rear of vehicle|
-├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
-│ 3        | RTSP PoE      | RLC-510A      | 2304x1296 30Fps   | Rear facing camera.   |
-├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
-│ 4        │ RTSP PoE      | unknown       | ~1080p 30Fps      | Front bumper camera   |
-├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
-│ 5        │ USB 3.0       | Logitech BRIO | ~1080p 30Fps      | Under mirror cam      |
-│          |               |               |                   | facing front          |
-├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
-│ 6        │ RTSP PoE      | Unknown       | ~1080p 30Fps      | ClusterCam            |
-└──────────┴───────────────┴───────────────┴───────────────────┴───────────────────────┘
+## Planned Cameras and Locations
+
+| CAM # | Camera Comms | Camera Make   | Video Specs        | Vehicle Location                                  |
+|------:|--------------|---------------|--------------------|--------------------------------------------------|
+| 1     | RTSP PoE     | RLC-510A      | 2304×1296 @ 30 FPS | Left outboard camera, facing rear of vehicle     |
+| 2     | RTSP PoE     | RLC-510A      | 2304×1296 @ 30 FPS | Right outboard camera, facing rear of vehicle    |
+| 3     | RTSP PoE     | RLC-510A      | 2304×1296 @ 30 FPS | Rear-facing camera                               |
+| 4     | RTSP PoE     | Unknown       | ~1080p @ 30 FPS    | Front bumper camera                              |
+| 5     | USB 3.0      | Logitech BRIO | ~1080p @ 30 FPS    | Under-mirror camera, facing front                |
+| 6     | RTSP PoE     | Unknown       | ~1080p @ 30 FPS    | ClusterCam                                      |
+
 
  These streams run simultaneously at once, and should all be recorded as separate video files stored in a collected folder
 
