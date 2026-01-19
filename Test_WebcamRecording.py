@@ -225,10 +225,17 @@ def get_CurrentCameras():
 
 def ConstructCameraObjects(configFile):
     cameraArray = []
-    
+
     try:
         for configItem in configFile.sections():
-            cameraItem = Camera(configItem["name"],configItem["type"],configItem["location"],configItem["url"],configItem["ping"])
+            print(configItem)
+            for configProperty in configItem.items():
+                print(configProperty)
+            cameraItem = Camera(str(configItem['name']),
+                                str(configItem['type']),
+                                str(configItem['location']),
+                                str(configItem['url']),
+                                str(configItem['ping']))
             #Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
             cameraArray.append(cameraItem)
 
