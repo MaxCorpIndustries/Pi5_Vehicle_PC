@@ -148,7 +148,7 @@ def testRTSP_Ping(cameras):
                 process_1 = subprocess.run(["v4l2-ctl", "--list-devices" ],check=True,capture_output=True,text=True)
                 pingOutput = subprocess.run(["grep", "-A", "1",str(i.ping)],input = process_1.stdout,check=True,capture_output=True,text=True)
                 print("pingoutput:  " + str(pingOutput))
-                if(i.accessURL in pingOutput):
+                if(i.accessURL in str(pingOutput)):
                     print(i.name + " Camera Online" )
                     cameras[index].readytoload = True
                     
