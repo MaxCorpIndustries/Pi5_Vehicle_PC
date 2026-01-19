@@ -228,7 +228,7 @@ def ConstructCameraObjects(configFile):
 
     try:
         for configItem in configFile.sections():
-            print(configItemString)
+            print(configItem)
             
             cameraName = configFile[configItem].get('name')
             cameraType = configItem[configItem].get('type')
