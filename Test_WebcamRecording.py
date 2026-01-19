@@ -228,33 +228,33 @@ def ConstructCameraObjects(cameraObject):
 
     config = cameraObject[0]
     configFile=cameraObject[1]
-    try:
-        for section in configFile.sections():
-            camera_data = {}
-            camera_data["section"] = section
+    #try:
+    for section in configFile.sections():
+        camera_data = {}
+        camera_data["section"] = section
+        
+        for key, value in config.items(section):
+            # camera_data[key] = value
+            match key:
+                case 'name':
+                    cameraName['name'] = value
+                case 'type':
+                    cameraType['type'] = value
+                case 'location':
+                    cameraLocation['location'] = value
+                case 'url':
+                    cameraUrl['url'] = value
+                case 'ping':
+                    cameraPing['ping'] = value                         
+        
+        cameraItem = Camera(cameraName,cameraType,cameraLocation,cameraUrl,cameraPing)
+        #Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
+        cameraArray.append(cameraItem)
 
-            for key, value in config.items(section):
-                # camera_data[key] = value
-                match key:
-                    case 'name':
-                        cameraName['name'] = value
-                    case 'type':
-                        cameraType['type'] = value
-                    case 'location':
-                        cameraLocation['location'] = value
-                    case 'url':
-                        cameraUrl['url'] = value
-                    case 'ping':
-                        cameraPing['ping'] = value                         
-            
-            cameraItem = Camera(cameraName,cameraType,cameraLocation,cameraUrl,cameraPing)
-            #Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
-            cameraArray.append(cameraItem)
-
-        return cameraArray
-    except Exception as e:
-        print("Failure while reading camera config file: \n" + str(e))
-        return None
+    return cameraArray
+    #except Exception as e:
+        #print("Failure while reading camera config file: \n" + str(e))
+        #return None
     
     
 
