@@ -227,7 +227,7 @@ def ConstructCameraObjects(configFile):
     cameraArray = []
 
     try:
-        for configItem in configFile.sections():
+        for configItem in configFile:
             print(configItem)
 
             cameraItem = configFile[configItem]
