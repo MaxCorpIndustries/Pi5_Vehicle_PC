@@ -167,7 +167,7 @@ def get_config_info(filename):
     # Check if file exists
     if os.path.exists(filename):
         processedFile = config.read(filename)
-        return processedFile
+        return [config,processedFile]
     else:
         print(f"Error: Config file {filename} was not found.")
         return None
@@ -223,22 +223,27 @@ def get_CurrentCameras():
 
 #---------------------- camera related functions
 
-def ConstructCameraObjects(configFile):
+def ConstructCameraObjects(config,configFile):
     cameraArray = []
-
+    
     try:
-        for configItem in configFile:
-            print(configItem)
+        for section in configFile.sections():
+            camera_data = {}
+            camera_data["section"] = section
 
-            cameraItem = configFile[configItem]
-
-            print(cameraItem)
-            
-            cameraName =        cameraItem.get('name')
-            cameraType =        cameraItem.get('type')
-            cameraLocation =    cameraItem.get('location')
-            cameraUrl=          cameraItem.get('url')
-            cameraPing=         cameraItem.get('ping')
+            for key, value in config.items(section):
+                # camera_data[key] = value
+                match key:
+                    'name':
+                        cameraName = value
+                    'type':
+                        cameraType = value
+                    'location':
+                        cameraLocation = value
+                    'url':
+                        cameraUrl = value
+                    'ping':
+                        cameraPing = value                         
             
             cameraItem = Camera(cameraName,cameraType,cameraLocation,cameraUrl,cameraPing)
             #Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
