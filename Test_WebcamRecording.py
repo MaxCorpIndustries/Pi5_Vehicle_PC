@@ -234,16 +234,16 @@ def ConstructCameraObjects(config,configFile):
             for key, value in config.items(section):
                 # camera_data[key] = value
                 match key:
-                    'name':
-                        cameraName = value
-                    'type':
-                        cameraType = value
-                    'location':
-                        cameraLocation = value
-                    'url':
-                        cameraUrl = value
-                    'ping':
-                        cameraPing = value                         
+                    case 'name':
+                        cameraName['name'] = value
+                    case 'type':
+                        cameraType['type'] = value
+                    case 'location':
+                        cameraLocation['location'] = value
+                    case 'url':
+                        cameraUrl['url'] = value
+                    case 'ping':
+                        cameraPing['ping'] = value                         
             
             cameraItem = Camera(cameraName,cameraType,cameraLocation,cameraUrl,cameraPing)
             #Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
