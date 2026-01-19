@@ -225,7 +225,7 @@ def get_CurrentCameras():
 
 def ConstructCameraObjects(configFile):
     cameraArray = []
-    for configItem in configFile:
+    for configItem in configFile[1:]:
         print(configItem)
     
     try:
