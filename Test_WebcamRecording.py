@@ -369,7 +369,7 @@ def main():
         # Test all rtsp cameras for functionality
         cameraArray = testRTSP_Ping(cameraArray)
         
-        for i in cameras:
+        for i in cameraArray:
             cameraStatus="offline"
             if(i.readytoload):
                 cameraStatus = "ready"    
