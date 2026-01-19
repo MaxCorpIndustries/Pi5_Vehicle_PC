@@ -227,9 +227,11 @@ def ConstructCameraObjects(cameraObject):
     cameraArray = []
 
     config = cameraObject[0]
+    print(config)
     configFile=cameraObject[1]
+    print(configFile)
     #try:
-    for section in configFile.sections():
+    for section in config.sections():
         camera_data = {}
         camera_data["section"] = section
         
