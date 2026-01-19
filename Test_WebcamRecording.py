@@ -30,7 +30,8 @@ class Camera:
         self.location = location
         self.accessURL = accessURL # for rtsp, this is the url, for usb this is the unique keyword to look for in --list-devices 
         self.ping = ping
-        self.readytoload=False #this value will become true when ping successful 
+        self.readytoload=False #this value will become true when ping successful
+        self.ASYNCPOLL = None #this will contain the current process running this camera
 
 
 #The following are the planned cameras and their locations:
@@ -54,24 +55,6 @@ class Camera:
 #└──────────┴───────────────┴───────────────┴───────────────────┴───────────────────────┘
 
 # These streams run simultaneously at once, and should all be recorded as separate video files stored in a collected folder
-
-
-# define all the cameras
-'''
-cameras = [
-    Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
-    
-    Camera("2_RIGTCAM","RTSP","RIGHT OUTBOARD",'rtsp://cam1:test12345678@10.0.0.207:554/h264Preview_01_main',"10.0.0.207"),
-
-    Camera("3_REARCAM","RTSP","REAR FACING",'rtsp://cam4:test12345678@needed:554/h264Preview_01_main',"needed"),
-
-    Camera("4_BMPRCAM","RTSP","FRONT FACING",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed"),
-    
-    Camera("5_DASHCAM","USB","DASHBOARD FRONT","/dev/video0","Logitech BRIO"),
-    
-    Camera("6_CLUSCAM","RTSP","CLUSTER GAUGE",'rtsp://cam5:test12345678@needed:554/h264Preview_01_main',"needed")
-]'''
-
 
 GREEN_LED=14
 YELLOW_LED=15
@@ -129,32 +112,23 @@ def testRTSP_Ping(cameras):
        # Returns true to update Camera.readytoload and confirm rtsp ready for
     index =0
     for i in cameras:
-        
-        #print("checking: " + i.name)
         match (i.camType):
             case "RTSP":
                 try:
                     pingOutput = subprocess.run(["ping","-c","1",str(i.ping)], check=True,stdout=DEVNULL,stderr=DEVNULL)
-                    #print(i.name + " Camera Online" )
                     cameras[index].readytoload = True
                 except:
-                    #print(i.name + " Camera Offline" )
                     pass
                     
             case "USB":
                 try:
                     process_1 = subprocess.run(["v4l2-ctl", "--list-devices" ],check=True,capture_output=True,text=True)
                     pingOutput = subprocess.run(["grep", "-A", "1",str(i.ping)],input = process_1.stdout,check=True,capture_output=True,text=True)
-                    #print("pingoutput:  " + str(pingOutput))
                     if(i.accessURL in str(pingOutput)):
-                        print(i.name + " Camera Online" )
-                        cameras[index].readytoload = True
-                        
+                        cameras[index].readytoload = True 
                 except:
-                   print(i.name + " Camera Offline" )
                    pass
-                    
-
+                
         index +=1
     return cameras
                     
@@ -175,6 +149,10 @@ def get_config_info(filename):
 
  
 def create_NewTripFolder():
+    #This function creats the trip folder, named after current date and trip count
+    # Example:
+    # /main_storage/Trip_1_2026_01_18 20:15:05
+    
     #Get current count of folders in the trip_videos folder
     current_trip_directory="STOP"
     tripcount=0
@@ -195,6 +173,29 @@ def create_NewTripFolder():
     
     return current_trip_directory
 
+
+def create_NewLocationFolder(cameraObject,tripFolderName):
+    #This function creats a folder within the trip folder, named after the location of the camera
+    # Example:
+    # /main_storage/Trip_1_2026.../DASHBOARD FRONT/Video_1.avi
+    
+    #Get current count of folders in the trip_videos folder
+    current_location_directory="STOP"
+                         
+    #Create the new folder 
+    try:
+        directory=TripsVideoDirectory+'/'+tripFolderName+str(cameraObject.location)
+        subprocess.run(['mkdir',directory],check=True) #execute mkdir
+        current_location_directory=directory #update the returned directory to this new folder
+    except subprocess.CalledProcessError as e:
+        print("Folder Error: " + e)
+        
+    except FileExistsError:
+        print("Folder already exists")
+    
+    return current_location_directory
+
+
 def create_NewVideoFootageNum(vid_directory):
     #Get count of the videos within this file
     vidcount=0
@@ -202,7 +203,16 @@ def create_NewVideoFootageNum(vid_directory):
         for file in files:
             if(".avi" in file):
                 vidcount+=1
-    return vidcount+1                   
+    return vidcount+1
+
+
+def DeleteTripFolder(folderlocation):
+    try:
+        subprocess.run(['rm','-rf',folderlocation])
+        print(folderlocation + ' Removed successfully')
+    except:
+        print('could not delete folder: '+folderlocation)    
+
 
 def get_OldestTripFolder():
     #Get current count of folders in the trip_videos folder
@@ -228,71 +238,71 @@ def ConstructCameraObjects(cameraObject):
     cameraArray = []
 
     config = cameraObject[0]
-    #print(config)
     configFile=cameraObject[1]
-    #print(configFile)
-    #try:
-    for section in config.sections():
-        camera_data = {}
-        camera_data["section"] = section
-        
-        for key, value in config.items(section):
-            # camera_data[key] = value
-            match key:
-                case 'name':
-                    cameraName = value
-                case 'type':
-                    cameraType = value
-                case 'location':
-                    cameraLocation = value
-                case 'url':
-                    cameraUrl = value
-                case 'ping':
-                    cameraPing = value                         
-        
-        cameraItem = Camera(cameraName,cameraType,cameraLocation,cameraUrl,cameraPing)
-        #Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
-        cameraArray.append(cameraItem)
+    try:
+        for section in config.sections():
+            camera_data = {}
+            camera_data["section"] = section
+            
+            for key, value in config.items(section):
+                # camera_data[key] = value
+                match key:
+                    case 'name':
+                        cameraName = value
+                    case 'type':
+                        cameraType = value
+                    case 'location':
+                        cameraLocation = value
+                    case 'url':
+                        cameraUrl = value
+                    case 'ping':
+                        cameraPing = value                         
+            
+            cameraItem = Camera(cameraName,cameraType,cameraLocation,cameraUrl,cameraPing)
+            cameraArray.append(cameraItem)
 
-    return cameraArray
-    #except Exception as e:
-        #print("Failure while reading camera config file: \n" + str(e))
-        #return None
+        return cameraArray
+    except Exception as e:
+        print("Failure while reading camera config file: \n" + str(e))
+        return None
     
     
 
-def KillVideoProcess(streamlocation):
+def KillVideoProcess(cameraObject):
     try:
-        subprocess.run(['fuser','-k','/dev/video0'])
-        print('killed previous instance successfully')
+        subprocess.run(['fuser','-k',cameraObject.ASYNCPOLL])
+        print("killed "+cameraObject.name+" instance successfully")
+        return True
     except:
-        print('could not kill previout video user')    
+        print("could not kill "+cameraObject.name+" video user")
+        return False
 
-def DeleteTripFolder(folderlocation):
+
+def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
+
     try:
-        subprocess.run(['rm','-rf',folderlocation])
-        print(folderlocation + ' Removed successfully')
-    except:
-        print('could not delete folder: '+folderlocation)    
-
-
-
-def InitializeVideoProcessASYNC(streamlocation,currentdirectory):
-        
+       #Generate a new video number corresponding to the necessary  
         newvidnum=create_NewVideoFootageNum(currentdirectory)
-        videolocation=currentdirectory+"/"+videoFileName+str(newvidnum)+".avi"
         
+        newLocationFolder = create_NewLocationFolder(cameraObject,currentdirectory)
+        
+        videolocation=currentdirectory+"/"+newLocationFolder+"/"+videoFileName+str(newvidnum)+".avi"
         
         process = (
             ffmpeg
-            .input(streamlocation,flags='nobuffer')#,format='v4l2',framerate=30,video_size='1920x1080')
+            .input(cameraObject.url,flags='nobuffer')#,format='v4l2',framerate=30,video_size='1920x1080')
             .output(filename=videolocation,c="copy",t=3600,loglevel="quiet")#, vcodec="libx264",)
             .overwrite_output()
         )
+        
         process = process.run_async(pipe_stdin=True)
         #add this process to the pending array
-        global_process_array.append([process,streamlocation])
-        return process
+        global_process_array.append([process,cameraObject.url])
+        
+        return True
+    except Exception as e:
+        print(e)
+        return False
     
 def BlinkProgress():
     global blinkcode
@@ -311,7 +321,6 @@ def BlinkProgress():
             )            
         },
     ) as request:
-        #print(blinkcode)
         request.set_value(GREEN_LED, Value.INACTIVE)
         request.set_value(YELLOW_LED, Value.INACTIVE)
         request.set_value(RED_LED, Value.INACTIVE)        
@@ -352,8 +361,11 @@ def BlinkProgress():
         
 def main():
     global blinkcode
+
+    startVideoOnBoot=True
+    
     cameraArray = []
-    #getCurrentCameras()
+
     BlinkProgress()
 
     #attempt to set static IP within pi
@@ -388,24 +400,29 @@ def main():
             
             BlinkProgress()
             
-            if(len(global_process_array) != 0):
-                for a in global_process_array:
-                    #print(a[0].poll())
+            for a in global_process_array:
+                #print(a[0].poll())
+                
+                if(str(a[0].poll()) == "None"):
+                    blinkcode=1                
+                
+                if(a[0].poll() == 0):
+                    blinkcode=2
                     
-                    if(str(a[0].poll()) == "None"):
-                        blinkcode=1                
+                    #this process has finished, and is being removed from the pool
+                    allprocessesstatus+=1
+                    global_process_array.remove(a)
+                
+                if(a[0]._internal_poll(_deadstate=127) == 1):
+                    blinkcode=3
                     
-                    if(a[0].poll() == 0):
-                        blinkcode=2
-                        
-                        #this process has finished, and is being removed from the pool
-                        allprocessesstatus+=1
-                        global_process_array.remove(a)
+            if(startVideoOnBoot):
+                startVideoOnBoot=False
+                
+                for cameraObject in cameraArray:
+                    if(cameraObject.readytoload == True):
+                        process = InitializeVideoProcessASYNC(cameraObject,currentdirectory)
                     
-                    if(a[0]._internal_poll(_deadstate=127) == 1):
-                        blinkcode=3
-            else:
-                process = InitializeVideoProcessASYNC('/dev/video0',currentdirectory)
                 allprocessesstatus=0
                 blinkcode=0
                 #CYCLIC BUFFER SYSTEM
