@@ -139,6 +139,7 @@ def testRTSP_Ping(cameras):
                     cameras[index].readytoload = True
                 except:
                     #print(i.name + " Camera Offline" )
+                    pass
                     
             case "USB":
                 try:
@@ -152,6 +153,7 @@ def testRTSP_Ping(cameras):
                     
                 except:
                     print(i.name + " Camera Offline" )
+                    pass
                     
 
         index +=1
