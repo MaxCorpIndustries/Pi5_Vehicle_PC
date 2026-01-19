@@ -228,11 +228,13 @@ def ConstructCameraObjects(configFile):
 
     try:
         for configItem in configFile.sections():
-            cameraItem = Camera(str(configFile[configItem]['name']),
-                                str(configItem[configItem]['type']),
-                                str(configItem[configItem]['location']),
-                                str(configItem[configItem]['url']),
-                                str(configItem[configItem]['ping']))
+            configItemString = str(configItem )
+            print(configItemString)
+            cameraItem = Camera(str(configFile[configItemString]['name']),
+                                str(configItem[configItemString]['type']),
+                                str(configItem[configItemString]['location']),
+                                str(configItem[configItemString]['url']),
+                                str(configItem[configItemString]['ping']))
             #Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
             cameraArray.append(cameraItem)
 
