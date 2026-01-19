@@ -239,15 +239,15 @@ def ConstructCameraObjects(cameraObject):
             # camera_data[key] = value
             match key:
                 case 'name':
-                    cameraName['name'] = value
+                    cameraName = value
                 case 'type':
-                    cameraType['type'] = value
+                    cameraType = value
                 case 'location':
-                    cameraLocation['location'] = value
+                    cameraLocation = value
                 case 'url':
-                    cameraUrl['url'] = value
+                    cameraUrl = value
                 case 'ping':
-                    cameraPing['ping'] = value                         
+                    cameraPing = value                         
         
         cameraItem = Camera(cameraName,cameraType,cameraLocation,cameraUrl,cameraPing)
         #Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
