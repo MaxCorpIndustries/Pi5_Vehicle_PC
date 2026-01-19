@@ -166,8 +166,8 @@ def get_config_info(filename):
     
     # Check if file exists
     if os.path.exists(filename):
-        config.read(filename)
-        return config
+        processedFile = config.read(filename)
+        return processedFile
     else:
         print(f"Error: Config file {filename} was not found.")
         return None
@@ -229,12 +229,16 @@ def ConstructCameraObjects(configFile):
     try:
         for configItem in configFile.sections():
             print(configItem)
+
+            cameraItem = configFile[configItem]
+
+            print(cameraItem)
             
-            cameraName = configFile[configItem].get('name')
-            cameraType = configItem[configItem].get('type')
-            cameraLocation = configItem[configItem].get('location')
-            cameraUrl= configItem[configItem].get('url')
-            cameraPing= configItem[configItem].get('ping')
+            cameraName =        cameraItem.get('name')
+            cameraType =        cameraItem.get('type')
+            cameraLocation =    cameraItem.get('location')
+            cameraUrl=          cameraItem.get('url')
+            cameraPing=         cameraItem.get('ping')
             
             cameraItem = Camera(cameraName,cameraType,cameraLocation,cameraUrl,cameraPing)
             #Camera("1_LEFTCAM","RTSP","LEFT OUTBOARD",'rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main',"10.0.0.209"),
