@@ -142,19 +142,17 @@ def testRTSP_Ping(cameras):
                     pass
                     
             case "USB":
-                #try:
-                print(i.ping)
-                print(i.accessURL)
-                process_1 = subprocess.run(["v4l2-ctl", "--list-devices" ],check=True,capture_output=True,text=True)
-                pingOutput = subprocess.run(["grep", "-A", "1",str(i.ping)],input = process_1.stdout,check=True,capture_output=True,text=True)
-                print("pingoutput:  " + str(pingOutput))
-                if(i.accessURL in str(pingOutput)):
-                    print(i.name + " Camera Online" )
-                    cameras[index].readytoload = True
-                    
-                #except:
-                   # print(i.name + " Camera Offline" )
-                   # pass
+                try:
+                    process_1 = subprocess.run(["v4l2-ctl", "--list-devices" ],check=True,capture_output=True,text=True)
+                    pingOutput = subprocess.run(["grep", "-A", "1",str(i.ping)],input = process_1.stdout,check=True,capture_output=True,text=True)
+                    #print("pingoutput:  " + str(pingOutput))
+                    if(i.accessURL in str(pingOutput)):
+                        print(i.name + " Camera Online" )
+                        cameras[index].readytoload = True
+                        
+                except:
+                   print(i.name + " Camera Offline" )
+                   pass
                     
 
         index +=1
