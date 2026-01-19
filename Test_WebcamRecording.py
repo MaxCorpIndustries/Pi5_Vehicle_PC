@@ -223,9 +223,11 @@ def get_CurrentCameras():
 
 #---------------------- camera related functions
 
-def ConstructCameraObjects(config,configFile):
+def ConstructCameraObjects(cameraObject):
     cameraArray = []
-    
+
+    config = cameraObject[0]
+    configFile=cameraObject[1]
     try:
         for section in configFile.sections():
             camera_data = {}
