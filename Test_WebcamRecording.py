@@ -181,10 +181,11 @@ def create_NewLocationFolder(cameraObject,tripFolderName):
     
     #Get current count of folders in the trip_videos folder
     current_location_directory="STOP"
-                         
+    print('test1')
     #Create the new folder 
     try:
         directory=TripsVideoDirectory+'/'+tripFolderName+"/"+str(cameraObject.location)
+        print('directory: '+ directory)
         subprocess.run(['mkdir',directory],check=True) #execute mkdir
         current_location_directory=directory #update the returned directory to this new folder
     except subprocess.CalledProcessError as e:
