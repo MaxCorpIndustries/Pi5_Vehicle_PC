@@ -304,7 +304,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
 
         #(self,name,camType,location,accessURL,ping,ffmpeg_settings,fps,resolution_y,resolution_x):
         #print('\n\n STARTING: '+cameraObject.name+'\n Location: '+cameraObject.location+'\n URL: '+cameraObject.accessURL+'\n\n File: ' + videolocation)
-        match cameraObject.ffmpeg_settings
+        match cameraObject.ffmpeg_settings:
             case "SKIP":
                 process = (
                     ffmpeg #3600
