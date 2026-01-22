@@ -317,7 +317,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
                 process = (
                     ffmpeg #3600
                     .input(cameraObject.accessURL,format='v4l2',framerate=cameraObject.fps,video_size=resolution)
-                    .output(filename=videolocation,c="copy",t=60,loglevel="quiet")#, vcodec="libx264",)
+                    .output(filename=videolocation,c="copy",t=60,loglevel="quiet", vcodec="libx264",)
                     .overwrite_output()
                 )
             case _: #wildcard
@@ -470,8 +470,8 @@ def main():
                         print(a[1].name + " Status: ERROR")
                         
                 
-                time.sleep(1)
-                subprocess.run(['clear'])
+                time.sleep(10)
+                #subprocess.run(['clear'])
             #This may need to run more than once
             #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
             #while(currentdirectorysize>20971520):#20 megbytes #1073741824): 1 gig
