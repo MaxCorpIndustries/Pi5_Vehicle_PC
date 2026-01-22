@@ -291,6 +291,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
         
         videolocation=currentdirectory+"/"+newLocationFolder+"/"+videoFileName+str(newvidnum)+".avi"
         
+        print(videolocation)
         process = (
             ffmpeg
             .input(cameraObject.accessURL,flags='nobuffer')#,format='v4l2',framerate=30,video_size='1920x1080')
