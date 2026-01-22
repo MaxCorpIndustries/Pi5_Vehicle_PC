@@ -313,8 +313,8 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
                     .overwrite_output()
                 )
             case "USE":
-                print('using USE condition')
                 resolution=cameraObject.resolution_x +"x"+cameraObject.resolution_y
+                print(resolution)
                 process = (
                     ffmpeg #3600
                     .input(cameraObject.accessURL,format='v4l2',framerate=cameraObject.fps,video_size=resolution)
