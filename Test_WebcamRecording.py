@@ -286,9 +286,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
 
     try:
        #Generate a new video number corresponding to the necessary  
-        print(currentdirectory)
         newLocationFolder = create_NewLocationFolder(cameraObject,currentdirectory)
-        print(newLocationFolder)
         newvidnum=create_NewVideoFootageNum(newLocationFolder)
         
         videolocation=currentdirectory+"/"+newLocationFolder+"/"+videoFileName+str(newvidnum)+".avi"
@@ -302,7 +300,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
         
         process = process.run_async(pipe_stdin=True)
         #add this process to the pending array
-        global_process_array.append([process,cameraObject.url])
+        global_process_array.append([process,cameraObject.accessURL])
         
         return True
     except Exception as e:
