@@ -161,9 +161,13 @@ def create_NewTripFolder():
                          
     #Create the new folder 
     try:
-        now = datetime.now() #timestamp the trip folder with a datetime 
+        now_raw = datetime.now()
+        now = now_raw.strftime("%Y_%m_%d_%H_%M_%S") #timestamp the trip folder with a datetime
+        
         directory=TripsVideoDirectory+'/'+tripFolderName+str(tripcount)+"_"+str(now)
-        subprocess.run(['mkdir',directory],check=True) #execute mkdir
+        
+        subprocess.run(['mkdir',directory]) #execute mkdir
+        
         current_trip_directory=directory #update the returned directory to this new folder
     except subprocess.CalledProcessError as e:
         print("Folder Error: " + e)
