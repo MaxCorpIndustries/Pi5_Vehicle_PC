@@ -319,8 +319,8 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
                 resolution=cameraObject.resolution_x +"x"+cameraObject.resolution_y
                 process = (
                     ffmpeg #3600
-                    .input(cameraObject.accessURL,format='v4l2',framerate=cameraObject.fps,video_size=resolution)
-                    .output(filename=videolocation,c="copy",t=video_duration,loglevel="quiet")#, vcodec="libx264",)
+                    .input(cameraObject.accessURL,format='v4l2',framerate=cameraObject.fps)
+                    .output(video_size=resolution,filename=videolocation,c="copy",t=video_duration,loglevel="quiet")#, vcodec="libx264",)
                     .overwrite_output()
                 )
             case _: #wildcard
