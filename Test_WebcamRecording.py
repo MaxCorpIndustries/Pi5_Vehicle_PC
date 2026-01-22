@@ -160,16 +160,17 @@ def create_NewTripFolder():
     
     #Get current count of folders in the trip_videos folder
     current_trip_directory="STOP"
-    tripcount=0
-    for _,dirnames, _ in os.walk(TripsVideoDirectory):
-        tripcount+=1
+
+    #tripcount=0
+    #for _,dirnames, _ in os.walk(TripsVideoDirectory):
+     #   tripcount+=1
                          
     #Create the new folder 
     try:
         now_raw = datetime.now()
         now = now_raw.strftime("%Y_%m_%d %H_%M_%S") #timestamp the trip folder with a datetime
         
-        directory=TripsVideoDirectory+'/'+tripFolderName+str(tripcount)+"_"+str(now)
+        directory=TripsVideoDirectory+'/'+tripFolderName+"_"+str(now)
         
         subprocess.run(['mkdir',directory],check=True) #execute mkdir
         
@@ -316,7 +317,6 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
                 )
             case "USE":
                 resolution=cameraObject.resolution_x +"x"+cameraObject.resolution_y
-                print(resolution)
                 process = (
                     ffmpeg #3600
                     .input(cameraObject.accessURL,format='v4l2',framerate=cameraObject.fps,video_size=resolution)
