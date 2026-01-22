@@ -422,10 +422,11 @@ def main():
                     
             if(startVideoOnBoot):
                 startVideoOnBoot=False
-                
+                print('STARTING VIDEO PROCESS')
                 for cameraObject in cameraArray:
                     if(cameraObject.readytoload == True):
                         process = InitializeVideoProcessASYNC(cameraObject,currentdirectory)
+                        time.sleep(5)
                     
                 allprocessesstatus=0
                 blinkcode=0
