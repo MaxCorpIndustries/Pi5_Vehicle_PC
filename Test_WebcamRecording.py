@@ -295,7 +295,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
         process = (
             ffmpeg
             .input(cameraObject.accessURL,flags='nobuffer')#,format='v4l2',framerate=30,video_size='1920x1080')
-            .output(filename=videolocation,c="copy",t=3600,loglevel="quiet")#, vcodec="libx264",)
+            .output(filename=videolocation,c="copy",t=3600)#,loglevel="quiet")#, vcodec="libx264",)
             .overwrite_output()
         )
         
