@@ -289,7 +289,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
         newLocationFolder = create_NewLocationFolder(cameraObject,currentdirectory)
         newvidnum=create_NewVideoFootageNum(newLocationFolder)
         
-        videolocation=currentdirectory+newLocationFolder+'/'+videoFileName+str(newvidnum)+".avi"
+        videolocation=newLocationFolder+'/'+videoFileName+str(newvidnum)+".avi"
         
         print('\n\n STARTING: '+cameraObject.name+'\n Location: '+cameraObject.location+'\n URL: '+cameraObject.accessURL+'\n\n File: ' + videolocation)
         process = (
