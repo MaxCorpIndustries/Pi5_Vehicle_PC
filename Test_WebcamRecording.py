@@ -393,7 +393,7 @@ def main():
                 cameraStatus = "ready"    
             print(i.name + "    | Status: " + cameraStatus)
         
-    #KillVideoProcess('/dev/video0')
+    KillVideoProcess('/dev/video0')
     
     currentdirectory=create_NewTripFolder()
     print('trip '+currentdirectory+ ' created')
