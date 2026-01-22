@@ -14,6 +14,8 @@ TripsVideoDirectory='/media/carpc/Main_Storage/test'
 tripFolderName='Trip_'
 videoFileName='Video_'
 
+video_duration=3600
+
 #--------------------------------------
 # VIDEO RECORDER SYSTEM
 
@@ -309,7 +311,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
                 process = (
                     ffmpeg #3600
                     .input(cameraObject.accessURL)
-                    .output(filename=videolocation,c="copy",t=60,loglevel="quiet")#, vcodec="libx264",)
+                    .output(filename=videolocation,c="copy",t=video_duration,loglevel="quiet")#, vcodec="libx264",)
                     .overwrite_output()
                 )
             case "USE":
@@ -318,7 +320,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
                 process = (
                     ffmpeg #3600
                     .input(cameraObject.accessURL,format='v4l2',framerate=cameraObject.fps,video_size=resolution)
-                    .output(filename=videolocation,c="copy",t=60)#,loglevel="quiet", vcodec="libx264",)
+                    .output(filename=videolocation,c="copy",t=video_duration,loglevel="quiet")#, vcodec="libx264",)
                     .overwrite_output()
                 )
             case _: #wildcard
@@ -327,7 +329,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
                 process = (
                     ffmpeg #3600
                     .input(cameraObject.accessURL)
-                    .output(filename=videolocation,c="copy",t=60,loglevel="quiet")#, vcodec="libx264",)
+                    .output(filename=videolocation,c="copy",t=video_duration,loglevel="quiet")#, vcodec="libx264",)
                     .overwrite_output()
                 )
         
