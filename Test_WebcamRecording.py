@@ -14,7 +14,7 @@ TripsVideoDirectory='/media/carpc/Main_Storage/test'
 tripFolderName='Trip_'
 videoFileName='Video_'
 
-video_duration=3600
+video_duration=60
 
 #--------------------------------------
 # VIDEO RECORDER SYSTEM
@@ -474,7 +474,7 @@ def main():
                         
                 
                 time.sleep(10)
-                #subprocess.run(['clear'])
+                subprocess.run(['clear'])
             #This may need to run more than once
             #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
             #while(currentdirectorysize>20971520):#20 megbytes #1073741824): 1 gig
