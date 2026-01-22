@@ -162,11 +162,11 @@ def create_NewTripFolder():
     #Create the new folder 
     try:
         now_raw = datetime.now()
-        now = now_raw.strftime("%Y_%m_%d_%H_%M_%S") #timestamp the trip folder with a datetime
+        now = now_raw.strftime("%Y_%m_%d %H_%M_%S") #timestamp the trip folder with a datetime
         
         directory=TripsVideoDirectory+'/'+tripFolderName+str(tripcount)+"_"+str(now)
         
-        subprocess.run(['mkdir',directory]) #execute mkdir
+        subprocess.run(['mkdir',directory],check=True) #execute mkdir
         
         current_trip_directory=directory #update the returned directory to this new folder
     except subprocess.CalledProcessError as e:
@@ -188,7 +188,7 @@ def create_NewLocationFolder(cameraObject,tripFolderName):
     print('test1')
     #Create the new folder 
     try:
-        directory=TripsVideoDirectory+'/'+tripFolderName+"/"+str(cameraObject.location)
+        directory=TripsVideoDirectory+tripFolderName+"/"+str(cameraObject.location)
         print('directory: '+ directory)
         subprocess.run(['mkdir',directory],check=True) #execute mkdir
         current_location_directory=directory #update the returned directory to this new folder
