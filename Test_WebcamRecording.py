@@ -412,7 +412,7 @@ def main():
                     
                 allprocessesstatus=0
                 blinkcode=0
-                print("Initiation Complete, current processes: " + global_process_array)
+                print("Initiation Complete, current processes: " + str(len(global_process_array)))
             else:
                 #CYCLIC BUFFER SYSTEM
                 currentdirectorysize=os.path.getsize(currentdirectory)
