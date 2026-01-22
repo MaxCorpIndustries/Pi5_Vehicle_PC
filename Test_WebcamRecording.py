@@ -438,8 +438,9 @@ def main():
                         blinkcode=3
                         print(a[1].name + " Status: ERROR")
                         
-                subprocess.run(['clear'])
+                
                 time.sleep(1)
+                subprocess.run(['clear'])
             #This may need to run more than once
             #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
             #while(currentdirectorysize>20971520):#20 megbytes #1073741824): 1 gig
