@@ -274,7 +274,7 @@ def ConstructCameraObjects(cameraObject):
 
 def KillVideoProcess(cameraObject):
     try:
-        subprocess.run(['fuser','-k',cameraObject.ASYNCPOLL])
+        subprocess.run(['fuser','-k',cameraObject.accessURL])
         print("killed "+cameraObject.name+" instance successfully")
         return True
     except:
@@ -392,8 +392,6 @@ def main():
             if(i.readytoload):
                 cameraStatus = "ready"    
             print(i.name + "    | Status: " + cameraStatus)
-        
-    KillVideoProcess('/dev/video0')
     
     currentdirectory=create_NewTripFolder()
     print('trip '+currentdirectory+ ' created')
@@ -407,6 +405,9 @@ def main():
                 print('STARTING INITIAL VIDEO PROCESS')
                 for cameraObject in cameraArray:
                     if(cameraObject.readytoload == True):
+                        if(cameraObject.camType=="USB"):
+                            KillVideoProcess(cameraObject)
+                            
                         process = InitializeVideoProcessASYNC(cameraObject,currentdirectory)
                     
                 allprocessesstatus=0
