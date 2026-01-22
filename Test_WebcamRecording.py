@@ -282,9 +282,10 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
 
     try:
        #Generate a new video number corresponding to the necessary  
-        newvidnum=create_NewVideoFootageNum(currentdirectory)
-        
+        print(currentdirectory)
         newLocationFolder = create_NewLocationFolder(cameraObject,currentdirectory)
+        print(newLocationFolder)
+        newvidnum=create_NewVideoFootageNum(newLocationFolder)
         
         videolocation=currentdirectory+"/"+newLocationFolder+"/"+videoFileName+str(newvidnum)+".avi"
         
