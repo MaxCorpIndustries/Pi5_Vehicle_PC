@@ -411,27 +411,27 @@ def main():
                     
                 allprocessesstatus=0
                 blinkcode=0
-                
+                print("Initiation Complete, current processes: " + global_process_array)
             else:
                 #CYCLIC BUFFER SYSTEM
                 currentdirectorysize=os.path.getsize(currentdirectory)
                 BlinkProgress()
                 
                 for a in global_process_array:
-                    #print(a[0].poll())
+                    print(a[0].poll())
                     
-                    if(str(a[0].poll()) == "None"):
-                        blinkcode=1                
+                    #if(str(a[0].poll()) == "None"):
+                     #   blinkcode=1                
                     
-                    if(a[0].poll() == 0):
-                        blinkcode=2
+                    #if(a[0].poll() == 0):
+                     #   blinkcode=2
                         
                         #this process has finished, and is being removed from the pool
-                        allprocessesstatus+=1
-                        global_process_array.remove(a)
+                      #  allprocessesstatus+=1
+                       # global_process_array.remove(a)
                     
-                    if(a[0]._internal_poll(_deadstate=127) == 1):
-                        blinkcode=3
+                    #if(a[0]._internal_poll(_deadstate=127) == 1):
+                     #   blinkcode=3
                 
             #This may need to run more than once
             #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
