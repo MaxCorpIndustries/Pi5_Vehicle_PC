@@ -421,7 +421,7 @@ def main():
                 #[process,cameraObject]1
                 print("Status of cameras:")
                 for a in global_process_array:
-                     print(cameraObject.name + " Status: " a[0].poll())
+                     print(cameraObject.name + " Status: " + a[0].poll())
 
                 subprocess.run(['clear'])
                     #if(str(a[0].poll()) == "None"):
