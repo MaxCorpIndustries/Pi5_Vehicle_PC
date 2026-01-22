@@ -301,7 +301,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
         
         process = process.run_async(pipe_stdin=True)
         #add this process to the pending array
-        global_process_array.append([process,cameraObject.accessURL])
+        global_process_array.append([process,cameraObject])
         
         return True
     except Exception as e:
@@ -417,10 +417,13 @@ def main():
                 #CYCLIC BUFFER SYSTEM
                 currentdirectorysize=os.path.getsize(currentdirectory)
                 BlinkProgress()
-                
+
+                #[process,cameraObject]1
+                print("Status of cameras:")
                 for a in global_process_array:
-                    print(a[0].poll())
-                    
+                     print(cameraObject.name + " Status: " a[0].poll())
+
+                subprocess.run(['clear'])
                     #if(str(a[0].poll()) == "None"):
                      #   blinkcode=1                
                     
