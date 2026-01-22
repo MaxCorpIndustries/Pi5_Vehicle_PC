@@ -421,9 +421,10 @@ def main():
                 #[process,cameraObject]1
                 print("Status of cameras:")
                 for a in global_process_array:
-                     print(cameraObject.name + " Status: " + str(a[0].poll()))
+                     print(a[1].name + " Status: " + str(a[0].poll()))
 
                 subprocess.run(['clear'])
+                time.sleep(0.1)
                     #if(str(a[0].poll()) == "None"):
                      #   blinkcode=1                
                     
