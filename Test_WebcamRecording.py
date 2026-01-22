@@ -24,7 +24,7 @@ videoFileName='Video_'
 
 
 class Camera:
-    def __init__(self,name,camType,location,accessURL,ping):
+    def __init__(self,name,camType,location,accessURL,ping,ffmpeg_settings,fps,resolution_y,resolution_x):
         self.name = name
         self.camType = camType
         self.location = location
@@ -32,7 +32,10 @@ class Camera:
         self.ping = ping
         self.readytoload=False #this value will become true when ping successful
         self.ASYNCPOLL = None #this will contain the current process running this camera
-
+        self.ffmpeg_settings=ffmpeg_settings
+        self.fps=fps
+        self.resolution_y=resolution_y
+        self.resolution_x=resolution_x
 
 #The following are the planned cameras and their locations:
 #┌──────────┬───────────────┬───────────────┬───────────────────┬───────────────────────┐
@@ -261,8 +264,16 @@ def ConstructCameraObjects(cameraObject):
                         cameraUrl = value
                     case 'ping':
                         cameraPing = value                         
-            
-            cameraItem = Camera(cameraName,cameraType,cameraLocation,cameraUrl,cameraPing)
+                    case 'ffmpeg_settings':
+                        ffmpeg_settings = value
+                    case 'fps':
+                        fps = value
+                    case 'resolution_y':
+                        resolution_y = value
+                    case 'resolution_x':
+                        resolution_x = value
+                        
+            cameraItem = Camera(cameraName,cameraType,cameraLocation,cameraUrl,cameraPing,ffmpeg_settings,fps,resolution_y,resolution_x)
             cameraArray.append(cameraItem)
 
         return cameraArray
@@ -290,14 +301,34 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
         newvidnum=create_NewVideoFootageNum(newLocationFolder)
         
         videolocation=newLocationFolder+'/'+videoFileName+str(newvidnum)+".avi"
-        
-        print('\n\n STARTING: '+cameraObject.name+'\n Location: '+cameraObject.location+'\n URL: '+cameraObject.accessURL+'\n\n File: ' + videolocation)
-        process = (
-            ffmpeg #3600
-            .input(cameraObject.accessURL)#,format='v4l2',framerate=30,video_size='1920x1080')
-            .output(filename=videolocation,c="copy",t=60,loglevel="quiet")#, vcodec="libx264",)
-            .overwrite_output()
-        )
+
+        #(self,name,camType,location,accessURL,ping,ffmpeg_settings,fps,resolution_y,resolution_x):
+        #print('\n\n STARTING: '+cameraObject.name+'\n Location: '+cameraObject.location+'\n URL: '+cameraObject.accessURL+'\n\n File: ' + videolocation)
+        match cameraObject.ffmpeg_settings
+            case "SKIP":
+                process = (
+                    ffmpeg #3600
+                    .input(cameraObject.accessURL)
+                    .output(filename=videolocation,c="copy",t=60,loglevel="quiet")#, vcodec="libx264",)
+                    .overwrite_output()
+                )
+            case "USE":
+                resolution=cameraObject.resolution_x +"x"+cameraObject.resolution_y
+                process = (
+                    ffmpeg #3600
+                    .input(cameraObject.accessURL,format='v4l2',framerate=cameraObject.fps,video_size=resolution)
+                    .output(filename=videolocation,c="copy",t=60,loglevel="quiet")#, vcodec="libx264",)
+                    .overwrite_output()
+                )
+            case _: #wildcard
+
+                print("WARNING: CAMERA ITEM WITH NO ffmpeg_settings VALUE!")
+                process = (
+                    ffmpeg #3600
+                    .input(cameraObject.accessURL)
+                    .output(filename=videolocation,c="copy",t=60,loglevel="quiet")#, vcodec="libx264",)
+                    .overwrite_output()
+                )
         
         process = process.run_async(pipe_stdin=True)
         #add this process to the pending array
