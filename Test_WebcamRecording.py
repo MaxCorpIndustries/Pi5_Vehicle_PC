@@ -189,7 +189,6 @@ def create_NewLocationFolder(cameraObject,tripFolderName):
     #Create the new folder 
     try:
         directory=tripFolderName+"/"+str(cameraObject.location)
-        print('directory: '+ directory)
         subprocess.run(['mkdir',directory],check=True) #execute mkdir
         current_location_directory=directory #update the returned directory to this new folder
     except subprocess.CalledProcessError as e:
