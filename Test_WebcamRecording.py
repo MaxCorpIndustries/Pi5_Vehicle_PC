@@ -421,23 +421,25 @@ def main():
                 #[process,cameraObject]1
                 print("Status of cameras:")
                 for a in global_process_array:
-                     print(a[1].name + " Status: " + str(a[0].poll()))
-
-                subprocess.run(['clear'])
-                time.sleep(0.1)
-                    #if(str(a[0].poll()) == "None"):
-                     #   blinkcode=1                
-                    
-                    #if(a[0].poll() == 0):
-                     #   blinkcode=2
+                     #print(a[1].name + " Status: " + str(a[0].poll()))
+                    if(str(a[0].poll()) == "None"):
+                        print(a[1].name + " Status: Active"))
                         
-                        #this process has finished, and is being removed from the pool
-                      #  allprocessesstatus+=1
-                       # global_process_array.remove(a)
+                        blinkcode=1                
                     
-                    #if(a[0]._internal_poll(_deadstate=127) == 1):
-                     #   blinkcode=3
-                
+                    if(a[0].poll() == 0):
+                        blinkcode=2
+                        print(a[1].name + " Status: Done"))
+                        #this process has finished, and is being removed from the pool
+                        #allprocessesstatus+=1
+                        #global_process_array.remove(a)
+                    
+                    if(a[0]._internal_poll(_deadstate=127) == 1):
+                        blinkcode=3
+                        print(a[1].name + " Status: ERROR"))
+                        
+                subprocess.run(['clear'])
+                time.sleep(1)
             #This may need to run more than once
             #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
             #while(currentdirectorysize>20971520):#20 megbytes #1073741824): 1 gig
