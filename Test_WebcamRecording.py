@@ -458,9 +458,9 @@ def main():
                 for cameraObject in cameraArray:
                     if(cameraObject.readytoload == True):
                         #Poll current process
-                        print(cameraObject.ASYNCPOLL)
+                        print(cameraObject.ASYNCPOLL.returncode)   
                         process = cameraObject.ASYNCPOLL[0]
-                        print(process)
+                        print(process.returncode)
                         errorDetection = process._internal_poll(_deadstate=127)
                         
                         if(errorDetection == 1):
