@@ -459,8 +459,11 @@ def main():
                     if(cameraObject.readytoload == True):
 
                         #Check for failed process
-                        errorDetection = cameraObject.ASYNCPOLL._internal_poll(_deadstate=127)
-                        print('error: ' + str(errorDetection))
+                        try:
+                            errorDetection = cameraObject.ASYNCPOLL._internal_poll(_deadstate=127)
+                        except:
+                            errorDetection = -1
+                            # Whatever device this is does not support deadstate checks, override
                         
                         if(errorDetection == 1):
                             cameraObject.ASYNCSTATUS = "FAILURE"
