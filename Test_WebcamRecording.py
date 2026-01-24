@@ -169,17 +169,19 @@ def create_NewTripFolder():
         now = now_raw.strftime("%Y_%m_%d %H_%M_%S") #timestamp the trip folder with a datetime
         
         directory=TripsVideoDirectory+'/'+tripFolderName+"_"+str(now)
-        print(directory)
-        subprocess.run(['mkdir',directory],check=True) #execute mkdir
+        #print(directory)
+        subprocess.run(['mkdir',directory],shell=True,check=True) #execute mkdir
+        #os.makedirs(directory, exist_ok=True)
         
         current_trip_directory=directory #update the returned directory to this new folder
+        
     except subprocess.CalledProcessError as e:
         print("Folder Error: " + str(e))
         
     except FileExistsError:
         print("Folder already exists")
     
-    return current_trip_directory
+    return False
 
 
 def create_NewLocationFolder(cameraObject,tripFolderName):
