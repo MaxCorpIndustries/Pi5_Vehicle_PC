@@ -457,18 +457,16 @@ def main():
                 # Checks and restarts to do every cyle:
                 for cameraObject in cameraArray:
                     if(cameraObject.readytoload == True):
-                        #Poll current process
-                        print(cameraObject.ASYNCPOLL.returncode)   
-                        process = cameraObject.ASYNCPOLL[0]
-                        print(process.returncode)
-                        errorDetection = process._internal_poll(_deadstate=127)
+
+                        #Check for failed process
+                        errorDetection = cameraObject.ASYNCPOLL._internal_poll(_deadstate=127)
+                        print('error: ' + str(errorDetection))
                         
                         if(errorDetection == 1):
                             cameraObject.ASYNCSTATUS = "FAILURE"
                         else:
-                            cameraObject.ASYNCSTATUS = process.poll()
-                            
-                            match cameraObject.ASYNCSTATUS:
+
+                            match cameraObject.ASYNCPOLL.returncode:
                                 case "None":
                                     print(cameraObject.name + " Status: Active")
                                     blinkcode=1                
