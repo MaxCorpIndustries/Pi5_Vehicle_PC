@@ -458,23 +458,27 @@ def main():
                 for cameraObject in cameraArray:
                     if(cameraObject.readytoload == True):
                         #Poll current process
-                        errorDetection = cameraObject.ASYNCPOLL[0]._internal_poll(_deadstate=127)
+                        print(cameraObject.ASYNCPOLL)
+                        process = cameraObject.ASYNCPOLL[0]
+                        print(process)
+                        errorDetection = process._internal_poll(_deadstate=127)
+                        
                         if(errorDetection == 1):
                             cameraObject.ASYNCSTATUS = "FAILURE"
                         else:
-                            cameraObject.ASYNCSTATUS = cameraObject.ASYNCPOLL[0].poll()
+                            cameraObject.ASYNCSTATUS = process.poll()
                             
                             match cameraObject.ASYNCSTATUS:
                                 case "None":
-                                    print(a[1].name + " Status: Active")
+                                    print(cameraObject.name + " Status: Active")
                                     blinkcode=1                
                                 
                                 case 0:
-                                    print(a[1].name + " Status: Done")
+                                    print(cameraObject.name + " Status: Done")
                                     blinkcode=2
                                 
-                                case "ERROR":
-                                    print(a[1].name + " Status: ERROR")
+                                case "FAILURE":
+                                    print(cameraObject.name + " Status: ERROR")
                                     blinkcode=3
                     else:
                         # Attempt to reconnect to disconnected device
