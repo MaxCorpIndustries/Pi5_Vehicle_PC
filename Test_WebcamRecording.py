@@ -170,8 +170,8 @@ def create_NewTripFolder():
         
         directory=TripsVideoDirectory+'/'+tripFolderName+"_"+str(now)
         #print(directory)
-        subprocess.run(['mkdir',directory],shell=True,check=True) #execute mkdir
-        #os.makedirs(directory, exist_ok=True)
+        #subprocess.run(['mkdir',directory],shell=True,check=True) #execute mkdir
+        os.makedirs(directory, exist_ok=True)
         
         current_trip_directory=directory #update the returned directory to this new folder
         
