@@ -169,7 +169,7 @@ def create_NewTripFolder():
         now = now_raw.strftime("%Y_%m_%d %H_%M_%S") #timestamp the trip folder with a datetime
         
         directory=TripsVideoDirectory+'/'+tripFolderName+"_"+str(now)
-        
+        print(directory)
         subprocess.run(['mkdir',directory],check=True) #execute mkdir
         
         current_trip_directory=directory #update the returned directory to this new folder
