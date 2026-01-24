@@ -175,7 +175,7 @@ def create_NewTripFolder():
         
         current_trip_directory=directory #update the returned directory to this new folder
         
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         print("Folder Error: " + str(e))
         
     except FileExistsError:
