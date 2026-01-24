@@ -174,7 +174,9 @@ def create_NewTripFolder():
         os.makedirs(directory, exist_ok=True)
         
         current_trip_directory=directory #update the returned directory to this new folder
-        
+        print('trip '+current_trip_directory+ ' created')
+        return current_trip_directory
+    
     except Exception as e:
         print("Folder Error: " + str(e))
         
@@ -429,78 +431,78 @@ def main():
 
     
     currentdirectory=create_NewTripFolder()
-    print('trip '+currentdirectory+ ' created')
     
     try:
-        while True:   
-            if(startVideoOnBoot):
-                startVideoOnBoot=False
-                print('STARTING INITIAL VIDEO PROCESS')
-                for cameraObject in cameraArray:
-                    if(cameraObject.readytoload == True):
+        while True:
+            if(currentdirectory != False): #if folder creation was successful
+                if(startVideoOnBoot):
+                    startVideoOnBoot=False
+                    print('STARTING INITIAL VIDEO PROCESS')
+                    for cameraObject in cameraArray:
+                        if(cameraObject.readytoload == True):
 
-                        # Kill USB camera objects that were hung up from previous instance
-                        if(cameraObject.camType=="USB"):
-                            KillVideoProcess(cameraObject)
-                            
-                        # Initiate video process
-                        process = InitializeVideoProcessASYNC(cameraObject,currentdirectory)
-                        if( process != False):
-                            cameraObject.ASYNCPOLL = process
-                        else:
-                            print('Could not initialize video process for: ' + cameraObject.name)
-                            
-                #allprocessesstatus=0
-                #blinkcode=0                
-            else:
-                #CYCLIC BUFFER SYSTEM
-                #currentdirectorysize=os.path.getsize(currentdirectory)
-                #BlinkProgress()
-                # Checks and restarts to do every cyle:
-                for cameraObject in cameraArray:
-                    if(cameraObject.readytoload == True):
-
-                        #Check for failed process
-                        try:
-                            errorDetection = cameraObject.ASYNCPOLL._internal_poll(_deadstate=127)
-                        except:
-                            errorDetection = -1
-                            # Whatever device this is does not support deadstate checks, override
-                        
-                        if(errorDetection == 1):
-                            cameraObject.ASYNCSTATUS = "FAILURE"
-                        else:
-
-                            match str(cameraObject.ASYNCPOLL.returncode):
-                                case "None":
-                                    print(cameraObject.name + " Status: Active")
-                                    blinkcode=1                
+                            # Kill USB camera objects that were hung up from previous instance
+                            if(cameraObject.camType=="USB"):
+                                KillVideoProcess(cameraObject)
                                 
-                                case "0":
-                                    print(cameraObject.name + " Status: Done")
-                                    blinkcode=2
+                            # Initiate video process
+                            process = InitializeVideoProcessASYNC(cameraObject,currentdirectory)
+                            if( process != False):
+                                cameraObject.ASYNCPOLL = process
+                            else:
+                                print('Could not initialize video process for: ' + cameraObject.name)
                                 
-                                case "FAILURE":
-                                    print(cameraObject.name + " Status: ERROR")
-                                    blinkcode=3
+                    #allprocessesstatus=0
+                    #blinkcode=0                
+                else:
+                    #CYCLIC BUFFER SYSTEM
+                    #currentdirectorysize=os.path.getsize(currentdirectory)
+                    #BlinkProgress()
+                    # Checks and restarts to do every cyle:
+                    for cameraObject in cameraArray:
+                        if(cameraObject.readytoload == True):
 
-                                case _:
-                                    print(cameraObject.name + " Status: UNKNOWN")
-                    else:
-                        # Attempt to reconnect to disconnected device
-                        print('reconnecting to:' + cameraObject.name)
-                        cameraObject = testRTSP_Ping(cameraObject)
+                            #Check for failed process
+                            try:
+                                errorDetection = cameraObject.ASYNCPOLL._internal_poll(_deadstate=127)
+                            except:
+                                errorDetection = -1
+                                # Whatever device this is does not support deadstate checks, override
+                            
+                            if(errorDetection == 1):
+                                cameraObject.ASYNCSTATUS = "FAILURE"
+                            else:
 
-                time.sleep(10)
-                #subprocess.run(['clear'])
-                
-            #This may need to run more than once
-            #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
-            #while(currentdirectorysize>20971520):#20 megbytes #1073741824): 1 gig
-                #blinkcode=4
-                #BlinkProgress()
-                #print("Trip directory exceeded size limit! Deleting trip: " + get_OldestTripFolder)
-                #DeleteTripFolder(get_OldestTripFolder)
+                                match str(cameraObject.ASYNCPOLL.returncode):
+                                    case "None":
+                                        print(cameraObject.name + " Status: Active")
+                                        blinkcode=1                
+                                    
+                                    case "0":
+                                        print(cameraObject.name + " Status: Done")
+                                        blinkcode=2
+                                    
+                                    case "FAILURE":
+                                        print(cameraObject.name + " Status: ERROR")
+                                        blinkcode=3
+
+                                    case _:
+                                        print(cameraObject.name + " Status: UNKNOWN")
+                        else:
+                            # Attempt to reconnect to disconnected device
+                            print('reconnecting to:' + cameraObject.name)
+                            cameraObject = testRTSP_Ping(cameraObject)
+
+                    time.sleep(10)
+                    #subprocess.run(['clear'])
+                    
+                #This may need to run more than once
+                #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
+                #while(currentdirectorysize>20971520):#20 megbytes #1073741824): 1 gig
+                    #blinkcode=4
+                    #BlinkProgress()
+                    #print("Trip directory exceeded size limit! Deleting trip: " + get_OldestTripFolder)
+                    #DeleteTripFolder(get_OldestTripFolder)
                                 
     except KeyboardInterrupt:
         pass
