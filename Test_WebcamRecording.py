@@ -464,7 +464,7 @@ def main():
                         else:
                             cameraObject.ASYNCSTATUS = cameraObject.ASYNCPOLL[0].poll()
                             
-                            match cameraObject.ASYNCSTATUS
+                            match cameraObject.ASYNCSTATUS:
                                 case "None":
                                     print(a[1].name + " Status: Active")
                                     blinkcode=1                
