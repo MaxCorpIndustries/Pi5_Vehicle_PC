@@ -469,20 +469,24 @@ def main():
                             cameraObject.ASYNCSTATUS = "FAILURE"
                         else:
 
-                            match cameraObject.ASYNCPOLL.returncode:
+                            match str(cameraObject.ASYNCPOLL.returncode):
                                 case "None":
                                     print(cameraObject.name + " Status: Active")
                                     blinkcode=1                
                                 
-                                case 0:
+                                case "0":
                                     print(cameraObject.name + " Status: Done")
                                     blinkcode=2
                                 
                                 case "FAILURE":
                                     print(cameraObject.name + " Status: ERROR")
                                     blinkcode=3
+
+                                case _:
+                                    print(cameraObject.name + " Status: UNKNOWN")
                     else:
                         # Attempt to reconnect to disconnected device
+                        print('reconnecting to:' cameraObject.name)
                         cameraObject = testRTSP_Ping(cameraObject)
 
                 time.sleep(10)
