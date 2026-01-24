@@ -489,8 +489,8 @@ def main():
                         print('reconnecting to:' + cameraObject.name)
                         cameraObject = testRTSP_Ping(cameraObject)
 
-                time.sleep(10)
-                subprocess.run(['clear'])
+                #time.sleep(10)
+                #subprocess.run(['clear'])
                 
             #This may need to run more than once
             #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
