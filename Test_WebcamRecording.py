@@ -30,10 +30,11 @@ class Camera:
         self.name = name
         self.camType = camType
         self.location = location
-        self.accessURL = accessURL # for rtsp, this is the url, for usb this is the unique keyword to look for in --list-devices 
+        self.accessURL = accessURL  # for rtsp, this is the url, for usb this is the unique keyword to look for in --list-devices 
         self.ping = ping
-        self.readytoload=False #this value will become true when ping successful
-        self.ASYNCPOLL = None #this will contain the current process running this camera
+        self.readytoload=False      # this value will become true when ping successful
+        self.ASYNCPOLL = None       # this will contain the current process running this camera
+        self.ASYNCSTATUS = None     # this will contain the last known status of this process
         self.ffmpeg_settings=ffmpeg_settings
         self.fps=fps
         self.resolution_y=resolution_y
@@ -112,30 +113,27 @@ def initializeInternalNetwork():
     
     return True #tell code that rtsp stream ready"
     
-def testRTSP_Ping(cameras):
-       # This function attempts to ping the Camera.ping property to confirm rtsp stream successful
-       # Returns true to update Camera.readytoload and confirm rtsp ready for
-    index =0
-    for i in cameras:
-        match (i.camType):
-            case "RTSP":
-                try:
-                    pingOutput = subprocess.run(["ping","-c","1",str(i.ping)], check=True,stdout=DEVNULL,stderr=DEVNULL)
-                    cameras[index].readytoload = True
-                except:
-                    pass
-                    
-            case "USB":
-                try:
-                    process_1 = subprocess.run(["v4l2-ctl", "--list-devices" ],check=True,capture_output=True,text=True)
-                    pingOutput = subprocess.run(["grep", "-A", "1",str(i.ping)],input = process_1.stdout,check=True,capture_output=True,text=True)
-                    if(i.accessURL in str(pingOutput)):
-                        cameras[index].readytoload = True 
-                except:
-                   pass
+def testRTSP_Ping(cameraObject):
+    # This function attempts to ping the Camera.ping property to confirm rtsp stream successful
+    # Returns true to update Camera.readytoload and confirm rtsp ready for
+    match (cameraObject.camType):
+        case "RTSP":
+            try:
+                pingOutput = subprocess.run(["ping","-c","1",str(cameraObject.ping)], check=True,stdout=DEVNULL,stderr=DEVNULL)
+                cameraObject.readytoload = True
+            except:
+                pass
                 
-        index +=1
-    return cameras
+        case "USB":
+            try:
+                process_1 = subprocess.run(["v4l2-ctl", "--list-devices" ],check=True,capture_output=True,text=True)
+                pingOutput = subprocess.run(["grep", "-A", "1",str(cameraObject.ping)],input = process_1.stdout,check=True,capture_output=True,text=True)
+                if(cameraObject.accessURL in str(pingOutput)):
+                    cameraObject.readytoload = True 
+            except:
+               pass
+            
+    return cameraObject
                     
 #------------- get and create functions
 
@@ -176,7 +174,7 @@ def create_NewTripFolder():
         
         current_trip_directory=directory #update the returned directory to this new folder
     except subprocess.CalledProcessError as e:
-        print("Folder Error: " + e)
+        print("Folder Error: " + str(e))
         
     except FileExistsError:
         print("Folder already exists")
@@ -335,9 +333,8 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
         
         process = process.run_async(pipe_stdin=True)
         #add this process to the pending array
-        global_process_array.append([process,cameraObject])
         
-        return True
+        return process
     except Exception as e:
         print(e)
         return False
@@ -404,7 +401,7 @@ def main():
     
     cameraArray = []
 
-    BlinkProgress()
+    #BlinkProgress()
 
     #attempt to set static IP within pi
     initNetworkStatus= initializeInternalNetwork()
@@ -416,65 +413,76 @@ def main():
         cameraArray = ConstructCameraObjects(cameraConfig)
     else:
         raise ValueError("Camera config could not be found")
-        
-    if(initNetworkStatus):
+
+    # If static ip was sucessfully created        
+    if(initNetworkStatus == True):
         # Test all rtsp cameras for functionality
-        cameraArray = testRTSP_Ping(cameraArray)
-        
-        for i in cameraArray:
+        for cameraObject in cameraArray:
+            #update cameraobject with ping status
+            cameraObject = testRTSP_Ping(cameraObject)      
             cameraStatus="offline"
-            if(i.readytoload):
+            if(cameraObject.readytoload):
                 cameraStatus = "ready"    
-            print(i.name + "    | Status: " + cameraStatus)
+            print(cameraObject.name + "    | Status: " + cameraStatus)
+
     
     currentdirectory=create_NewTripFolder()
     print('trip '+currentdirectory+ ' created')
     
-    #print('this should print immedietly')
     try:
-        while True:
-                    
+        while True:   
             if(startVideoOnBoot):
                 startVideoOnBoot=False
                 print('STARTING INITIAL VIDEO PROCESS')
                 for cameraObject in cameraArray:
                     if(cameraObject.readytoload == True):
+
+                        # Kill USB camera objects that were hung up from previous instance
                         if(cameraObject.camType=="USB"):
                             KillVideoProcess(cameraObject)
                             
+                        # Initiate video process
                         process = InitializeVideoProcessASYNC(cameraObject,currentdirectory)
-                    
-                allprocessesstatus=0
-                blinkcode=0
-                print("Initiation Complete, current processes: " + str(len(global_process_array)))
+                        if( process != False):
+                            cameraObject.ASYNCPOLL = process
+                        else:
+                            print('Could not initialize video process for: ' + cameraObject.name)
+                            
+                #allprocessesstatus=0
+                #blinkcode=0                
             else:
                 #CYCLIC BUFFER SYSTEM
-                currentdirectorysize=os.path.getsize(currentdirectory)
-                BlinkProgress()
+                #currentdirectorysize=os.path.getsize(currentdirectory)
+                #BlinkProgress()
+                # Checks and restarts to do every cyle:
+                for cameraObject in cameraArray:
+                    if(cameraObject.readytoload == True):
+                        #Poll current process
+                        errorDetection = cameraObject.ASYNCPOLL[0]._internal_poll(_deadstate=127)
+                        if(errorDetection == 1):
+                            cameraObject.ASYNCSTATUS = "FAILURE"
+                        else:
+                            cameraObject.ASYNCSTATUS = cameraObject.ASYNCPOLL[0].poll()
+                            
+                            match cameraObject.ASYNCSTATUS
+                                case "None":
+                                    print(a[1].name + " Status: Active")
+                                    blinkcode=1                
+                                
+                                case 0:
+                                    print(a[1].name + " Status: Done")
+                                    blinkcode=2
+                                
+                                case "ERROR":
+                                    print(a[1].name + " Status: ERROR")
+                                    blinkcode=3
+                    else:
+                        # Attempt to reconnect to disconnected device
+                        cameraObject = testRTSP_Ping(cameraObject)
 
-                #[process,cameraObject]1
-                print("Status of cameras:")
-                for a in global_process_array:
-                     #print(a[1].name + " Status: " + str(a[0].poll()))
-                    if(str(a[0].poll()) == "None"):
-                        print(a[1].name + " Status: Active")
-                        
-                        blinkcode=1                
-                    
-                    if(a[0].poll() == 0):
-                        blinkcode=2
-                        print(a[1].name + " Status: Done")
-                        #this process has finished, and is being removed from the pool
-                        #allprocessesstatus+=1
-                        #global_process_array.remove(a)
-                    
-                    if(a[0]._internal_poll(_deadstate=127) == 1):
-                        blinkcode=3
-                        print(a[1].name + " Status: ERROR")
-                        
-                
                 time.sleep(10)
                 subprocess.run(['clear'])
+                
             #This may need to run more than once
             #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
             #while(currentdirectorysize>20971520):#20 megbytes #1073741824): 1 gig
@@ -482,10 +490,7 @@ def main():
                 #BlinkProgress()
                 #print("Trip directory exceeded size limit! Deleting trip: " + get_OldestTripFolder)
                 #DeleteTripFolder(get_OldestTripFolder)
-                    
-                    
-            time.sleep(0.2)
-            
+                                
     except KeyboardInterrupt:
         pass
 
