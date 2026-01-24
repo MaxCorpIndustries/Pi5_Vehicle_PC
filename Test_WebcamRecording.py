@@ -486,7 +486,7 @@ def main():
                                     print(cameraObject.name + " Status: UNKNOWN")
                     else:
                         # Attempt to reconnect to disconnected device
-                        print('reconnecting to:' cameraObject.name)
+                        print('reconnecting to:' + cameraObject.name)
                         cameraObject = testRTSP_Ping(cameraObject)
 
                 time.sleep(10)
