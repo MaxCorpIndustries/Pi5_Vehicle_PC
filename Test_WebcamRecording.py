@@ -489,7 +489,7 @@ def main():
                         print('reconnecting to:' + cameraObject.name)
                         cameraObject = testRTSP_Ping(cameraObject)
 
-                #time.sleep(10)
+                time.sleep(10)
                 #subprocess.run(['clear'])
                 
             #This may need to run more than once
