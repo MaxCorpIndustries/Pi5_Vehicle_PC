@@ -504,7 +504,7 @@ def main():
                                         #print('ONLINE     '+cameraObject.name + " Status: ERROR")
                                         blinkcode=3
 
-                                    case _:
+                                    #case _:
                                         #print('ONLINE     '+cameraObject.name + " Status: UNKNOWN")
                         else:
                             # Attempt to reconnect to disconnected device
