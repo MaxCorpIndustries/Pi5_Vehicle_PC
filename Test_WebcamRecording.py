@@ -14,7 +14,7 @@ TripsVideoDirectory='/media/carpc/Main_Storage/test'
 tripFolderName='Trip_'
 videoFileName='Video_'
 
-video_duration=60
+video_duration=3600
 
 #--------------------------------------
 # VIDEO RECORDER SYSTEM
