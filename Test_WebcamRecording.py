@@ -524,8 +524,8 @@ def main():
                                     print('Could not initialize video process for: ' + cameraObject.name)
                                     
                             
-                    #time.sleep(1)
-                    #subprocess.run(['clear'])
+                    time.sleep(3)
+                    subprocess.run(['clear'])
                     
                 #This may need to run more than once
                 #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
