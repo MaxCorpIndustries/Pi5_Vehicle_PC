@@ -510,6 +510,7 @@ def main():
                             # Attempt to reconnect to disconnected device
                             #print('OFFLINE    '+cameraObject.name + " Status: DISCONNECTED")
                             cameraObject = testRTSP_Ping(cameraObject)
+                            KillVideoProcess(cameraObject)
                             if(cameraObject.readytoload == True):
                                 #print('Reconnection SUCESSFUL!')
 
