@@ -480,8 +480,15 @@ def main():
                             if(errorDetection == 1):
                                 cameraObject.ASYNCSTATUS = "FAILURE"
                             else:
-                                print(cameraObject.ASYNCPOLL)
-                                match str(cameraObject.ASYNCPOLL):
+
+                                # Some device types have an embedded returncode, others just are their returncode
+                                # Must handle all possibilities
+                                try:
+                                    statuscode = str(cameraObject.ASYNCPOLL.returncode)
+                                except Exception as e:
+                                    statuscode = str(cameraObject.ASYNCPOLL)
+                                    
+                                match statuscode:
                                     case "None":
                                         print('     '+cameraObject.name + " Status: Active")
                                         blinkcode=1                
