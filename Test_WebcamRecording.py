@@ -528,6 +528,7 @@ def main():
                                     
                             
                     time.sleep(3)
+                    test = input("press to recheck")
                     subprocess.run(['clear'])
                     
                 #This may need to run more than once
