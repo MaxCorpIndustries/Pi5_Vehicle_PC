@@ -488,7 +488,8 @@ def main():
                                     statuscode = str(cameraObject.ASYNCPOLL.returncode)
                                 except Exception as e:
                                     statuscode = str(cameraObject.ASYNCPOLL)
-                                    
+
+                                
                                 match statuscode:
                                     case "None":
                                         print('ONLINE     '+cameraObject.name + " Status: Active")
@@ -504,8 +505,10 @@ def main():
                                         print('ONLINE     '+cameraObject.name + " Status: ERROR")
                                         blinkcode=3
 
-                                    #case _:
+                                    case _:
                                         print('UNKNOWN    '+cameraObject.name + " Status: " + statuscode)
+
+                                    cameraObject = testRTSP_Ping(cameraObject)
                         else:
                             # Attempt to reconnect to disconnected device
                             print('OFFLINE    '+cameraObject.name + " Status: DISCONNECTED")
