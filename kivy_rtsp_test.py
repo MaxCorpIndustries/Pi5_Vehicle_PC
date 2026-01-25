@@ -30,7 +30,7 @@ class KivyCamera(Image):
 
 class CamApp(App):
     def build(self):
-        self.capture = cv2.VideoCapture('rtsp://admin:@10.248.158.35:554/ch0_0.264')
+        self.capture = cv2.VideoCapture('/dev/video0')
         self.my_camera = KivyCamera(capture=self.capture, fps=30)
         return self.my_camera
 

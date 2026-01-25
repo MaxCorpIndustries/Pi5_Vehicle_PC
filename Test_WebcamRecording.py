@@ -62,12 +62,6 @@ class Camera:
 
 # These streams run simultaneously at once, and should all be recorded as separate video files stored in a collected folder
 
-GREEN_LED=14
-YELLOW_LED=15
-RED_LED=18
-
-global_process_array=list()
-blinkcode=0
 GPIORequester= None
 
 with gpiod.request_lines(
@@ -345,70 +339,12 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
     except Exception as e:
         print(e)
         return False
-    
-def BlinkProgress():
-    global blinkcode
-    with gpiod.request_lines(
-        "/dev/gpiochip0",
-        consumer="blink-example",
-        config={
-            GREEN_LED: gpiod.LineSettings(
-                direction=Direction.OUTPUT, output_value=Value.INACTIVE
-            ),
-            YELLOW_LED: gpiod.LineSettings(
-                direction=Direction.OUTPUT, output_value=Value.INACTIVE
-            ),
-            RED_LED: gpiod.LineSettings(
-                direction=Direction.OUTPUT, output_value=Value.INACTIVE
-            )            
-        },
-    ) as request:
-        request.set_value(GREEN_LED, Value.INACTIVE)
-        request.set_value(YELLOW_LED, Value.INACTIVE)
-        request.set_value(RED_LED, Value.INACTIVE)        
-        match blinkcode:
-            case 0:
-                request.set_value(GREEN_LED, Value.ACTIVE)
-                request.set_value(YELLOW_LED, Value.ACTIVE)
-                request.set_value(RED_LED, Value.ACTIVE)
-            case 1:
-                request.set_value(YELLOW_LED, Value.ACTIVE)
-                time.sleep(0.5)
-
-                request.set_value(YELLOW_LED, Value.INACTIVE)
-                time.sleep(0.5)
-            
-            case 2:
-                request.set_value(GREEN_LED, Value.ACTIVE)
-
-            case 3:
-                request.set_value(RED_LED, Value.ACTIVE)
-                time.sleep(0.5)
-
-                request.set_value(RED_LED, Value.INACTIVE)
-                time.sleep(0.5)
-            case 4: 
-                request.set_value(RED_LED, Value.ACTIVE)
-                request.set_value(YELLOW_LED, Value.INACTIVE)
-                time.sleep(0.25)
-
-                request.set_value(RED_LED, Value.INACTIVE)
-                request.set_value(YELLOW_LED, Value.ACTIVE)
-                time.sleep(0.25)                
-            case _:
-                request.set_value(GREEN_LED, Value.INACTIVE)
-                request.set_value(YELLOW_LED, Value.INACTIVE)
-                request.set_value(RED_LED, Value.INACTIVE)
-
         
-def main():
-    global blinkcode
+def StartVideoProcess():
 
     startVideoOnBoot=True
     
     cameraArray = []
-
-    #BlinkProgress()
 
     #attempt to set static IP within pi
     initNetworkStatus= initializeInternalNetwork()
@@ -442,8 +378,7 @@ def main():
                     startVideoOnBoot=False
                     print('STARTING INITIAL VIDEO PROCESS')
                     for cameraObject in cameraArray:
-
-                        
+                   
                         if(cameraObject.readytoload == True):
 
                             # Kill USB camera objects that were hung up from previous instance
@@ -459,14 +394,9 @@ def main():
                                 cameraObject.ASYNCPOLL = process
                             else:
                                 print('Could not initialize video process for: ' + cameraObject.name)
-                            
-                                
-                    #allprocessesstatus=0
-                    #blinkcode=0                
+             
                 else:
-                    #CYCLIC BUFFER SYSTEM
-                    #currentdirectorysize=os.path.getsize(currentdirectory)
-                    #BlinkProgress()
+
                     # Checks and restarts to do every cyle:
                     for cameraObject in cameraArray:
                         if(cameraObject.readytoload == True):
@@ -493,18 +423,12 @@ def main():
                                 match statuscode:
                                     case "None":
                                         print('ONLINE     '+cameraObject.name + " Status: Active")
-                                        blinkcode=1                
-                                    
                                     case "0":
                                         print('ONLINE     '+cameraObject.name + " Status: Done")
                                         # Begin restart of service with new video file
                                         cameraObject.readytoload=False 
-                                        blinkcode=2
-                                    
                                     case "FAILURE":
                                         print('ONLINE     '+cameraObject.name + " Status: ERROR")
-                                        blinkcode=3
-
                                     case _:
                                         print('UNKNOWN    '+cameraObject.name + " Status: " + statuscode)
 
@@ -538,12 +462,9 @@ def main():
                     #BlinkProgress()
                     #print("Trip directory exceeded size limit! Deleting trip: " + get_OldestTripFolder)
                     #DeleteTripFolder(get_OldestTripFolder)
-                                
-    except KeyboardInterrupt:
-        pass
 
     
     
 if __name__ == "__main__":
-    main()
+    StartVideoProcess()
     print('finished!')
