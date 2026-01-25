@@ -4,6 +4,7 @@ import threading
 from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.config import Config
+from kivy.uix.label import Label
 
 import sys
 import os
@@ -29,7 +30,7 @@ class MainLayout(BoxLayout):
 
 class MainApp(App):
     def build(self):
-        
+        self.icon = 'icon.png'  # Set the icon path here
         #Builder.load_file("main.kv")
         return MainLayout()
 
