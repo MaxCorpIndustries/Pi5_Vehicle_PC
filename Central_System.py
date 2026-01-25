@@ -3,6 +3,8 @@ from kivy.lang import Builder
 import threading
 from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
+from kivy.config import Config
+
 import sys
 import os
 import signal
