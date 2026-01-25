@@ -7,6 +7,9 @@ import sys
 import os
 import signal
 
+Config.set('graphics', 'width', '1024')
+Config.set('graphics', 'height', '600')
+
 
 def test():
     pid = 12345 # Replace with the actual Process ID (PID)
