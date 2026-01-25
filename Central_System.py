@@ -1,15 +1,33 @@
-import CORE_WebcamRecording as cam
 from kivy.app import App
+from kivy.lang import Builder
+import threading
+from kivy.clock import Clock
+from kivy.uix.boxlayout import BoxLayout
+import sys
+import os
+import signal
 
 
-class TestApp(App):
+def test():
+    pid = 12345 # Replace with the actual Process ID (PID)
+    os.system(f'taskkill /F /PID {pid}')
+
+class MainLayout(BoxLayout):
+    def exit(self):
+        Clock.schedule_once(lambda dt: self.stop(), 0)
+
+    def start_task(self):
+        test()
+        
     pass
 
-def main():
-    print('started')
-    cam.StartVideoProcess()
-    TestApp().run()
 
-# Run the main() function
-if __name__ == '__main__':
-    main()
+class MainApp(App):
+    def build(self):
+        
+        #Builder.load_file("main.kv")
+        return MainLayout()
+
+
+if __name__ == "__main__":
+    MainApp().run()

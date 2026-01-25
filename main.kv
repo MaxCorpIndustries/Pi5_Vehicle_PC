@@ -1,0 +1,58 @@
+#:kivy 2.2.0
+
+<MainLayout>:
+    orientation: "vertical"
+
+    ScreenManager:
+        id: screen_manager
+
+        Screen:
+            name: "cameras"
+            BoxLayout:
+                Label:
+                    text: "Cameras"
+                    font_size: 32
+
+        Screen:
+            name: "settings"
+			BoxLayout:
+				orientation: "vertical"
+				spacing: 10
+				padding: 10
+
+				Label:
+					text: "Settings"
+					font_size: 32
+
+				Button:
+					text: "Exit App"
+					size_hint_y: 0.2
+					on_release: root.start_task()
+
+        Screen:
+            name: "about"
+            BoxLayout:
+                Label:
+                    text: "About"
+                    font_size: 32
+
+    BoxLayout:
+        size_hint_y: 0.15
+
+        Button:
+            text: "Cameras"
+            on_release: screen_manager.current = "cameras"
+
+        Button:
+            text: "Settings"
+            on_release: screen_manager.current = "settings"
+
+        Button:
+            text: "About"
+            on_release: screen_manager.current = "about"
+			
+        Button:
+            text: "Exit"
+            on_release: app.stop()
+
+
