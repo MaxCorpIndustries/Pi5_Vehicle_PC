@@ -495,6 +495,7 @@ def main():
                                     
                                     case "0":
                                         print('ONLINE     '+cameraObject.name + " Status: Done")
+                                        print(cameraObject.ASYNCPOLL)
                                         blinkcode=2
                                     
                                     case "FAILURE":
