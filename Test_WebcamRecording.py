@@ -490,25 +490,25 @@ def main():
                                     
                                 match statuscode:
                                     case "None":
-                                        print('     '+cameraObject.name + " Status: Active")
+                                        print('ONLINE     '+cameraObject.name + " Status: Active")
                                         blinkcode=1                
                                     
                                     case "0":
-                                        print('     '+cameraObject.name + " Status: Done")
+                                        print('ONLINE     '+cameraObject.name + " Status: Done")
                                         blinkcode=2
                                     
                                     case "FAILURE":
-                                        print('     '+cameraObject.name + " Status: ERROR")
+                                        print('ONLINE     '+cameraObject.name + " Status: ERROR")
                                         blinkcode=3
 
                                     case _:
-                                        print('     '+cameraObject.name + " Status: UNKNOWN")
+                                        print('ONLINE     '+cameraObject.name + " Status: UNKNOWN")
                         else:
                             # Attempt to reconnect to disconnected device
-                            print('\n Retry: ' + cameraObject.name)
+                            print('OFFLINE    '+cameraObject.name + " Status: DISCONNECTED")
                             cameraObject = testRTSP_Ping(cameraObject)
                             if(cameraObject.readytoload == True):
-                                print('Reconnection SUCESSFUL!')
+                                #print('Reconnection SUCESSFUL!')
 
                                 # Create folder (will still work if folder already exists)
                                 newLocationDirectory = create_NewLocationFolder(cameraObject,currentdirectory)
