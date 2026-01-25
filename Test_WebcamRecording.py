@@ -508,7 +508,7 @@ def main():
                                     case _:
                                         print('UNKNOWN    '+cameraObject.name + " Status: " + statuscode)
 
-                                    cameraObject = testRTSP_Ping(cameraObject)
+                                cameraObject = testRTSP_Ping(cameraObject)
                         else:
                             # Attempt to reconnect to disconnected device
                             print('OFFLINE    '+cameraObject.name + " Status: DISCONNECTED")
