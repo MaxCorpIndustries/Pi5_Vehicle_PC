@@ -200,9 +200,10 @@ def create_NewLocationFolder(cameraObject,tripFolderName):
     #Create the new folder 
     try:
         directory=tripFolderName+"/"+str(cameraObject.location)
-        subprocess.run(['mkdir',directory],check=True) #execute mkdir
+        #subprocess.run(['mkdir',directory],check=True) #execute mkdir
+        os.makedirs(directory, exist_ok=True)
         current_location_directory=directory #update the returned directory to this new folder
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         print("Folder Error: " + str(e))
         
     except FileExistsError:
