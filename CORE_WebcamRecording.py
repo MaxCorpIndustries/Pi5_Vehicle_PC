@@ -5,7 +5,6 @@ import time
 import os
 import asyncio
 import configparser
-import gpiod
 from datetime import datetime
 from gpiod.line import Direction, Value
 
@@ -62,27 +61,7 @@ class Camera:
 
 # These streams run simultaneously at once, and should all be recorded as separate video files stored in a collected folder
 
-GPIORequester= None
-
-with gpiod.request_lines(
-    "/dev/gpiochip0",
-    consumer="blink-example",
-    config={
-        GREEN_LED: gpiod.LineSettings(
-            direction=Direction.OUTPUT, output_value=Value.INACTIVE
-        ),
-        YELLOW_LED: gpiod.LineSettings(
-            direction=Direction.OUTPUT, output_value=Value.INACTIVE
-        ),
-        RED_LED: gpiod.LineSettings(
-            direction=Direction.OUTPUT, output_value=Value.INACTIVE
-        )            
-    },
-) as request:
-    GPIORequester = request
-
 #------------- RTSP Functions
-
 
 def initializeInternalNetwork():
     # This function allows the pi to create an "internal network" 
