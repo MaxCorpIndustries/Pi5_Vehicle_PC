@@ -480,7 +480,7 @@ def main():
                             if(errorDetection == 1):
                                 cameraObject.ASYNCSTATUS = "FAILURE"
                             else:
-
+                                print(cameraObject.ASYNCPOLL)
                                 match str(cameraObject.ASYNCPOLL.returncode):
                                     case "None":
                                         print('     '+cameraObject.name + " Status: Active")
