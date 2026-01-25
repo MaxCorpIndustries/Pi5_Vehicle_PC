@@ -510,10 +510,10 @@ def main():
                             # Attempt to reconnect to disconnected device
                             print('OFFLINE    '+cameraObject.name + " Status: DISCONNECTED")
                             cameraObject = testRTSP_Ping(cameraObject)
-                            KillVideoProcess(cameraObject)
+                            
                             if(cameraObject.readytoload == True):
                                 #print('Reconnection SUCESSFUL!')
-
+                                KillVideoProcess(cameraObject)
                                 # Create folder (will still work if folder already exists)
                                 newLocationDirectory = create_NewLocationFolder(cameraObject,currentdirectory)
                                 # Initiate video process
