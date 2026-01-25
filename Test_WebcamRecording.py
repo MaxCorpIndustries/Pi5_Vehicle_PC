@@ -190,6 +190,9 @@ def create_NewLocationFolder(cameraObject,tripFolderName):
     #This function creats a folder within the trip folder, named after the location of the camera
     # Example:
     # /main_storage/Trip_1_2026.../DASHBOARD FRONT/Video_1.avi
+
+    # This system is designed to fail if the folder already exists, as it may be possible
+    # A intermittent connection causes it to check if this file exists multiple times
     
     #Get current count of folders in the trip_videos folder
     current_location_directory="STOP"
@@ -302,10 +305,9 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
 
     try:
        #Generate a new video number corresponding to the necessary  
-        newLocationFolder = create_NewLocationFolder(cameraObject,currentdirectory)
         newvidnum=create_NewVideoFootageNum(newLocationFolder)
         
-        videolocation=newLocationFolder+'/'+videoFileName+str(newvidnum)+".avi"
+        videolocation=currentdirectory+'/'+videoFileName+str(newvidnum)+".avi"
 
         #(self,name,camType,location,accessURL,ping,ffmpeg_settings,fps,resolution_y,resolution_x):
         #print('\n\n STARTING: '+cameraObject.name+'\n Location: '+cameraObject.location+'\n URL: '+cameraObject.accessURL+'\n\n File: ' + videolocation)
@@ -439,18 +441,24 @@ def main():
                     startVideoOnBoot=False
                     print('STARTING INITIAL VIDEO PROCESS')
                     for cameraObject in cameraArray:
+
+                        
                         if(cameraObject.readytoload == True):
 
                             # Kill USB camera objects that were hung up from previous instance
                             if(cameraObject.camType=="USB"):
                                 KillVideoProcess(cameraObject)
-                                
+
+                            #Create location directory for the video file
+                            newLocationDirectory = create_NewLocationFolder(cameraObject,currentdirectory)
+                        
                             # Initiate video process
-                            process = InitializeVideoProcessASYNC(cameraObject,currentdirectory)
+                            process = InitializeVideoProcessASYNC(cameraObject,newLocationDirectory)
                             if( process != False):
                                 cameraObject.ASYNCPOLL = process
                             else:
                                 print('Could not initialize video process for: ' + cameraObject.name)
+                            
                                 
                     #allprocessesstatus=0
                     #blinkcode=0                
@@ -475,26 +483,38 @@ def main():
 
                                 match str(cameraObject.ASYNCPOLL.returncode):
                                     case "None":
-                                        print(cameraObject.name + " Status: Active")
+                                        print('     '+cameraObject.name + " Status: Active")
                                         blinkcode=1                
                                     
                                     case "0":
-                                        print(cameraObject.name + " Status: Done")
+                                        print('     '+cameraObject.name + " Status: Done")
                                         blinkcode=2
                                     
                                     case "FAILURE":
-                                        print(cameraObject.name + " Status: ERROR")
+                                        print('     '+cameraObject.name + " Status: ERROR")
                                         blinkcode=3
 
                                     case _:
-                                        print(cameraObject.name + " Status: UNKNOWN")
+                                        print('     '+cameraObject.name + " Status: UNKNOWN")
                         else:
                             # Attempt to reconnect to disconnected device
-                            print('reconnecting to:' + cameraObject.name)
+                            print('\n Retry: ' + cameraObject.name)
                             cameraObject = testRTSP_Ping(cameraObject)
+                            if(cameraObject.readytoload == True):
+                                print('Reconnection SUCESSFUL!')
 
+                                # Create folder (will still work if folder already exists)
+                                newLocationDirectory = create_NewLocationFolder(cameraObject,currentdirectory)
+                                # Initiate video process
+                                process = InitializeVideoProcessASYNC(cameraObject,newLocationDirectory)
+                                if( process != False):
+                                    cameraObject.ASYNCPOLL = process
+                                else:
+                                    print('Could not initialize video process for: ' + cameraObject.name)
+                                    
+                            
                     time.sleep(10)
-                    #subprocess.run(['clear'])
+                    subprocess.run(['clear'])
                     
                 #This may need to run more than once
                 #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
