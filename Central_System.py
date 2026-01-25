@@ -30,6 +30,7 @@ class MainLayout(BoxLayout):
 
 class MainApp(App):
     def build(self):
+        self.title = "CARPC SYSTEM"
         self.icon = 'icon.png'  # Set the icon path here
         #Builder.load_file("main.kv")
         return MainLayout()
