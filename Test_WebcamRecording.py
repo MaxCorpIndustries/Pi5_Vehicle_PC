@@ -203,7 +203,7 @@ def create_NewLocationFolder(cameraObject,tripFolderName):
         subprocess.run(['mkdir',directory],check=True) #execute mkdir
         current_location_directory=directory #update the returned directory to this new folder
     except subprocess.CalledProcessError as e:
-        print("Folder Error: " + e)
+        print("Folder Error: " + str(e))
         
     except FileExistsError:
         print("Folder already exists")
@@ -495,7 +495,6 @@ def main():
                                     
                                     case "0":
                                         print('ONLINE     '+cameraObject.name + " Status: Done")
-                                        print(cameraObject.ASYNCPOLL)
                                         # Begin restart of service with new video file
                                         cameraObject.readytoload=False 
                                         blinkcode=2
@@ -523,7 +522,7 @@ def main():
                                     print('Could not initialize video process for: ' + cameraObject.name)
                                     
                             
-                    time.sleep(2)
+                    time.sleep(1)
                     subprocess.run(['clear'])
                     
                 #This may need to run more than once
