@@ -491,24 +491,24 @@ def main():
                                     
                                 match statuscode:
                                     case "None":
-                                        print('ONLINE     '+cameraObject.name + " Status: Active")
+                                        #print('ONLINE     '+cameraObject.name + " Status: Active")
                                         blinkcode=1                
                                     
                                     case "0":
-                                        print('ONLINE     '+cameraObject.name + " Status: Done")
+                                        #print('ONLINE     '+cameraObject.name + " Status: Done")
                                         # Begin restart of service with new video file
                                         cameraObject.readytoload=False 
                                         blinkcode=2
                                     
                                     case "FAILURE":
-                                        print('ONLINE     '+cameraObject.name + " Status: ERROR")
+                                        #print('ONLINE     '+cameraObject.name + " Status: ERROR")
                                         blinkcode=3
 
                                     case _:
-                                        print('ONLINE     '+cameraObject.name + " Status: UNKNOWN")
+                                        #print('ONLINE     '+cameraObject.name + " Status: UNKNOWN")
                         else:
                             # Attempt to reconnect to disconnected device
-                            print('OFFLINE    '+cameraObject.name + " Status: DISCONNECTED")
+                            #print('OFFLINE    '+cameraObject.name + " Status: DISCONNECTED")
                             cameraObject = testRTSP_Ping(cameraObject)
                             if(cameraObject.readytoload == True):
                                 #print('Reconnection SUCESSFUL!')
@@ -523,8 +523,8 @@ def main():
                                     print('Could not initialize video process for: ' + cameraObject.name)
                                     
                             
-                    time.sleep(1)
-                    subprocess.run(['clear'])
+                    #time.sleep(1)
+                    #subprocess.run(['clear'])
                     
                 #This may need to run more than once
                 #print("Trip folder is " +str(currentdirectorysize/1048576) +" MB big")
