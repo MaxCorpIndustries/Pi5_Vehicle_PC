@@ -33,6 +33,7 @@ class Camera:
         self.accessURL = accessURL  # for rtsp, this is the url, for usb this is the unique keyword to look for in --list-devices 
         self.ping = ping
         self.readytoload=False      # this value will become true when ping successful
+        self.reboot=False           # this value will become true when a video service has completed and needs to be restarted
         self.ASYNCPOLL = None       # this will contain the current process running this camera
         self.ASYNCSTATUS = None     # this will contain the last known status of this process
         self.ffmpeg_settings=ffmpeg_settings
@@ -496,6 +497,8 @@ def main():
                                     case "0":
                                         print('ONLINE     '+cameraObject.name + " Status: Done")
                                         print(cameraObject.ASYNCPOLL)
+                                        # Begin restart of service with new video file
+                                        cameraObject.reboot=False
                                         blinkcode=2
                                     
                                     case "FAILURE":
