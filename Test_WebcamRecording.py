@@ -491,24 +491,24 @@ def main():
                                     
                                 match statuscode:
                                     case "None":
-                                        #print('ONLINE     '+cameraObject.name + " Status: Active")
+                                        print('ONLINE     '+cameraObject.name + " Status: Active")
                                         blinkcode=1                
                                     
                                     case "0":
-                                        #print('ONLINE     '+cameraObject.name + " Status: Done")
+                                        print('ONLINE     '+cameraObject.name + " Status: Done")
                                         # Begin restart of service with new video file
                                         cameraObject.readytoload=False 
                                         blinkcode=2
                                     
                                     case "FAILURE":
-                                        #print('ONLINE     '+cameraObject.name + " Status: ERROR")
+                                        print('ONLINE     '+cameraObject.name + " Status: ERROR")
                                         blinkcode=3
 
                                     #case _:
-                                        #print('ONLINE     '+cameraObject.name + " Status: UNKNOWN")
+                                        print('UNKNOWN    '+cameraObject.name + " Status: " + statuscode)
                         else:
                             # Attempt to reconnect to disconnected device
-                            #print('OFFLINE    '+cameraObject.name + " Status: DISCONNECTED")
+                            print('OFFLINE    '+cameraObject.name + " Status: DISCONNECTED")
                             cameraObject = testRTSP_Ping(cameraObject)
                             KillVideoProcess(cameraObject)
                             if(cameraObject.readytoload == True):
