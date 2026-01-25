@@ -26,7 +26,7 @@
 
 				Button:
 					text: "Exit App"
-					size_hint_y: 0.2
+					size_hint_y: 5
 					on_release: root.start_task()
 
         Screen:
@@ -52,7 +52,9 @@
             on_release: screen_manager.current = "about"
 			
         Button:
-            text: "Exit"
+            text: "×"
+			font_size: 64
+			size_hint_x: 0.25
             on_release: app.stop()
 
 
