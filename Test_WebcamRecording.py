@@ -305,7 +305,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
 
     try:
        #Generate a new video number corresponding to the necessary  
-        newvidnum=create_NewVideoFootageNum(newLocationFolder)
+        newvidnum=create_NewVideoFootageNum(currentdirectory)
         
         videolocation=currentdirectory+'/'+videoFileName+str(newvidnum)+".avi"
 
@@ -481,7 +481,7 @@ def main():
                                 cameraObject.ASYNCSTATUS = "FAILURE"
                             else:
                                 print(cameraObject.ASYNCPOLL)
-                                match str(cameraObject.ASYNCPOLL.returncode):
+                                match str(cameraObject.ASYNCPOLL):
                                     case "None":
                                         print('     '+cameraObject.name + " Status: Active")
                                         blinkcode=1                
