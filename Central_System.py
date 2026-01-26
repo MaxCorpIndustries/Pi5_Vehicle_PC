@@ -122,6 +122,10 @@ class MainApp(App):
         # Access widget created in kv
         self.root.ids.camera_view3.start(self.capture, fps=15)
 
+    def stopcamPreview(self):
+        if self.capture:
+            self.capture.release()
+
     def on_stop(self):
         if self.capture:
             self.capture.release()

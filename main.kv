@@ -56,11 +56,22 @@
                         allow_stretch: True
                         keep_ratio: True
                         size_hint_y: 1  
+                
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: 10
+                    padding: 10
                     
-                RoundedButton:
-                    icon_source: 'cameras.png'
-                    on_release: app.startcamPreview()
-                    size_hint_y: 0.15
+                    RoundedButton:
+                        icon_source: 'cameras.png'
+                        on_release: app.startcamPreview()
+                        size_hint_y: 0.15
+                        
+                    RoundedButton:
+                        icon_source: 'stop.png'
+                        on_release: app.stopcamPreview()
+                        size_hint_y: 0.15
+                        
                 Widget:  # spacer
                     size_hint_y: 0.15
 
