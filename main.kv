@@ -101,7 +101,7 @@
 
         RoundedButton:
             text: ""
-			size_hint_x: 0.35
+			size_hint_x: 0.5
 			icon_source: 'cameras.png'
 			icon_color: 1, 1, 1, 1  # RGBA color to tint icon
             on_release: app.switch_screen("cameras")
@@ -153,14 +153,14 @@
         orientation: "horizontal"
         padding: 10
         spacing: 5
-        center_y: self.parent.center_y+8
+        center_y: self.parent.center_y
 		center_x: self.parent.center_x
 		
         # Icon image
         Image:
             source: root.icon_source if root.icon_source else ""  # show nothing if no icon
             size_hint: None, None
-            size: 64, 64
+            size: 80, 80
             allow_stretch: True
             opacity: 1 if root.icon_source else 0
 			color: root.icon_color if root.icon_color else (1, 1, 1, 1)
