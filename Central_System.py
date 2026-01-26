@@ -27,29 +27,40 @@ from kivy.uix.screenmanager import ScreenManager, SlideTransition
 Window.borderless = True
 
 class KivyCamera(Image):
-    capture = None
-    fps = 30
-
     def start(self, capture, fps=30):
         self.capture = capture
         self.fps = fps
-        Clock.schedule_interval(self.update, 1.0 / fps)
+        self.texture = None
+        self._event = Clock.schedule_interval(self.update, 1.0 / fps)
+
+    def stop(self):
+        if hasattr(self, "_event"):
+            self._event.cancel()
 
     def update(self, dt):
         if not self.capture:
             return
 
         ret, frame = self.capture.read()
-        if ret:
-            frame = cv2.flip(frame, 0)
-            buf = frame.tobytes()
+        if not ret:
+            return
 
-            texture = Texture.create(
-                size=(frame.shape[1], frame.shape[0]),
-                colorfmt='bgr'
+        h, w, _ = frame.shape
+
+        if self.texture is None:
+            self.texture = Texture.create(
+                size=(w, h),
+                colorfmt="bgr"
             )
-            texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
-            self.texture = texture
+            self.texture.flip_vertical()
+
+        # Write directly into existing texture
+        self.texture.blit_buffer(
+            frame.tobytes(),
+            colorfmt="bgr",
+            bufferfmt="ubyte"
+        )
+        self.canvas.ask_update()
 
 def test():
     pid = 12345 # Replace with the actual Process ID (PID)
@@ -80,25 +91,31 @@ class MainApp(App):
         # Defer screen change to next frame (Linux fix)
         Clock.schedule_once(lambda dt: setattr(sm, 'current', screen_name), 0)
 
-    def on_start(self):
+    def startcamPreview(self):
+        print('starting cams')
+        
         self.capture = cv2.VideoCapture(
             "/dev/video0"
         )
                 # Request resolution
         self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1024)
         self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 576)
+        self.capture.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*"MJPG"))
+        self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+
         self.root.ids.camera_view.start(self.capture, fps=15)
         
         self.capture = cv2.VideoCapture(
             "rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_sub"
         )
-        self.root.ids.camera_view2.start(self.capture, fps=15)
+        self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
+        self.root.ids.camera_view2.start(self.capture, fps=15)
+        
         self.capture = cv2.VideoCapture(
             "rtsp://cam1:test12345678@10.0.0.207:554/h264Preview_01_sub"
-        )        
-                # Request resolution
-        print('starting cams')
+        )
+        self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         
         # Access widget created in kv
         self.root.ids.camera_view3.start(self.capture, fps=15)
