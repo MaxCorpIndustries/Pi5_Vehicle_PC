@@ -124,27 +124,23 @@
                             size: self.size
     BoxLayout:
         size_hint_y: 0.15
-        spacing: 45
-        padding: 10
+        spacing: 30  # 20px horizontal spacing, 0px vertical
+        padding: 50, 10 # 10px padding on left/right, 0px top/bottom
 
         RoundedButton:
 			icon_source: 'testsquare.png'
-			icon_color: 1, 1, 1, 1  # RGBA color to tint icon
             on_release: app.switch_screen("cameras")
 
         RoundedButton:
 			icon_source: 'testsquare.png'
-			icon_color: 1, 1, 1, 1  # RGBA color to tint icon
             on_release: app.switch_screen("settings")
 
         RoundedButton:
 			icon_source: 'testsquare.png'
-			icon_color: 1, 1, 1, 1  # RGBA color to tint icon
             on_release: app.switch_screen("about")
 
         RoundedButton:
 			icon_source: 'testsquare.png'
-			icon_color: 1, 1, 1, 1  # RGBA color to tint icon
             on_release: app.switch_screen("about")
 			
 
@@ -154,7 +150,7 @@
             font_size: 64
 			halign: 'center'
 			valign: 'center'
-            size_hint_x: 0.25
+            size_hint_x: 1
             on_release: app.stop()
 
 
@@ -163,7 +159,7 @@
     text: ""
     radius: [30]  # default radius
     #width: '80dp'
-    size_hint_x: 0.25
+    size_hint_x: 1
     
 	color: 1, 0.9, 0.9, 1
 	normal_color: 0, 0, 0, 1
