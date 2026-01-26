@@ -92,11 +92,11 @@ class MainApp(App):
         # Defer screen change to next frame (Linux fix)
         Clock.schedule_once(lambda dt: setattr(sm, 'current', screen_name), 0)
 
-    def startcamPreview(self):
+    def on_start(self):
         print('starting cams')
         #CoreCams.initializeInternalNetwork()
         
-        self.capture = cv2.VideoCapture("/dev/video0",cv2.CAP_V4L2)
+        self.capture = cv2.VideoCapture("/dev/video0")
                 # Request resolution
         #self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         #self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
