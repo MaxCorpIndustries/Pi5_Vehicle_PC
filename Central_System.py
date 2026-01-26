@@ -19,6 +19,7 @@ from kivy.graphics.texture import Texture
 from kivy.core.window import Window
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.animation import Animation
 
 from kivy.uix.label import Label
 from kivy.uix.image import Image
@@ -68,6 +69,19 @@ def test():
     os.system(f'taskkill /F /PID {pid}')
 
 class MainLayout(BoxLayout):
+
+    
+    def toggle_layout(self):
+        extra = self.ids.extra_layout
+        print('test')
+        # If currently visible, animate to hidden (height 0)
+        if extra.size_hint_x > 0:
+            anim = Animation(size_hint_x=0, opacity=0, d=0.3, t='out_quad')
+        # If hidden, animate to visible (target height e.g., 100)
+        else:
+            anim = Animation(size_hint_x=1, opacity=1, d=0.3, t='out_quad')
+        
+        anim.start(extra)    
     pass
 
 
@@ -79,6 +93,7 @@ class MainApp(App):
         #Builder.load_file("main.kv")
         return MainLayout()
 
+        
     def switch_screen(self, screen_name):
         sm = self.root.ids.screen_manager
         screen_order = ['cameras', 'settings', 'about']
