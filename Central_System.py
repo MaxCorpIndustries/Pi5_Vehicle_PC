@@ -94,7 +94,7 @@ class MainApp(App):
 
     def startcamPreview(self):
         print('starting cams')
-        CoreCams.initializeInternalNetwork()
+        #CoreCams.initializeInternalNetwork()
         
         self.capture = cv2.VideoCapture(
             "/dev/video0"
