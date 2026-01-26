@@ -1,20 +1,23 @@
-from kivy.app import App
-from kivy.lang import Builder
-import threading
-from kivy.clock import Clock
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.screenmanager import ScreenManager, SlideTransition
-from kivy.core.window import Window
-from kivy.config import Config
-from kivy.uix.label import Label
 
+
+import threading
 import sys
 import os
 import signal
 
+from kivy.config import Config
 Config.set('graphics', 'width', '1024')
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'fullscreen', 'auto')
+
+
+from kivy.clock import Clock
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import ScreenManager, SlideTransition
+from kivy.core.window import Window
+from kivy.uix.label import Label
+from kivy.app import App
+from kivy.lang import Builder
 
 Window.borderless = True
 
