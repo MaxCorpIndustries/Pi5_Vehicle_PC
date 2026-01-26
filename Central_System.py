@@ -96,9 +96,7 @@ class MainApp(App):
         print('starting cams')
         #CoreCams.initializeInternalNetwork()
         
-        self.capture = cv2.VideoCapture(
-            "/dev/video0"
-        )
+        self.capture = cv2.VideoCapture("/dev/video0")
                 # Request resolution
         #self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         #self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
