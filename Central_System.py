@@ -87,16 +87,16 @@ class MainApp(App):
                 # Request resolution
         self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1024)
         self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 576)
-        self.root.ids.camera_view.start(self.capture, fps=30)
+        self.root.ids.camera_view.start(self.capture, fps=15)
         
         self.capture = cv2.VideoCapture(
-            "rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_main"
+            "rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_sub"
         )
                 # Request resolution
         print('starting cams')
         
         # Access widget created in kv
-        self.root.ids.camera_view2.start(self.capture, fps=30)
+        self.root.ids.camera_view2.start(self.capture, fps=15)
 
     def on_stop(self):
         if self.capture:
