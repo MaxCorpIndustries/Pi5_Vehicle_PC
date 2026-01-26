@@ -190,7 +190,7 @@
         Image:
             source: root.icon_source if root.icon_source else ""  # show nothing if no icon
             size_hint: None, None
-            size: 80, 80
+            size: self.size
             allow_stretch: True
             opacity: 1 if root.icon_source else 0
 			color: root.icon_color if root.icon_color else (1, 1, 1, 1)
