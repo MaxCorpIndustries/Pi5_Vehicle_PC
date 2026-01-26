@@ -6,6 +6,8 @@ import os
 import signal
 import cv2
 
+import CORE_WebcamRecording as CoreCams
+
 from kivy.config import Config
 Config.set('graphics', 'width', '1024')
 Config.set('graphics', 'height', '600')
@@ -93,7 +95,7 @@ class MainApp(App):
 
     def startcamPreview(self):
         print('starting cams')
-        
+        CoreCams.initializeInternalNetwork()
         self.capture = cv2.VideoCapture(
             "/dev/video0"
         )
