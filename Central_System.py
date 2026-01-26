@@ -4,7 +4,7 @@ import threading
 from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
-
+from kivy.core.window import Window
 from kivy.config import Config
 from kivy.uix.label import Label
 
@@ -14,6 +14,7 @@ import signal
 
 Config.set('graphics', 'width', '1024')
 Config.set('graphics', 'height', '600')
+Window.borderless = True
 
 
 def test():
