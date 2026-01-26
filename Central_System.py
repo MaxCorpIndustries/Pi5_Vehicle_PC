@@ -97,7 +97,8 @@ class MainApp(App):
 
     def toggle_all_icons(self):
         self.icons_visible = not self.icons_visible
-
+        print('test!')
+        print(icons_visible)
         
     def switch_screen(self, screen_name):
         sm = self.root.ids.screen_manager
