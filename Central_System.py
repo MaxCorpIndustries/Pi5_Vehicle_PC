@@ -22,6 +22,30 @@ from kivy.lang import Builder
 
 Window.borderless = True
 
+class KivyCamera(Image):
+    capture = None
+    fps = 30
+
+    def start(self, capture, fps=30):
+        self.capture = capture
+        self.fps = fps
+        Clock.schedule_interval(self.update, 1.0 / fps)
+
+    def update(self, dt):
+        if not self.capture:
+            return
+
+        ret, frame = self.capture.read()
+        if ret:
+            frame = cv2.flip(frame, 0)
+            buf = frame.tobytes()
+
+            texture = Texture.create(
+                size=(frame.shape[1], frame.shape[0]),
+                colorfmt='bgr'
+            )
+            texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
+            self.texture = texture
 
 def test():
     pid = 12345 # Replace with the actual Process ID (PID)
@@ -52,6 +76,17 @@ class MainApp(App):
         # Defer screen change to next frame (Linux fix)
         Clock.schedule_once(lambda dt: setattr(sm, 'current', screen_name), 0)
 
+    def on_start(self):
+        self.capture = cv2.VideoCapture(
+            "/dev/video0"
+        )
+        # Access widget created in kv
+        self.root.ids.camera_view.start(self.capture, fps=30)
+
+    def on_stop(self):
+        if self.capture:
+            self.capture.release()
+            
     def exit(self):
         Clock.schedule_once(lambda dt: self.stop(), 0)
 
