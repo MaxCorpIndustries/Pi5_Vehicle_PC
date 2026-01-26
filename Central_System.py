@@ -102,7 +102,7 @@ class MainApp(App):
         #self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         #self.capture.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*"MJPG"))
         #self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-
+        
         self.root.ids.camera_view.start(self.capture, fps=15)
         
         #self.capture = cv2.VideoCapture(
@@ -122,6 +122,7 @@ class MainApp(App):
 
     def stopcamPreview(self):
         if self.capture:
+            subprocess.run(['fuser','-k',"/dev/video0"])
             self.capture.release()
 
     def on_stop(self):
