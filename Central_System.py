@@ -100,8 +100,8 @@ class MainApp(App):
             "/dev/video0"
         )
                 # Request resolution
-        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1024)
-        self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 576)
+        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         #self.capture.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*"MJPG"))
         #self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
