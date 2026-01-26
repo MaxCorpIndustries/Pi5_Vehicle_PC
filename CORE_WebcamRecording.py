@@ -311,7 +311,7 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
                     .overwrite_output()
                 )
         
-        process = process.run_async(pipe_stdin=True)
+        process = process.run_async(pipe_stdout=True)
         #add this process to the pending array
         
         return process
