@@ -34,20 +34,31 @@
                         Rectangle:
                             pos: self.pos
                             size: self.size
-                            
-                Image:
-                        # Set the source property to the filename (must be in the same directory or provide full path)
-                        source: 'topdown.png' 
-                        # Optional properties to control how the image fits:
-                        allow_stretch: True
-                        keep_ratio: False 
-                        # You can also use 'fit_mode' for more options in recent Kivy versions                            
-                                            
                 BoxLayout:
+                    canvas.before:
+                        Color:
+                            # RGBA values (0 to 1 range): Red, Green, Blue, Alpha (opacity)
+                            rgba: 1, 0, 0, 1  # This will make the background solid red                
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
                     orientation: "horizontal"
-                    spacing: 5
-                    padding: 5
+                    padding: 0
+                    spacing: 0
                     size_hint_y: 1
+                    center_y: self.parent.center_y
+                    center_x: self.parent.center_x
+                    Image:
+                        source: 'topdown.png' 
+                        allow_stretch: False
+                        fit_mode: "contain"
+                        keep_ratio: True 
+                                        
+                #BoxLayout:
+                    #orientation: "horizontal"
+                   # spacing: 5
+                   # padding: 5
+                   # size_hint_y: 1
                     
                     #KivyCamera:
                         #id: camera_view
@@ -71,8 +82,7 @@
                         icon_source: 'stop.png'
                         on_release: app.stopcamPreview()
                         
-                Widget:  # spacer
-                    size_hint_y: 0.15
+
 
 
                 Widget:

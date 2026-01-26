@@ -95,14 +95,14 @@ class MainApp(App):
     def startcamPreview(self):
         print('starting cams')
         #CoreCams.initializeInternalNetwork()
-        self.capture = cv2.VideoCapture("/dev/video0")
+        #self.capture = cv2.VideoCapture("/dev/video0")
                 # Request resolution
         #self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         #self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         #self.capture.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*"MJPG"))
         #self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         
-        self.root.ids.camera_view.start(self.capture, fps=15)
+        #self.root.ids.camera_view.start(self.capture, fps=15)
         
         #self.capture = cv2.VideoCapture(
         #    "rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_sub"
