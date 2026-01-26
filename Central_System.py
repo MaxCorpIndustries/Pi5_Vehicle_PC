@@ -85,8 +85,8 @@ class MainApp(App):
             "/dev/video0"
         )
                 # Request resolution
-        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-        self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1024)
+        self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 576)
         print('starting cams')
         # Access widget created in kv
         self.root.ids.camera_view.start(self.capture, fps=30)
