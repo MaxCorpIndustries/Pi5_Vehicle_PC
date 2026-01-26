@@ -41,15 +41,15 @@ class MainApp(App):
     def switch_screen(self, screen_name):
         sm = self.root.ids.screen_manager
         screen_order = ['cameras', 'settings', 'about']
+
         current_index = screen_order.index(sm.current)
         target_index = screen_order.index(screen_name)
 
-        if target_index > current_index:
-            sm.transition.direction = 'left'
-        else:
-            sm.transition.direction = 'right'
+        direction = 'left' if target_index > current_index else 'right'
+        sm.transition.direction = direction
 
-        sm.current = screen_name
+        # Defer screen change to next frame (Linux fix)
+        Clock.schedule_once(lambda dt: setattr(sm, 'current', screen_name), 0)
 
     def exit(self):
         Clock.schedule_once(lambda dt: self.stop(), 0)
