@@ -97,14 +97,14 @@
                                 
                         CameraButtons:
                             text:"5"
-                            pos_hint: {'x': 0.6, 'top': 0.5}
+                            pos_hint: {'x': 0.6, 'top': 0.45}
                             on_release: 
                                 app.toggle_all_icons()
                                 root.toggle_layout()     
 
                         CameraButtons:
                             text:"6"
-                            pos_hint: {'x': 0.55, 'top': 0.7}
+                            pos_hint: {'x': 0.55, 'top': 0.78}
                             on_release: 
                                 app.toggle_all_icons()
                                 root.toggle_layout()       
@@ -308,11 +308,13 @@
 
 <CameraButtons@Button>:
     text: ""
-    radius: [30] if app.icons_visible else [5]
+    radius: [30]
     #width: '80dp'
     text_size: self.size
     font_size: '32sp'
     padding:10
+    
+    opacity: 1 if app.icons_visible else 0
     
     size_hint_y: 0.2    
     size_hint_x: 0.15
