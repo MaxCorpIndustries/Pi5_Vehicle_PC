@@ -34,12 +34,22 @@
                         Rectangle:
                             pos: self.pos
                             size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: 10
+                    padding: 10
+                    
+                    KivyCamera:
+                        id: camera_view
+                        allow_stretch: True
+                        keep_ratio: True
+                        size_hint_y: 1
 
-                KivyCamera:
-                    id: camera_view
-                    allow_stretch: True
-                    keep_ratio: True
-                    size_hint_y: 1
+                    KivyCamera:
+                        id: camera_view
+                        allow_stretch: True
+                        keep_ratio: True
+                        size_hint_y: 1                        
                     
                 RoundedButton:
                     icon_source: 'cameras.png'
