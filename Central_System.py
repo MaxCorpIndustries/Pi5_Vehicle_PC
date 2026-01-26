@@ -4,6 +4,7 @@ import threading
 import sys
 import os
 import signal
+import cv2
 
 from kivy.config import Config
 Config.set('graphics', 'width', '1024')
@@ -12,6 +13,7 @@ Config.set('graphics', 'multisamples', '8')
 Config.set('graphics', 'fullscreen', 'auto')
 
 from kivy.clock import Clock
+from kivy.graphics.texture import Texture
 from kivy.core.window import Window
 from kivy.app import App
 from kivy.lang import Builder
@@ -82,6 +84,7 @@ class MainApp(App):
         self.capture = cv2.VideoCapture(
             "/dev/video0"
         )
+        print('starting cams')
         # Access widget created in kv
         self.root.ids.camera_view.start(self.capture, fps=30)
 
