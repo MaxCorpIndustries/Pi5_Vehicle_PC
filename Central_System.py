@@ -129,7 +129,7 @@ class MainApp(App):
             self.capture.release()
 
     def on_start(self):
-        startcamPreview()
+        self.startcamPreview()
     
     def exit(self):
         Clock.schedule_once(lambda dt: self.stop(), 0)
