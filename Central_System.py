@@ -11,14 +11,16 @@ Config.set('graphics', 'height', '600')
 Config.set('graphics', 'multisamples', '8')
 Config.set('graphics', 'fullscreen', 'auto')
 
-
 from kivy.clock import Clock
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.screenmanager import ScreenManager, SlideTransition
 from kivy.core.window import Window
-from kivy.uix.label import Label
 from kivy.app import App
 from kivy.lang import Builder
+
+from kivy.uix.label import Label
+from kivy.uix.image import Image
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import ScreenManager, SlideTransition
+
 
 Window.borderless = True
 
