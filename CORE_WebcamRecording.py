@@ -6,7 +6,7 @@ import os
 import asyncio
 import configparser
 from datetime import datetime
-from gpiod.line import Direction, Value
+#from gpiod.line import Direction, Value
 
 TripsVideoDirectory='/media/carpc/Main_Storage/test'
 
