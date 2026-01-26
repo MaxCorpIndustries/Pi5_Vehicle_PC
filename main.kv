@@ -34,26 +34,45 @@
                         Rectangle:
                             pos: self.pos
                             size: self.size
+                            
                 BoxLayout:
-                    canvas.before:
-                        Color:
-                            # RGBA values (0 to 1 range): Red, Green, Blue, Alpha (opacity)
-                            rgba: 1, 0, 0, 1  # This will make the background solid red                
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
-                    orientation: "horizontal"
-                    padding: 0
-                    spacing: 0
-                    size_hint_y: 1
-                    center_y: self.parent.center_y
-                    center_x: self.parent.center_x
-                    Image:
-                        source: 'topdown.png' 
-                        allow_stretch: False
-                        fit_mode: "contain"
-                        keep_ratio: True 
-                                        
+                    orientation: 'horizontal'                            
+                    BoxLayout:
+                        canvas.before:
+                            Color:
+                                # RGBA values (0 to 1 range): Red, Green, Blue, Alpha (opacity)
+                                rgba: 1, 0, 0, 1  # This will make the background solid red                
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                        orientation: "horizontal"
+                        padding: 0
+                        spacing: 0
+                        size_hint_y: 1
+                        center_y: self.parent.center_y
+                        center_x: self.parent.center_x
+                        Image:
+                            source: 'topdown.png' 
+                            allow_stretch: False
+                            fit_mode: "contain"
+                            keep_ratio: True 
+                                            
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: 0
+                        padding: 0
+                        size_hint_x: 0.15
+                        
+                        RoundedButton:
+                            icon_source: 'cameras.png'
+                            on_release: app.on_start()
+                            
+                        RoundedButton:
+                            icon_source: 'stop.png'
+                            on_release: app.stopcamPreview()
+                                
+
+
                 #BoxLayout:
                     #orientation: "horizontal"
                    # spacing: 5
@@ -65,25 +84,6 @@
                         #allow_stretch: True
                         #keep_ratio: True
                         #size_hint_y: 1
-
-
-                
-                BoxLayout:
-                    orientation: "horizontal"
-                    spacing: 0
-                    padding: 0
-                    size_hint_y: 0.15
-                    
-                    RoundedButton:
-                        icon_source: 'cameras.png'
-                        on_release: app.on_start()
-                        
-                    RoundedButton:
-                        icon_source: 'stop.png'
-                        on_release: app.stopcamPreview()
-                        
-
-
 
                 Widget:
                     size_hint_y: None
