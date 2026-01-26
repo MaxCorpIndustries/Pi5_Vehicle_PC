@@ -14,6 +14,8 @@ import signal
 
 Config.set('graphics', 'width', '1024')
 Config.set('graphics', 'height', '600')
+Config.set('graphics', 'fullscreen', 'auto')
+
 Window.borderless = True
 
 
