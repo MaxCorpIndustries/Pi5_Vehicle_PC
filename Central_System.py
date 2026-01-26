@@ -122,7 +122,6 @@ class MainApp(App):
 
     def stopcamPreview(self):
         if self.capture:
-            subprocess.run(['fuser','-k',"/dev/video0"])
             self.capture.release()
 
     def on_stop(self):
