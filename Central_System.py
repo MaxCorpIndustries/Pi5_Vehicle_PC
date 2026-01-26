@@ -92,7 +92,7 @@ class MainApp(App):
         # Defer screen change to next frame (Linux fix)
         Clock.schedule_once(lambda dt: setattr(sm, 'current', screen_name), 0)
 
-    def on_start(self):
+    def startcamPreview(self):
         print('starting cams')
         #CoreCams.initializeInternalNetwork()
         
