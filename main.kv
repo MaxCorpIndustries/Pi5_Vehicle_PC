@@ -34,17 +34,26 @@
                         Rectangle:
                             pos: self.pos
                             size: self.size
+                            
+                Image:
+                        # Set the source property to the filename (must be in the same directory or provide full path)
+                        source: 'topdown.png' 
+                        # Optional properties to control how the image fits:
+                        allow_stretch: True
+                        keep_ratio: False 
+                        # You can also use 'fit_mode' for more options in recent Kivy versions                            
+                                            
                 BoxLayout:
                     orientation: "horizontal"
                     spacing: 5
                     padding: 5
                     size_hint_y: 1
                     
-                    KivyCamera:
-                        id: camera_view
-                        allow_stretch: True
-                        keep_ratio: True
-                        size_hint_y: 1
+                    #KivyCamera:
+                        #id: camera_view
+                        #allow_stretch: True
+                        #keep_ratio: True
+                        #size_hint_y: 1
 
 
                 
