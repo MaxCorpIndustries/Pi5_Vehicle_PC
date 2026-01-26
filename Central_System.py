@@ -5,7 +5,7 @@ import sys
 import os
 import signal
 import cv2
-
+import subprocess
 import CORE_WebcamRecording as CoreCams
 
 from kivy.config import Config
@@ -24,7 +24,6 @@ from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
-
 
 Window.borderless = True
 
@@ -96,31 +95,32 @@ class MainApp(App):
     def startcamPreview(self):
         print('starting cams')
         CoreCams.initializeInternalNetwork()
+        
         self.capture = cv2.VideoCapture(
             "/dev/video0"
         )
                 # Request resolution
-        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+        #self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        #self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         #self.capture.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*"MJPG"))
         #self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
         self.root.ids.camera_view.start(self.capture, fps=15)
         
-        self.capture = cv2.VideoCapture(
-            "rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_sub"
-        )
-        self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+        #self.capture = cv2.VideoCapture(
+        #    "rtsp://cam3:test12345678@10.0.0.209:554/h264Preview_01_sub"
+        #)
+        #self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
-        self.root.ids.camera_view2.start(self.capture, fps=15)
+        #self.root.ids.camera_view2.start(self.capture, fps=15)
         
-        self.capture = cv2.VideoCapture(
-            "rtsp://cam1:test12345678@10.0.0.207:554/h264Preview_01_sub"
-        )
-        self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+        #self.capture = cv2.VideoCapture(
+         #   "rtsp://cam1:test12345678@10.0.0.207:554/h264Preview_01_sub"
+        #)
+        #self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         
         # Access widget created in kv
-        self.root.ids.camera_view3.start(self.capture, fps=15)
+        #self.root.ids.camera_view3.start(self.capture, fps=15)
 
     def stopcamPreview(self):
         if self.capture:
