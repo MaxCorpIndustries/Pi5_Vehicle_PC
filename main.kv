@@ -1,3 +1,5 @@
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+
 #:kivy 2.2.0
 
 <MainLayout>:
@@ -5,7 +7,8 @@
 
     ScreenManager:
         id: screen_manager
-
+		transition: SlideTransition(duration=0.25)
+		
         Screen:
 			name: "cameras"
             BoxLayout:
