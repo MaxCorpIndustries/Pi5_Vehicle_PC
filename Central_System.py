@@ -78,7 +78,7 @@ class MainLayout(BoxLayout):
             anim = Animation(size_hint_x=0, opacity=0, d=0.3, t='out_quad')
         # If hidden, animate to visible (target height e.g., 100)
         else:
-            anim = Animation(size_hint_x=3, opacity=1, d=0.3, t='out_quad')
+            anim = Animation(size_hint_x=5, opacity=1, d=0.3, t='out_quad')
         
         anim.start(extra)    
     pass

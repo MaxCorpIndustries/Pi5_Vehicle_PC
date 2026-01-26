@@ -130,7 +130,17 @@
                                 icon_source: 'stop.png'
                                 on_release: app.stopcamPreview()
                             
-
+                            RoundedButton:
+                                #icon_source: 'stop.png'
+                                text: "×"
+                                bold: True
+                                font_size: 64
+                                halign: 'center'
+                                valign: 'center'
+                                size_hint_x: 0.5                                
+                                on_release: 
+                                    app.toggle_all_icons()
+                                    root.toggle_layout() 
                             
                 #BoxLayout:
                     #orientation: "horizontal"
