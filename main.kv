@@ -39,13 +39,14 @@
                     id: camera_view
                     allow_stretch: True
                     keep_ratio: True
-
+                    size_hint_y: 1
+                    
                 RoundedButton:
                     icon_source: 'cameras.png'
                     on_release: app.on_start()
-
+                
                 Widget:  # spacer
-
+                    size_hint_y: 0.15
 
 
                 Widget:
