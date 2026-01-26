@@ -27,67 +27,22 @@ from kivy.uix.screenmanager import ScreenManager, SlideTransition
 Window.borderless = True
 
 class KivyCamera(Image):
-    def start(self, source, fps=15, reconnect_delay=2.0):
-        """
-        source: RTSP url or /dev/videoX
-        """
-        self.source = source
+    def start(self, capture, fps=30):
+        self.capture = capture
         self.fps = fps
-        self.reconnect_delay = reconnect_delay
-
-        self.capture = None
         self.texture = None
-        self.last_fail_time = 0
-        self.connected = False
-
         self._event = Clock.schedule_interval(self.update, 1.0 / fps)
 
     def stop(self):
         if hasattr(self, "_event"):
             self._event.cancel()
-        self._release()
-
-    def _release(self):
-        if self.capture:
-            self.capture.release()
-            self.capture = None
-        self.connected = False
-
-    def _connect(self):
-        now = time.time()
-
-        # Backoff so we don't hammer reconnects
-        if now - self.last_fail_time < self.reconnect_delay:
-            return False
-
-        self.last_fail_time = now
-        print("Connecting to camera...")
-
-        self.capture = cv2.VideoCapture(self.source, cv2.CAP_FFMPEG)
-
-        # RTSP stability flags
-        self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-
-        if not self.capture.isOpened():
-            print("RTSP connect failed")
-            self._release()
-            return False
-
-        print("Camera connected")
-        self.connected = True
-        return True
 
     def update(self, dt):
-        # Ensure connection
-        if not self.connected:
-            self._connect()
+        if not self.capture:
             return
 
         ret, frame = self.capture.read()
-
-        if not ret or frame is None:
-            print("Frame read failed, reconnecting...")
-            self._release()
+        if not ret:
             return
 
         h, w, _ = frame.shape
@@ -99,6 +54,7 @@ class KivyCamera(Image):
             )
             self.texture.flip_vertical()
 
+        # Write directly into existing texture
         self.texture.blit_buffer(
             frame.tobytes(),
             colorfmt="bgr",
