@@ -19,12 +19,16 @@ from kivy.core.window import Window
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.animation import Animation
-from kivy.properties import BooleanProperty
+from kivy.properties import ListProperty, StringProperty, BooleanProperty
+from kivy.factory import Factory
+
+from functools import partial
 
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
+from kivy.uix.button import Button
 
 Window.borderless = True
 
@@ -34,6 +38,11 @@ class Camera:
         self.name = name
         self.ASYNCSTATUS = status
 
+
+class CameraButtons(Button):
+    normal_color = ListProperty([0.5, 0.5, 0.5, 1])
+    down_color = ListProperty([0.3, 0.3, 0.3, 1])
+    my_id_string = StringProperty("")
 
 
 class KivyCamera(Image):
@@ -78,34 +87,67 @@ def test():
 
 class MainLayout(BoxLayout):
 
+
+    menu_text = StringProperty("Default Message")
+    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # Dictionary of camera objects
         self.cameras = {
-            "4_BMPRCAM": Camera("4_BMPRCAM", "ready"),
-            "5_BMPRCAM": Camera("5_BMPRCAM", "offline")
+            Camera("1_LEFTCAM",     "disconnected"     ),
+            Camera("5_DASHCAM",     "disconnected"   ),
+            Camera("3_REARCAM",     "disconnected"   )
         }
+        
         for a in self.cameras:
-            Clock.schedule_interval(self.get_cam_color, 1)
+           Clock.schedule_interval(partial(self.update_button_color, a.name), 1)
+
+    def update_button_color(self, cam_id, dt):
+        new_color = self.get_cam_color(cam_id)        
+        for widget in self.walk():
+            if getattr(widget, 'my_id_string', None) == cam_id:
+                widget.normal_color = new_color
         
     def get_cam_color(self, cam_id):
-        cam = self.cameras.get(cam_id)
-        
-        # CRITICAL: Always return a list of 4 floats. Never return None.
-        if not cam:
-            return [0.5, 0.5, 0.5, 1]  # Default Gray
-        
-        if cam.ASYNCSTATUS == "ready":
-            return [0, 1, 0, 1]        # Green
-        elif cam.ASYNCSTATUS == "offline":
-            return [1, 0, 0, 1]        # Red
-        
-        return [0.5, 0.5, 0.5, 1]      # Fallback Gray
+
+        # find camera item in self.cameras array
+        for cameraObject in self.cameras:
+            if(cameraObject.name == cam_id):
+                cam = cameraObject
+                
+        match cam.ASYNCSTATUS:
+            case "disconnected":
+                return [1, 1, 1, 1]
+            
+            case "ready":
+                return [0, 1, 0, 1]
+
+            case "offline":
+                return [1, 0, 0, 1]  
+
+            case "test":
+                return [1, 0.5, 0, 1]
+
+            case _:
+                return [0.5, 0.5, 0.5, 1]
+            
+        #should never be here
+        return [0.5, 0.5, 0.5, 1]
+
     
     def toggle_layout(self,buttonType):
-        #boolean = not boolean
+
+        try:
+            cameraId = buttonType.my_id_string
+            # find camera item in self.cameras array
+            for cameraObject in self.cameras:
+                if(cameraObject.name == cameraId):
+                    cam = cameraObject        
+            self.menu_text = cam.name
+        except:
+            pass #this was likely the close button being hit (has no id)
+            
         extra = self.ids.extra_layout
-                
         if extra.size_hint_x > 0:
             anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
             for widget in self.walk():
@@ -131,8 +173,7 @@ class MainApp(App):
     
     def build(self):
         self.title = "CARPC SYSTEM"
-        self.icon = 'icon.png'  # Set the icon path here
-        #Builder.load_file("main.kv")
+        self.icon = 'icon.png' #window icon
         return MainLayout()
         
     def switch_screen(self, screen_name):

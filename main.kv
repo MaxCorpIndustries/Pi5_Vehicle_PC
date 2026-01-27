@@ -97,7 +97,7 @@
                             my_id_string: "1_LEFTCAM"
                             pos_hint: {'x': 0.7, 'top': 0.2 if not self.disabled else 0.42}
                             on_release: 
-                                root.toggle_layout(self)                                
+                                root.toggle_layout(self)  
 
                         CameraButtons:
                             text:"2"
@@ -142,6 +142,15 @@
                         size_hint_x: 0
                         opacity:0
                         
+                        Label:
+                            text: root.menu_text if app.root else "Initializing..."
+                            font_size: 22
+                            size_hint_y: None
+                            height: '25dp'
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'middle'
+                            
                         BoxLayout:
                             orientation: "horizontal"
                             spacing: 0
@@ -357,10 +366,13 @@
     
     opacity: 1
     
-    normal_color: [0.5, 0.5, 0.5, 1] # Default Gray
+    #normal_color: [0.5, 0.5, 0.5, 1] # Default Gray
     down_color: [0.3, 0.3, 0.3, 1]   # Darker Gray
-    
     my_id_string: ""
+    #normal_color: app.root.get_cam_color(self.my_id_string) if self.my_id_string != "" else [0.5, 0.5, 0.5, 1]
+    normal_color: app.root.get_cam_color(self.my_id_string) if (app.root and self.my_id_string) else [0.5, 0.5, 0.5, 1]
+
+
     on_my_id_string: if app.root: self.normal_color = app.root.get_cam_color(self.my_id_string)
     
     size_hint_y: 0.15 if not self.disabled else 0.13    
@@ -384,7 +396,7 @@
 
     canvas.before:
         Color:
-            rgba: (self.normal_color if self.state == 'normal' else self.down_color) or [0.5, 0.5, 0.5, 1]
+            rgba: self.normal_color if self.state == 'normal' else self.down_color
         RoundedRectangle:
             pos: self.pos
             size: self.size
