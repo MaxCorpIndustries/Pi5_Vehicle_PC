@@ -268,6 +268,13 @@
                             pos: self.pos
                             size: self.size
 
+                        Image:
+                            source: 'kivy_testing/testgif.gif' 
+                            allow_stretch: False
+                            fit_mode: "contain"
+                            padding:10
+                            keep_ratio: True 
+
                 Widget:  # spacer
 
                 Widget:
@@ -364,8 +371,6 @@
         RoundedButton:
 			icon_source: 'icons/cameras_button.png'
             on_release: app.switch_screen("cameras")
-
-
 
         RoundedButton:
 			icon_source: 'icons/car.png'
