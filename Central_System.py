@@ -32,17 +32,10 @@ from kivy.uix.button import Button
 
 Window.borderless = True
 
-# Define your Camera Class (as provided by user)
-class Camera:
-    def __init__(self, name, status="offline"):
-        self.name = name
-        self.ASYNCSTATUS = status
-
-
 class CameraButtons(Button):
     normal_color = ListProperty([0.5, 0.5, 0.5, 1])
     down_color = ListProperty([0.3, 0.3, 0.3, 1])
-    my_id_string = StringProperty("")
+    camera_id_string = StringProperty("")
 
 
 class KivyCamera(Image):
@@ -87,25 +80,31 @@ def test():
 
 class MainLayout(BoxLayout):
 
-
+    startVideoOnBoot=BooleanProperty(True)
     menu_text = StringProperty("Default Message")
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Dictionary of camera objects
-        self.cameras = {
-            Camera("1_LEFTCAM",     "disconnected"     ),
-            Camera("5_DASHCAM",     "disconnected"   ),
-            Camera("3_REARCAM",     "disconnected"   )
-        }
+
+        #Start internal network
+        initNetworkStatus= CoreCams.initializeInternalNetwork()
+        print('WORKED')
+        #Initialize camera systems
+        cameraConfig = CoreCams.get_config_info("cameras.ini")
         
+        if(cameraConfig != None):
+            self.cameras = CoreCams.ConstructCameraObjects(cameraConfig)
+        else:
+            raise ValueError("Camera config could not be found")
+
+        #update status values consistently
         for a in self.cameras:
            Clock.schedule_interval(partial(self.update_button_color, a.name), 1)
 
     def update_button_color(self, cam_id, dt):
         new_color = self.get_cam_color(cam_id)        
         for widget in self.walk():
-            if getattr(widget, 'my_id_string', None) == cam_id:
+            if getattr(widget, 'camera_id_string', None) == cam_id:
                 widget.normal_color = new_color
         
     def get_cam_color(self, cam_id):
@@ -118,31 +117,38 @@ class MainLayout(BoxLayout):
         #if the cameras was not found in camera.ini, make it this unique color
         if(cam == None):
             return [1, 1, 1, 1]
+
+        if(cam.readytoload):
+            return [0.815, 0, 0.815, 1]
         
-        match cam.ASYNCSTATUS:
-            case "disconnected":
-                return [0.815, 0, 0.815, 1]
+        match cam.StatusValue:
             
-            case "ready":
-                return [0, 1, 0, 1]
+            case -2: # unknown state
+                return [0.2 , 0.4   , 1     , 1]
 
-            case "offline":
-                return [1, 0, 0, 1]  
+            case -1: # failure
+                return [1   , 0.2   , 0     , 1]
 
-            case "test":
-                return [1, 0.5, 0, 1]
+            case 0: #disconnected
+                return [0.4 , 0.4   , 0.4   , 1]  
+            
+            case 1: # currently recording
+                return [0   , 1     , 0     , 1]
+
+            case 2: #recording completed (restarting)
+                return [1   , 0.5   , 0     , 1]
 
             case _:
-                return [0.5, 0.5, 0.5, 1]
+                return [0.5 , 0.5   , 0.5   , 1]
             
         #should never be here
-        return [0.5, 0.5, 0.5, 1]
+        return [0, 0, 0, 1]
 
     
     def toggle_layout(self,buttonType):
 
         try:
-            cameraId = buttonType.my_id_string
+            cameraId = buttonType.camera_id_string
             # find camera item in self.cameras array
             for cameraObject in self.cameras:
                 if(cameraObject.name == cameraId):

@@ -84,42 +84,42 @@
                         
                         CameraButtons:
                             text:"1"
-                            my_id_string: "1_LEFTCAM"
+                            camera_id_string: "1_LEFTCAM"
                             pos_hint: {'x': 0.7, 'top': 0.2 if not self.disabled else 0.42}
                             on_release: 
                                 root.toggle_layout(self)  
 
                         CameraButtons:
                             text:"2"
-                            my_id_string: "2_RIGTCAM"
+                            camera_id_string: "2_RIGTCAM"
                             pos_hint: {'x': 0.7, 'top': 0.85 if not self.disabled else 0.6}
                             on_release: 
                                 root.toggle_layout(self)   
 
                         CameraButtons:
                             text:"3"
-                            my_id_string: "3_REARCAM"
+                            camera_id_string: "3_REARCAM"
                             pos_hint: {'x': 0.1 if not self.disabled else 0.05 , 'top': 0.5}
                             on_release: 
                                 root.toggle_layout(self)                
                
                         CameraButtons:
                             text:"4"
-                            my_id_string: "4_BMPRCAM"
+                            camera_id_string: "4_BMPRCAM"
                             pos_hint: {'x': 0.8 if not self.disabled else 0.7, 'top': 0.5}
                             on_release: 
                                 root.toggle_layout(self)                        
                                 
                         CameraButtons:
                             text:"5"
-                            my_id_string: "5_DASHCAM"
+                            camera_id_string: "5_DASHCAM"
                             pos_hint: {'x': 0.5, 'top': 0.5}
                             on_release: 
                                 root.toggle_layout(self)     
 
                         CameraButtons:
                             text:"6"
-                            my_id_string: "6_CLUSCAM"
+                            camera_id_string: "6_CLUSCAM"
                             pos_hint: {'x': 0.55, 'top': 0.7 if not self.disabled else 0.55}
                             on_release: 
                                 root.toggle_layout(self)       
@@ -140,6 +140,16 @@
                             size_hint_y:0.1
                             halign: 'center'
                             valign: 'middle'
+
+                        Widget:
+                            size_hint_y: None
+                            height: 2
+                            canvas:
+                                Color:
+                                    rgb: 1, 1, 1
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
                             
                         BoxLayout:
                             orientation: "horizontal"
@@ -358,12 +368,12 @@
     
     #normal_color: [0.5, 0.5, 0.5, 1] # Default Gray
     down_color: [0.3, 0.3, 0.3, 1]   # Darker Gray
-    my_id_string: ""
-    #normal_color: app.root.get_cam_color(self.my_id_string) if self.my_id_string != "" else [0.5, 0.5, 0.5, 1]
-    normal_color: app.root.get_cam_color(self.my_id_string) if (app.root and self.my_id_string) else [0.5, 0.5, 0.5, 1]
+    camera_id_string: ""
+    #normal_color: app.root.get_cam_color(self.camera_id_string) if self.camera_id_string != "" else [0.5, 0.5, 0.5, 1]
+    normal_color: app.root.get_cam_color(self.camera_id_string) if (app.root and self.camera_id_string) else [0.5, 0.5, 0.5, 1]
 
 
-    on_my_id_string: if app.root: self.normal_color = app.root.get_cam_color(self.my_id_string)
+    on_camera_id_string: if app.root: self.normal_color = app.root.get_cam_color(self.camera_id_string)
     
     size_hint_y: 0.15 if not self.disabled else 0.13    
     size_hint_x: 0.15 if not self.disabled else 0.28

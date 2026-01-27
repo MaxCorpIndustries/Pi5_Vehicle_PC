@@ -21,9 +21,6 @@ video_duration=60
 # This code is designed to take static hardware addresses and rtsp addresses,  and store them in a local SSD on the CarPC system on board the EV_PROJECT_1 Civic
 
 # This code serves as a multi angle redundant dash camera system/ autocross footage capturing system
-
-
-
 class Camera:
     def __init__(self,name,camType,location,accessURL,ping,ffmpeg_settings,fps,resolution_y,resolution_x):
         self.name = name
@@ -33,7 +30,8 @@ class Camera:
         self.ping = ping
         self.readytoload=False      # this value will become true when ping successful
         self.ASYNCPOLL = None       # this will contain the current process running this camera
-        self.ASYNCSTATUS = None     # this will contain the last known status of this process
+        self.ASYNCSTATUS = None     # this will contain the last known raw polled info of the subprocess
+        self.StatusValue = None     # this will contain the formatted status of the camera (derrived from ASYNCSTATUS)
         self.ffmpeg_settings=ffmpeg_settings
         self.fps=fps
         self.resolution_y=resolution_y
@@ -46,7 +44,7 @@ class Camera:
 #│ 1        │ RTSP PoE      | RLC-510A      | 2304x1296 30Fps   | Left outboard camera, | 
 #│          |               |               |                   | facing rear of vehicle|
 #├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
-#│ 2        | RTSP PoE      | RLC-510A      | 2304x1296 30Fps   | Right outboard camera,|  
+#│ 2        | RTSP PoE      | RLC-510A      | 23504x1296 30Fps   | Right outboard camera,|  
 #│          |               |               |                   | facing rear of vehicle|
 #├──────────┼───────────────┼───────────────┼───────────────────┼───────────────────────┤
 #│ 3        | RTSP PoE      | RLC-510A      | 2304x1296 30Fps   | Rear facing camera.   |
@@ -62,6 +60,23 @@ class Camera:
 # These streams run simultaneously at once, and should all be recorded as separate video files stored in a collected folder
 
 #------------- RTSP Functions
+
+'''
+        
+         cameraObject = testRTSP_Ping(cameraObject)
+            
+            if(cameraObject.readytoload == True):
+                #print('Reconnection SUCESSFUL!')
+                KillVideoProcess(cameraObject)
+                # Create folder (will still work if folder already exists)
+                newLocationDirectory = create_NewLocationFolder(cameraObject,currentdirectory)
+                # Initiate video process
+                process = InitializeVideoProcessASYNC(cameraObject,newLocationDirectory)
+                if( process != False):
+                    cameraObject.ASYNCPOLL = process
+                else:
+                    print('Could not initialize video process for: ' + cameraObject.name)
+'''
 
 def initializeInternalNetwork():
     # This function allows the pi to create an "internal network" 
@@ -318,10 +333,60 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
     except Exception as e:
         print(e)
         return False
-        
+
+# this runs every cycle and updates the system on the status of camera feeds
+def updateCameraStatus(cameraArray):
+
+    # Checks and restarts to do every cyle:
+    for cameraObject in cameraArray:
+        if(cameraObject.readytoload == True):
+
+            #Check for failed process
+            try:
+                errorDetection = cameraObject.ASYNCPOLL._internal_poll(_deadstate=127)
+            except:
+                errorDetection = -1
+                # Whatever device this is does not support deadstate checks, override
+            
+            if(errorDetection == 1):
+                cameraObject.ASYNCSTATUS = "FAILURE"
+            else:
+
+                # Some device types have an embedded returncode, others just are their returncode
+                # Must handle all possibilities
+                try:
+                    statuscode = str(cameraObject.ASYNCPOLL.returncode)
+                except Exception as e:
+                    statuscode = str(cameraObject.ASYNCPOLL)
+
+                
+                match statuscode:
+                    case "None":
+                        cameraObject.StatusValue=1 # means active
+                    case "0":
+                        cameraObject.StatusValue=2 # means done (reset conditions)
+                        try:
+                            cameraObject.ASYNCPOLL.terminate()
+                        except:
+                            print('failed to kill subprocess safely')
+
+                        cameraObject.readytoload=False
+                        
+                    case "FAILURE":
+                        cameraObject.StatusValue=-1 # means failure of some kind
+                    case _:
+                        cameraObject.StatusValue=-2 # means unknown state (catch all)      
+        else:
+            # Attempt to reconnect to disconnected device
+            cameraObject.StatusValue=0 # means disconnected state
+                
+    return cameraArray
+
+
+
 def StartVideoProcess():
 
-    startVideoOnBoot=True
+    
     
     cameraArray = []
 
@@ -375,61 +440,8 @@ def StartVideoProcess():
                                 print('Could not initialize video process for: ' + cameraObject.name)
              
                 else:
+                    pass                    
 
-                    # Checks and restarts to do every cyle:
-                    for cameraObject in cameraArray:
-                        if(cameraObject.readytoload == True):
-
-                            #Check for failed process
-                            try:
-                                errorDetection = cameraObject.ASYNCPOLL._internal_poll(_deadstate=127)
-                            except:
-                                errorDetection = -1
-                                # Whatever device this is does not support deadstate checks, override
-                            
-                            if(errorDetection == 1):
-                                cameraObject.ASYNCSTATUS = "FAILURE"
-                            else:
-
-                                # Some device types have an embedded returncode, others just are their returncode
-                                # Must handle all possibilities
-                                try:
-                                    statuscode = str(cameraObject.ASYNCPOLL.returncode)
-                                except Exception as e:
-                                    statuscode = str(cameraObject.ASYNCPOLL)
-
-                                
-                                match statuscode:
-                                    case "None":
-                                        print('ONLINE     '+cameraObject.name + " Status: Active")
-                                    case "0":
-                                        print('ONLINE     '+cameraObject.name + " Status: Done")
-                                        # Begin restart of service with new video file
-                                        cameraObject.readytoload=False 
-                                    case "FAILURE":
-                                        print('ONLINE     '+cameraObject.name + " Status: ERROR")
-                                    case _:
-                                        print('UNKNOWN    '+cameraObject.name + " Status: " + statuscode)
-
-                                cameraObject = testRTSP_Ping(cameraObject)
-                        else:
-                            # Attempt to reconnect to disconnected device
-                            print('OFFLINE    '+cameraObject.name + " Status: DISCONNECTED")
-                            cameraObject = testRTSP_Ping(cameraObject)
-                            
-                            if(cameraObject.readytoload == True):
-                                #print('Reconnection SUCESSFUL!')
-                                KillVideoProcess(cameraObject)
-                                # Create folder (will still work if folder already exists)
-                                newLocationDirectory = create_NewLocationFolder(cameraObject,currentdirectory)
-                                # Initiate video process
-                                process = InitializeVideoProcessASYNC(cameraObject,newLocationDirectory)
-                                if( process != False):
-                                    cameraObject.ASYNCPOLL = process
-                                else:
-                                    print('Could not initialize video process for: ' + cameraObject.name)
-                                    
-                            
                     time.sleep(3)
                     test = input("press to recheck")
                     subprocess.run(['clear'])
