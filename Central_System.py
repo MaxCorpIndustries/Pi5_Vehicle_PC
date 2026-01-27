@@ -108,7 +108,7 @@ class MainLayout(BoxLayout):
             if(cameraObject.name == cam_id):
                 cameraObject = CoreCams.testRTSP_Ping(cameraObject)
                 
-                print(cameraObject.name + str(cameraObject.readytoload))
+                print(cameraObject.name +' '+ str(cameraObject.StatusValue))
                 
         
         
