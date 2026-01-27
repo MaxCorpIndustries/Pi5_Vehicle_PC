@@ -37,7 +37,7 @@
 
                 BoxLayout:
                     orientation: "horizontal"
-                    spacing: 30
+                    spacing: 50
                     size_hint_y: 0.1
                     
                     RoundedButton:
@@ -86,7 +86,7 @@
                                 size: self.size
                         
                         Image:
-                            source: 'topdown.png' 
+                            source: 'icons/topdown.png' 
                             allow_stretch: False
                             fit_mode: "contain"
                             padding:10
@@ -143,12 +143,20 @@
                         opacity:0
                         
                         Label:
-                            text: root.menu_text if app.root else "Initializing..."
-                            font_size: 22
-                            size_hint_y: None
-                            height: '25dp'
+                            text: root.menu_text if app.root else "[NO DATA]"
+                            font_size: 32
+                            canvas.before:
+                                Color:
+                                    rgba: 0, 0, 0, 1
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size        
+                                    
+                            padding: 10
+                            #height: '25dp'
                             text_size: self.size
-                            halign: 'left'
+                            size_hint_y:0.05
+                            halign: 'center'
                             valign: 'middle'
                             
                         BoxLayout:
@@ -164,11 +172,11 @@
                             size_hint_y:0.15
                                    
                             RoundedButton:
-                                icon_source: 'cameras_button.png'
+                                icon_source: 'icons/cameras_button.png'
                                 on_release: app.on_start()
                                 
                             RoundedButton:
-                                icon_source: 'stop.png'
+                                icon_source: 'icons/stop.png'
                                 on_release: app.stopcamPreview()
                             
                             RoundedButton:
@@ -285,19 +293,19 @@
         padding: 45, 2 # 10px padding on left/right, 0px top/bottom
 
         RoundedButton:
-			icon_source: 'cameras_button.png'
+			icon_source: 'icons/cameras_button.png'
             on_release: app.switch_screen("cameras")
 
         RoundedButton:
-			icon_source: 'setting.png'
+			icon_source: 'icons/setting.png'
             on_release: app.switch_screen("settings")
 
         RoundedButton:
-			icon_source: 'car.png'
+			icon_source: 'icons/car.png'
             on_release: app.switch_screen("about")
 
         RoundedButton:
-			icon_source: 'testsquare.png'
+			icon_source: 'icons/testsquare.png'
             on_release: app.switch_screen("about")
 			
 
@@ -353,7 +361,7 @@
             #size: self.size
             allow_stretch: True
             opacity: 1 if root.icon_source else 0
-			color: root.icon_color if root.icon_color else (1, 1, 1, 1)
+            color: root.icon_color if root.icon_color else (1, 1, 1, 1)
      
 
 <CameraButtons@Button>:
@@ -385,10 +393,8 @@
     
 	color: 0, 0, 0, 1
     disabled_color: self.color
-    #normal_color: 0, 1, 0, 1
-    #down_color: 0.8, 0.8, 0.8, 1
-	
-	icon_source: 'cameras.png'
+
+	icon_source: 'icons/cameras.png'
 	icon_color: 1, 1, 1, 1  # RGBA color to tint icon
 
     background_color: 0, 0, 0, 0
@@ -416,7 +422,7 @@
             size: self.size
             opacity: 1 if not self.disabled else 0
             allow_stretch: True
-			color: root.icon_color if root.icon_color else (1, 1, 1, 1)
+            color: root.icon_color if root.icon_color else (1, 1, 1, 1)
      
 <Label>:
     font_name: "main_font.otf"

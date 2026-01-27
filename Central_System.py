@@ -114,10 +114,14 @@ class MainLayout(BoxLayout):
         for cameraObject in self.cameras:
             if(cameraObject.name == cam_id):
                 cam = cameraObject
-                
+
+        #if the cameras was not found in camera.ini, make it this unique color
+        if(cam == None):
+            return [1, 1, 1, 1]
+        
         match cam.ASYNCSTATUS:
             case "disconnected":
-                return [1, 1, 1, 1]
+                return [0.815, 0, 0.815, 1]
             
             case "ready":
                 return [0, 1, 0, 1]
