@@ -199,7 +199,7 @@ class MainApp(App):
         
     def switch_screen(self, screen_name):
         sm = self.root.ids.screen_manager
-        screen_order = ['cameras', 'settings', 'about']
+        screen_order = ['cameras','about','music','knight','settings']
 
         current_index = screen_order.index(sm.current)
         target_index = screen_order.index(screen_name)
@@ -208,7 +208,7 @@ class MainApp(App):
         sm.transition.direction = direction
 
         # Defer screen change to next frame (Linux fix)
-        Clock.schedule_once(lambda dt: setattr(sm, 'current', screen_name), 0)
+        Clock.schedule_once(lambda dt: setattr(sm, 'current', screen_name), 0.05)
 
     def startcamPreview(self):
         print('starting cams')
