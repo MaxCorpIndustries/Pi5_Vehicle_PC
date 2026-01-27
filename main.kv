@@ -99,7 +99,7 @@
                
                         CameraButtons:
                             text:"4"
-                            pos_hint: {'x': 0.8, 'top': 0.5}
+                            pos_hint: {'x': 0.8 if not self.disabled else 0.7, 'top': 0.5}
                             on_release: 
                                 root.toggle_layout(self)                        
                                 
