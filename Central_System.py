@@ -104,16 +104,10 @@ class MainLayout(BoxLayout):
 
     def update_button_color(self, cam_id, dt):
 
-        for cameraObject in self.cameras:
+        for index, cameraObject in enumerate(self.cameras):
             if(cameraObject.name == cam_id):
                 cameraObject = CoreCams.testRTSP_Ping(cameraObject)
-                
-                
-        for cameraObject in self.cameras:
-            if(cameraObject.name == cam_id):
-                print(cameraObject.name +' '+ str(cameraObject.StatusValue))
-                              
-        
+                self.cameras[index] = cameraObject
         
         new_color = self.get_cam_color(cam_id)        
         for widget in self.walk():
