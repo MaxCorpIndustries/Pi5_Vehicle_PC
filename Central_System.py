@@ -95,7 +95,7 @@ class MainLayout(BoxLayout):
             self.cameras = CoreCams.ConstructCameraObjects(cameraConfig)
         else:
             raise ValueError("Camera config could not be found")
-
+        print('CAMERA OUTPUT')
         print(self.cameras)
         Clock.schedule_interval(partial(CoreCams.updateCameraStatus, self.cameras), 5)
         
