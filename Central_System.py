@@ -149,8 +149,7 @@ class MainLayout(BoxLayout):
                 return [1   , 0.5   , 0     , 1]
 
             case _:
-                print(cameraObject.StatusValue)
-                return [0.5 , 0.5   , 0.5   , 1]
+                return [0.75 , 0.75   , 0.75   , 1]
             
         #should never be here
         return [0, 0, 0, 1]
