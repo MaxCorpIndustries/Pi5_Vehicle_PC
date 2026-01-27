@@ -88,7 +88,6 @@ class MainLayout(BoxLayout):
 
         #Start internal network
         initNetworkStatus= CoreCams.initializeInternalNetwork()
-        print('WORKED')
         #Initialize camera systems
         cameraConfig = CoreCams.get_config_info("cameras.ini")
         
@@ -100,6 +99,7 @@ class MainLayout(BoxLayout):
         #update status values consistently
         for a in self.cameras:
            Clock.schedule_interval(partial(self.update_button_color, a.name), 1)
+           Clock.schedule_interval(partial(CoreCams.updateCameraStatus, self.cameras), 5)
 
     def update_button_color(self, cam_id, dt):
         new_color = self.get_cam_color(cam_id)        
