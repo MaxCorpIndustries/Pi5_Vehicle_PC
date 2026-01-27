@@ -28,6 +28,14 @@ from kivy.uix.screenmanager import ScreenManager, SlideTransition
 
 Window.borderless = True
 
+# Define your Camera Class (as provided by user)
+class Camera:
+    def __init__(self, name, status="offline"):
+        self.name = name
+        self.ASYNCSTATUS = status
+
+
+
 class KivyCamera(Image):
     def start(self, capture, fps=30):
         self.capture = capture
@@ -69,6 +77,30 @@ def test():
     os.system(f'taskkill /F /PID {pid}')
 
 class MainLayout(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Dictionary of camera objects
+        self.cameras = {
+            "4_BMPRCAM": Camera("4_BMPRCAM", "ready"),
+            "5_BMPRCAM": Camera("5_BMPRCAM", "offline")
+        }
+        for a in self.cameras:
+            Clock.schedule_interval(self.get_cam_color, 1)
+        
+    def get_cam_color(self, cam_id):
+        cam = self.cameras.get(cam_id)
+        
+        # CRITICAL: Always return a list of 4 floats. Never return None.
+        if not cam:
+            return [0.5, 0.5, 0.5, 1]  # Default Gray
+        
+        if cam.ASYNCSTATUS == "ready":
+            return [0, 1, 0, 1]        # Green
+        elif cam.ASYNCSTATUS == "offline":
+            return [1, 0, 0, 1]        # Red
+        
+        return [0.5, 0.5, 0.5, 1]      # Fallback Gray
     
     def toggle_layout(self,buttonType):
         #boolean = not boolean

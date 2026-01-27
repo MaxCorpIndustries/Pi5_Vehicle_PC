@@ -94,42 +94,42 @@
                         
                         CameraButtons:
                             text:"1"
-                            id: 1_LEFTCAM
+                            my_id_string: "1_LEFTCAM"
                             pos_hint: {'x': 0.7, 'top': 0.2 if not self.disabled else 0.42}
                             on_release: 
                                 root.toggle_layout(self)                                
 
                         CameraButtons:
                             text:"2"
-                            id: 2_RIGTCAM
+                            my_id_string: "2_RIGTCAM"
                             pos_hint: {'x': 0.7, 'top': 0.85 if not self.disabled else 0.6}
                             on_release: 
                                 root.toggle_layout(self)   
 
                         CameraButtons:
                             text:"3"
-                            id: 3_REARCAM
+                            my_id_string: "3_REARCAM"
                             pos_hint: {'x': 0.1 if not self.disabled else 0.05 , 'top': 0.5}
                             on_release: 
                                 root.toggle_layout(self)                
                
                         CameraButtons:
                             text:"4"
-                            id: 4_BMPRCAM
+                            my_id_string: "4_BMPRCAM"
                             pos_hint: {'x': 0.8 if not self.disabled else 0.7, 'top': 0.5}
                             on_release: 
                                 root.toggle_layout(self)                        
                                 
                         CameraButtons:
                             text:"5"
-                            id: 5_DASHCAM
+                            my_id_string: "5_DASHCAM"
                             pos_hint: {'x': 0.5, 'top': 0.5}
                             on_release: 
                                 root.toggle_layout(self)     
 
                         CameraButtons:
                             text:"6"
-                            id: 6_CLUSCAM
+                            my_id_string: "6_CLUSCAM"
                             pos_hint: {'x': 0.55, 'top': 0.7 if not self.disabled else 0.55}
                             on_release: 
                                 root.toggle_layout(self)       
@@ -357,6 +357,12 @@
     
     opacity: 1
     
+    normal_color: [0.5, 0.5, 0.5, 1] # Default Gray
+    down_color: [0.3, 0.3, 0.3, 1]   # Darker Gray
+    
+    my_id_string: ""
+    on_my_id_string: if app.root: self.normal_color = app.root.get_cam_color(self.my_id_string)
+    
     size_hint_y: 0.15 if not self.disabled else 0.13    
     size_hint_x: 0.15 if not self.disabled else 0.28
     
@@ -367,8 +373,8 @@
     
 	color: 0, 0, 0, 1
     disabled_color: self.color
-	normal_color: 0, 1, 0, 1
-	down_color: 0.8, 0.8, 0.8, 1
+    #normal_color: 0, 1, 0, 1
+    #down_color: 0.8, 0.8, 0.8, 1
 	
 	icon_source: 'cameras.png'
 	icon_color: 1, 1, 1, 1  # RGBA color to tint icon
@@ -378,7 +384,7 @@
 
     canvas.before:
         Color:
-            rgba: self.state == "down" and self.down_color or self.normal_color
+            rgba: (self.normal_color if self.state == 'normal' else self.down_color) or [0.5, 0.5, 0.5, 1]
         RoundedRectangle:
             pos: self.pos
             size: self.size
@@ -403,3 +409,4 @@
 <Label>:
     font_name: "main_font.otf"
     
+
