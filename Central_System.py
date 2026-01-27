@@ -75,13 +75,13 @@ class MainLayout(BoxLayout):
         extra = self.ids.extra_layout
                 
         if extra.size_hint_x > 0:
-            anim = Animation(size_hint_x=0, opacity=0, d=0.3, t='out_quad')
+            anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
             for widget in self.walk():
                 if widget.__class__.__name__ == "CameraButtons":
                     widget.opacity = 1
                     widget.disabled = False
         else:
-            anim = Animation(size_hint_x=5, opacity=1, d=0.3, t='out_quad')
+            anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')
             for widget in self.walk():
                 if widget.__class__.__name__ == "CameraButtons":
                     if widget is not buttonType:
