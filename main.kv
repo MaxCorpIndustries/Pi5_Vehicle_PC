@@ -39,7 +39,7 @@
                     orientation: "horizontal"
                     spacing: 0
                     padding: 0
-                    size_hint_y: 0.05
+                    size_hint_y: 0.1
                     
                     RoundedButton:
                         text: 'Start All'
@@ -50,6 +50,16 @@
                         text: 'Stop All'
                         #icon_source: 'stop.png'
                         on_release: app.stopcamPreview()  
+  
+                Widget:
+                    size_hint_y: None
+                    height: 2
+                    canvas:
+                        Color:
+                            rgb: 1, 1, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
   
                 BoxLayout:
                     orientation: 'horizontal'                             
