@@ -130,7 +130,7 @@ class MainLayout(BoxLayout):
             return [1, 1, 1, 1]
 
         if(pickedCamera.readytoload == False):
-            return [0.515, 0, 0.515, 1]
+            return [0.515, 0.23, 0.215, 1]
         
         match str(pickedCamera.StatusValue):
             
