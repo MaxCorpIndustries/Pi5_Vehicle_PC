@@ -98,7 +98,7 @@ class MainLayout(BoxLayout):
         
         #update status values consistently
         for a in self.cameras:
-            Clock.schedule_interval(partial(self.update_button_color, a.name), 1)
+            Clock.schedule_interval(partial(self.update_button_color, a.name), 2)
             
         Clock.schedule_interval(partial(self.update_videostatus, self.cameras), 5)
 
@@ -108,12 +108,6 @@ class MainLayout(BoxLayout):
             if(cameraObject.name == cam_id):
                 cameraObject = CoreCams.testRTSP_Ping(cameraObject)
                 self.cameras[index] = cameraObject
-                
-        for cameraObject in self.cameras:
-            if(cameraObject.name == cam_id):
-                print(cameraObject.name +' '+ str(cameraObject.StatusValue))
-                              
-        
         
         new_color = self.get_cam_color(cam_id)        
         for widget in self.walk():
@@ -138,21 +132,21 @@ class MainLayout(BoxLayout):
         if(cameraObject.readytoload):
             return [0.815, 0, 0.815, 1]
         
-        match cameraObject.StatusValue:
+        match str(cameraObject.StatusValue):
             
-            case -2: # unknown state
+            case "-2": # unknown state
                 return [0.2 , 0.4   , 1     , 1]
 
-            case -1: # failure
+            case "-1": # failure
                 return [1   , 0.2   , 0     , 1]
 
-            case 0: #disconnected
+            case "0": #disconnected
                 return [0.4 , 0.4   , 0.4   , 1]  
             
-            case 1: # currently recording
+            case "1": # currently recording
                 return [0   , 1     , 0     , 1]
 
-            case 2: #recording completed (restarting)
+            case "2": #recording completed (restarting)
                 return [1   , 0.5   , 0     , 1]
 
             case _:
