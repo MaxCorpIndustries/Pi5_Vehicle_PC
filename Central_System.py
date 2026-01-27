@@ -19,7 +19,7 @@ from kivy.core.window import Window
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.animation import Animation
-from kivy.properties import ListProperty, StringProperty, BooleanProperty
+from kivy.properties import ListProperty, StringProperty, BooleanProperty#,ObjectProperty
 from kivy.factory import Factory
 
 from functools import partial
@@ -191,7 +191,7 @@ class MainLayout(BoxLayout):
 class MainApp(App):
 
     icons_visible = BooleanProperty(True)
-    
+    #gif_handler = ObjectProperty(Image(source='loading.gif', anim_delay=0.1))
     def build(self):
         self.title = "CARPC SYSTEM"
         self.icon = 'icon.png' #window icon
