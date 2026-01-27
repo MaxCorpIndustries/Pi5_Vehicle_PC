@@ -98,9 +98,9 @@ class MainLayout(BoxLayout):
         
         #update status values consistently
         for a in self.cameras:
-            Clock.schedule_interval(partial(self.update_button_color, a.name), 2)
+            Clock.schedule_interval(partial(self.update_button_color, a.name), 5)
             
-        Clock.schedule_interval(partial(self.update_videostatus, self.cameras), 5)
+        Clock.schedule_interval(partial(self.update_videostatus, self.cameras), 8)
 
     def update_button_color(self, cam_id, dt):
 

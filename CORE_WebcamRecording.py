@@ -104,6 +104,7 @@ def initializeInternalNetwork():
 def testRTSP_Ping(cameraObject):
     # This function attempts to ping the Camera.ping property to confirm rtsp stream successful
     # Returns true to update Camera.readytoload and confirm rtsp ready for
+    
     match (cameraObject.camType):
         case "RTSP":
             try:
@@ -121,6 +122,8 @@ def testRTSP_Ping(cameraObject):
             except:
                pass
             
+    print(cameraObject.name)
+    
     return cameraObject
                     
 #------------- get and create functions
