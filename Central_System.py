@@ -133,6 +133,9 @@ class MainLayout(BoxLayout):
             return [0.515, 0.23, 0.215, 1]
         
         match str(pickedCamera.StatusValue):
+
+            case "-3": # unknown state
+                return [0   , 0     , 0         , 1]
             
             case "-2": # unknown state
                 return [0.2 , 0.4   , 1     , 1]
@@ -150,7 +153,7 @@ class MainLayout(BoxLayout):
                 return [1   , 0.5   , 0     , 1]
 
             case _:
-                return [0.75 , 0.75   , 0.75   , 1]
+                return [0.75 , 0.75 , 0.75  , 1]
             
         #should never be here
         return [0, 0, 0, 1]

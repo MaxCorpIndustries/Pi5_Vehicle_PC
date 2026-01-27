@@ -29,7 +29,7 @@ class Camera:
         self.accessURL = accessURL  # for rtsp, this is the url, for usb this is the unique keyword to look for in --list-devices 
         self.ping = ping
         self.readytoload=False      # this value will become true when ping successful
-        self.ASYNCPOLL = None       # this will contain the current process running this camera
+        self.ASYNCPOLL = "Not Set"  # this will contain the current process running this camera
         self.ASYNCSTATUS = None     # this will contain the last known raw polled info of the subprocess
         self.StatusValue = -5     # this will contain the formatted status of the camera (derrived from ASYNCSTATUS)
         self.ffmpeg_settings=ffmpeg_settings
@@ -362,6 +362,7 @@ def updateCameraStatus(cameraArray):
 
                 
                 match statuscode:
+                    
                     case "None":
                         cameraObject.StatusValue=1 # means active
                     case "0":
@@ -375,6 +376,10 @@ def updateCameraStatus(cameraArray):
                         
                     case "FAILURE":
                         cameraObject.StatusValue=-1 # means failure of some kind
+
+                    case "Not Set":
+                        cameraObject.StatusValue=-3 # means a single instance of PingCameras hasn't run yet
+                        
                     case _:
                         cameraObject.StatusValue=-2 # means unknown state (catch all)      
         else:
@@ -387,8 +392,6 @@ def updateCameraStatus(cameraArray):
 
 def StartVideoProcess():
 
-    
-    
     cameraArray = []
 
     #attempt to set static IP within pi
