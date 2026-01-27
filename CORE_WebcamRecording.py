@@ -336,7 +336,9 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
 
 # this runs every cycle and updates the system on the status of camera feeds
 def updateCameraStatus(self,cameraArray):
-
+    for a in cameraArray:
+        print(a.name)
+    
     # Checks and restarts to do every cyle:
     for cameraObject in cameraArray:
         if(cameraObject.readytoload == True):
