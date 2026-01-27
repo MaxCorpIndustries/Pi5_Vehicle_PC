@@ -241,8 +241,8 @@
                         Rectangle:
                             pos: self.pos
                             size: self.size
-
-        Screen:
+                            
+       Screen:
             name: "about"
             BoxLayout:
                 orientation: "vertical"
@@ -250,7 +250,45 @@
                 padding: 10
 
                 Label:
-                    text: "About"
+                    text: "This Vehicle"
+                    font_size: 22
+                    size_hint_y: None
+                    height: '25dp'
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'middle'
+
+                Widget:
+                    size_hint_y: None
+                    height: 2
+                    canvas:
+                        Color:
+                            rgb: 1, 1, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                Widget:  # spacer
+
+                Widget:
+                    size_hint_y: None
+                    height: 2
+                    canvas:
+                        Color:
+                            rgb: 1, 1, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size                            
+
+        Screen:
+            name: "music"
+            BoxLayout:
+                orientation: "vertical"
+                spacing: 10
+                padding: 10
+
+                Label:
+                    text: "Offline Music Player"
                     font_size: 22
                     size_hint_y: None
                     height: '25dp'
@@ -279,6 +317,45 @@
                         Rectangle:
                             pos: self.pos
                             size: self.size
+                            
+        Screen:
+            name: "knight"
+            BoxLayout:
+                orientation: "vertical"
+                spacing: 10
+                padding: 10
+
+                Label:
+                    text: "Knight Industries Vehicle Voice Asist"
+                    font_size: 22
+                    size_hint_y: None
+                    height: '25dp'
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'middle'
+
+                Widget:
+                    size_hint_y: None
+                    height: 2
+                    canvas:
+                        Color:
+                            rgb: 1, 1, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                Widget:  # spacer
+
+                Widget:
+                    size_hint_y: None
+                    height: 2
+                    canvas:
+                        Color:
+                            rgb: 1, 1, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                            
     BoxLayout:
         size_hint_y: 0.15
         spacing: 30  # 20px horizontal spacing, 0px vertical
@@ -288,18 +365,23 @@
 			icon_source: 'icons/cameras_button.png'
             on_release: app.switch_screen("cameras")
 
-        RoundedButton:
-			icon_source: 'icons/setting.png'
-            on_release: app.switch_screen("settings")
+
 
         RoundedButton:
 			icon_source: 'icons/car.png'
             on_release: app.switch_screen("about")
 
         RoundedButton:
-			icon_source: 'icons/testsquare.png'
-            on_release: app.switch_screen("about")
+			icon_source: 'icons/music.png'
+            on_release: app.switch_screen("music")
 			
+        RoundedButton:
+			icon_source: 'icons/knight.png'
+            on_release: app.switch_screen("knight")
+
+        RoundedButton:
+			icon_source: 'icons/setting.png'
+            on_release: app.switch_screen("settings")
 
         RoundedButton:
             text: "×"
@@ -307,7 +389,7 @@
             font_size: 64
 			halign: 'center'
 			valign: 'center'
-            size_hint_x: 0.5
+            size_hint_x: 0.25
             on_release: app.stop()
 
 
