@@ -123,16 +123,16 @@ class MainLayout(BoxLayout):
         # find camera item in self.cameras array
         for cameraObject in self.cameras:
             if(cameraObject.name == cam_id):
-                cameraObject = cameraObject
-
+                pickedCamera = cameraObject
+            
         #if the cameras was not found in camera.ini, make it this unique color
-        if(cameraObject == None):
+        if(pickedCamera == None):
             return [1, 1, 1, 1]
 
-        if(cameraObject.readytoload):
+        if(pickedCamera.readytoload):
             return [0.815, 0, 0.815, 1]
         
-        match str(cameraObject.StatusValue):
+        match str(pickedCamera.StatusValue):
             
             case "-2": # unknown state
                 return [0.2 , 0.4   , 1     , 1]
