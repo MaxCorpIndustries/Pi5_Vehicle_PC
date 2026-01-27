@@ -98,7 +98,7 @@ class MainLayout(BoxLayout):
         
         #update status values consistently
         for a in self.cameras:
-           Clock.schedule_interval(partial(self.update_button_color, a.name), 1)
+            Clock.schedule_interval(partial(self.update_button_color, a.name), 1)
             print('CAMERA OUTPUT')
             print(self.cameras.name)
         
