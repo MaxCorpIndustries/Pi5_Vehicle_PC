@@ -39,7 +39,7 @@
                     orientation: "horizontal"
                     spacing: 50
                     size_hint_y: 0.1
-                    
+
                     RoundedButton:
                         text: 'Start All'
                         radius: [5]
@@ -134,16 +134,8 @@
                         
                         Label:
                             text: root.menu_text if app.root else "[NO DATA]"
-                            font_size: 32
-                            canvas.before:
-                                Color:
-                                    rgba: 0.15, 0.15, 0.15, 1
-                                Rectangle:
-                                    pos: self.pos
-                                    size: self.size        
-                                    
+                            font_size: 32     
                             padding: 10
-                            #height: '25dp'
                             text_size: self.size
                             size_hint_y:0.1
                             halign: 'center'
