@@ -104,12 +104,11 @@ class MainLayout(BoxLayout):
 
     def update_button_color(self, cam_id, dt):
 
-        index=0
         for cameraObject in self.cameras:
             if(cameraObject.name == cam_id):
-                index +=1
                 cameraObject = CoreCams.testRTSP_Ping(cameraObject)
-                self.cameras[index]=cameraObject
+                
+                print(cameraObject.name + str(cameraObject.readytoload))
                 
         
         
