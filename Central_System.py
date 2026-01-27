@@ -110,22 +110,26 @@ class MainLayout(BoxLayout):
 
     def update_videostatus(self, cameraArray, dt):
         self.cameras=CoreCams.updateCameraStatus(cameraArray)
+        
                 
     def get_cam_color(self, cam_id):
-
+        
         # find camera item in self.cameras array
         for cameraObject in self.cameras:
             if(cameraObject.name == cam_id):
-                cam = cameraObject
+                cameraObject = cameraObject
+                cameraObject = testRTSP_Ping(cameraObject)
+
+
 
         #if the cameras was not found in camera.ini, make it this unique color
-        if(cam == None):
+        if(cameraObject == None):
             return [1, 1, 1, 1]
 
-        if(cam.readytoload):
+        if(cameraObject.readytoload):
             return [0.815, 0, 0.815, 1]
         
-        match cam.StatusValue:
+        match cameraObject.StatusValue:
             
             case -2: # unknown state
                 return [0.2 , 0.4   , 1     , 1]
@@ -143,7 +147,7 @@ class MainLayout(BoxLayout):
                 return [1   , 0.5   , 0     , 1]
 
             case _:
-                print(cam.StatusValue)
+                print(cameraObject.StatusValue)
                 return [0.5 , 0.5   , 0.5   , 1]
             
         #should never be here

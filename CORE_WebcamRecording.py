@@ -31,7 +31,7 @@ class Camera:
         self.readytoload=False      # this value will become true when ping successful
         self.ASYNCPOLL = None       # this will contain the current process running this camera
         self.ASYNCSTATUS = None     # this will contain the last known raw polled info of the subprocess
-        self.StatusValue = None     # this will contain the formatted status of the camera (derrived from ASYNCSTATUS)
+        self.StatusValue = -5     # this will contain the formatted status of the camera (derrived from ASYNCSTATUS)
         self.ffmpeg_settings=ffmpeg_settings
         self.fps=fps
         self.resolution_y=resolution_y
