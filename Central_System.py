@@ -103,12 +103,12 @@ class MainLayout(BoxLayout):
         Clock.schedule_interval(partial(self.update_videostatus, self.cameras), 8)
 
     def update_button_color(self, cam_id, dt):
-
+        '''
         for index, cameraObject in enumerate(self.cameras):
             if(cameraObject.name == cam_id):
                 cameraObject = CoreCams.testRTSP_Ping(cameraObject)
                 self.cameras[index] = cameraObject
-        
+        '''
         new_color = self.get_cam_color(cam_id)        
         for widget in self.walk():
             if getattr(widget, 'camera_id_string', None) == cam_id:
