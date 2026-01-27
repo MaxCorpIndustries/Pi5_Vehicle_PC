@@ -72,7 +72,6 @@ class MainLayout(BoxLayout):
     
     def toggle_layout(self,buttonType):
         #boolean = not boolean
-        print('test!')
         extra = self.ids.extra_layout
                 
         if extra.size_hint_x > 0:
