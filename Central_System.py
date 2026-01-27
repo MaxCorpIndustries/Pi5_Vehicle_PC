@@ -71,7 +71,11 @@ def test():
 class MainLayout(BoxLayout):
 
     
-    def toggle_layout(self):
+    
+    def toggle_layout(self,boolean):
+        self.boolean = not self.boolean
+        print('test!')
+        print(self.icons_visible)        
         extra = self.ids.extra_layout
         # If currently visible, animate to hidden (height 0)
         if extra.size_hint_x > 0:
@@ -87,18 +91,12 @@ class MainLayout(BoxLayout):
 class MainApp(App):
 
     icons_visible = BooleanProperty(True)
-
-
+    
     def build(self):
         self.title = "CARPC SYSTEM"
         self.icon = 'icon.png'  # Set the icon path here
         #Builder.load_file("main.kv")
         return MainLayout()
-
-    def toggle_all_icons(self):
-        self.icons_visible = not self.icons_visible
-        print('test!')
-        print(self.icons_visible)
         
     def switch_screen(self, screen_name):
         sm = self.root.ids.screen_manager

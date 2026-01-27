@@ -71,43 +71,37 @@
                             text:"1"
                             pos_hint: {'x': 0.7, 'top': 0.2}
                             on_release: 
-                                app.toggle_all_icons()
-                                root.toggle_layout()                                
+                                root.toggle_layout(app.icons_visible)                                
 
                         CameraButtons:
                             text:"2"
                             pos_hint: {'x': 0.7, 'top': 0.85}
                             on_release: 
-                                app.toggle_all_icons()
-                                root.toggle_layout()   
+                                root.toggle_layout(app.icons_visible)   
 
                         CameraButtons:
                             text:"3"
                             pos_hint: {'x': 0.1, 'top': 0.5}
                             on_release: 
-                                app.toggle_all_icons()
-                                root.toggle_layout()                
+                                root.toggle_layout(app.icons_visible)                
                
                         CameraButtons:
                             text:"4"
                             pos_hint: {'x': 0.8, 'top': 0.5}
                             on_release: 
-                                app.toggle_all_icons()
-                                root.toggle_layout()                        
+                                root.toggle_layout(app.icons_visible)                        
                                 
                         CameraButtons:
                             text:"5"
-                            pos_hint: {'x': 0.6, 'top': 0.45}
+                            pos_hint: {'x': 0.5, 'top': 0.5}
                             on_release: 
-                                app.toggle_all_icons()
-                                root.toggle_layout()     
+                                root.toggle_layout(app.icons_visible)     
 
                         CameraButtons:
                             text:"6"
-                            pos_hint: {'x': 0.55, 'top': 0.78}
+                            pos_hint: {'x': 0.55, 'top': 0.7}
                             on_release: 
-                                app.toggle_all_icons()
-                                root.toggle_layout()       
+                                root.toggle_layout(app.icons_visible)       
 
                     BoxLayout:
 						id: extra_layout
