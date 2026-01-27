@@ -108,6 +108,12 @@ class MainLayout(BoxLayout):
             if(cameraObject.name == cam_id):
                 cameraObject = CoreCams.testRTSP_Ping(cameraObject)
                 self.cameras[index] = cameraObject
+                
+        for cameraObject in self.cameras:
+            if(cameraObject.name == cam_id):
+                print(cameraObject.name +' '+ str(cameraObject.StatusValue))
+                              
+        
         
         new_color = self.get_cam_color(cam_id)        
         for widget in self.walk():
