@@ -129,8 +129,8 @@ class MainLayout(BoxLayout):
         if(pickedCamera == None):
             return [1, 1, 1, 1]
 
-        if(pickedCamera.readytoload):
-            return [0.815, 0, 0.815, 1]
+        if(pickedCamera.readytoload == False):
+            return [0.515, 0, 0.515, 1]
         
         match str(pickedCamera.StatusValue):
             
