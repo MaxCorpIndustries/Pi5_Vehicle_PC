@@ -71,37 +71,37 @@
                             text:"1"
                             pos_hint: {'x': 0.7, 'top': 0.2}
                             on_release: 
-                                root.toggle_layout(app.icons_visible)                                
+                                root.toggle_layout(self)                                
 
                         CameraButtons:
                             text:"2"
                             pos_hint: {'x': 0.7, 'top': 0.85}
                             on_release: 
-                                root.toggle_layout(app.icons_visible)   
+                                root.toggle_layout(self)   
 
                         CameraButtons:
                             text:"3"
                             pos_hint: {'x': 0.1, 'top': 0.5}
                             on_release: 
-                                root.toggle_layout(app.icons_visible)                
+                                root.toggle_layout(self)                
                
                         CameraButtons:
                             text:"4"
                             pos_hint: {'x': 0.8, 'top': 0.5}
                             on_release: 
-                                root.toggle_layout(app.icons_visible)                        
+                                root.toggle_layout(self)                        
                                 
                         CameraButtons:
                             text:"5"
                             pos_hint: {'x': 0.5, 'top': 0.5}
                             on_release: 
-                                root.toggle_layout(app.icons_visible)     
+                                root.toggle_layout(self)     
 
                         CameraButtons:
                             text:"6"
                             pos_hint: {'x': 0.55, 'top': 0.7}
                             on_release: 
-                                root.toggle_layout(app.icons_visible)       
+                                root.toggle_layout(self)       
 
                     BoxLayout:
 						id: extra_layout
@@ -133,8 +133,7 @@
                                 valign: 'center'
                                 size_hint_x: 0.5                                
                                 on_release: 
-                                    app.toggle_all_icons()
-                                    root.toggle_layout() 
+                                    root.toggle_layout(self) 
                             
                 #BoxLayout:
                     #orientation: "horizontal"
@@ -318,7 +317,7 @@
     font_size: '32sp'
     padding:10
     
-    opacity: 1 if app.icons_visible else 0
+    opacity: 1
     
     size_hint_y: 0.2    
     size_hint_x: 0.15
@@ -329,6 +328,7 @@
     valign: 'center'
     
 	color: 0, 0, 0, 1
+    disabled_color: self.color
 	normal_color: 0, 1, 0, 1
 	down_color: 0.8, 0.8, 0.8, 1
 	
@@ -358,7 +358,7 @@
             source: root.icon_source if root.icon_source else ""  # show nothing if no icon
             size_hint: None, None
             size: self.size
-            opacity: 1.0
+            opacity: 1 if not self.disabled else 0
             allow_stretch: True
 			color: root.icon_color if root.icon_color else (1, 1, 1, 1)
      

@@ -69,21 +69,27 @@ def test():
     os.system(f'taskkill /F /PID {pid}')
 
 class MainLayout(BoxLayout):
-
     
-    
-    def toggle_layout(self,boolean):
-        self.boolean = not self.boolean
+    def toggle_layout(self,buttonType):
+        #boolean = not boolean
         print('test!')
-        print(self.icons_visible)        
         extra = self.ids.extra_layout
-        # If currently visible, animate to hidden (height 0)
+                
         if extra.size_hint_x > 0:
             anim = Animation(size_hint_x=0, opacity=0, d=0.3, t='out_quad')
-        # If hidden, animate to visible (target height e.g., 100)
+            for widget in self.walk():
+                if widget.__class__.__name__ == "CameraButtons":
+                    widget.opacity = 1
+                    widget.disabled = False
         else:
             anim = Animation(size_hint_x=5, opacity=1, d=0.3, t='out_quad')
-        
+            for widget in self.walk():
+                if widget.__class__.__name__ == "CameraButtons":
+                    if widget is not buttonType:
+                        widget.opacity = 0
+                        widget.disabled = True
+                        
+                    buttonType.opacity=1
         anim.start(extra)    
     pass
 
