@@ -95,14 +95,15 @@ class MainLayout(BoxLayout):
             self.cameras = CoreCams.ConstructCameraObjects(cameraConfig)
         else:
             raise ValueError("Camera config could not be found")
-        print('CAMERA OUTPUT')
-        print(self.cameras)
-        Clock.schedule_interval(partial(CoreCams.updateCameraStatus, self.cameras), 5)
         
         #update status values consistently
         for a in self.cameras:
            Clock.schedule_interval(partial(self.update_button_color, a.name), 1)
+            print('CAMERA OUTPUT')
+            print(self.cameras.name)
+        
            
+        Clock.schedule_interval(partial(CoreCams.updateCameraStatus, self.cameras), 5)
 
     def update_button_color(self, cam_id, dt):
         new_color = self.get_cam_color(cam_id)        
