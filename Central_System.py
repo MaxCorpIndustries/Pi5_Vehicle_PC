@@ -100,14 +100,17 @@ class MainLayout(BoxLayout):
         for a in self.cameras:
             Clock.schedule_interval(partial(self.update_button_color, a.name), 1)
             
-        Clock.schedule_interval(partial(CoreCams.updateCameraStatus, self.cameras), 5)
+        Clock.schedule_interval(partial(self.update_videostatus, self.cameras), 5)
 
     def update_button_color(self, cam_id, dt):
         new_color = self.get_cam_color(cam_id)        
         for widget in self.walk():
             if getattr(widget, 'camera_id_string', None) == cam_id:
                 widget.normal_color = new_color
-        
+
+    def update_videostatus(self, cameraArray, dt):
+        self.cameras=CoreCams.updateCameraStatus(cameraArray)
+                
     def get_cam_color(self, cam_id):
 
         # find camera item in self.cameras array
