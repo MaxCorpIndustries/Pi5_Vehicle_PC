@@ -37,8 +37,8 @@
 
                 BoxLayout:
                     orientation: "horizontal"
-                    spacing: 10
-                    padding: 0
+                    spacing: 20
+                    padding: 5
                     size_hint_y: 0.1
                     
                     RoundedButton:
@@ -48,7 +48,15 @@
                         color: 0, 0, 0, 1
                         normal_color: 0.1, 1, 0.1, 1
                         on_release: app.on_start()
-                        
+
+                    RoundedButton:
+                        text: 'Reset All'
+                        radius: [15]
+                        font_size: 28
+                        color: 0, 0, 0, 1
+                        normal_color: 1, 0.647, 0, 1
+                        on_release: app.on_start()
+                       
                     RoundedButton:
                         text: 'Stop All'
                         radius: [15]
@@ -133,7 +141,13 @@
                             orientation: "horizontal"
                             spacing: 0
                             padding: 0   
+                            size_hint_y:1
                             
+                        BoxLayout:
+                            orientation: "horizontal"
+                            spacing: 0
+                            padding: 0   
+                            size_hint_y:0.15
                                    
                             RoundedButton:
                                 icon_source: 'cameras_button.png'
