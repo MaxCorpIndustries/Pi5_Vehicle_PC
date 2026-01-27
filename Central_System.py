@@ -100,7 +100,7 @@ class MainLayout(BoxLayout):
         for a in self.cameras:
             Clock.schedule_interval(partial(self.update_button_color, a.name), 1)
             print('CAMERA OUTPUT')
-            print(self.cameras.name)
+            print(a.name)
         
            
         Clock.schedule_interval(partial(CoreCams.updateCameraStatus, self.cameras), 5)
