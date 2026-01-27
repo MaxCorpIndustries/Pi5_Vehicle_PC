@@ -42,11 +42,13 @@
                     size_hint_y: 0.05
                     
                     RoundedButton:
-                        icon_source: 'cameras.png'
+                        text: 'Start All'
+                        #icon_source: 'cameras.png'
                         on_release: app.on_start()
                         
                     RoundedButton:
-                        icon_source: 'stop.png'
+                        text: 'Stop All'
+                        #icon_source: 'stop.png'
                         on_release: app.stopcamPreview()  
   
                 BoxLayout:
