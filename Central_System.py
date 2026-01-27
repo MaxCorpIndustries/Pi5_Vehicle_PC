@@ -143,6 +143,7 @@ class MainLayout(BoxLayout):
                 return [1   , 0.5   , 0     , 1]
 
             case _:
+                print(cam.StatusValue)
                 return [0.5 , 0.5   , 0.5   , 1]
             
         #should never be here
