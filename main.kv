@@ -284,7 +284,7 @@
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'car_color_page') 
+                                    root.toggle_layout(self,'test_page1') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
@@ -294,47 +294,47 @@
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'car_color_page') 
+                                    root.toggle_layout(self,'test_page2') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
-                                text: "test 2"
+                                text: "test 3"
                                 #bold: True
                                 halign: 'left'
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'car_color_page') 
+                                    root.toggle_layout(self,'test_page3') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
-                                text: "test 2"
+                                text: "test 4"
                                 #bold: True
                                 halign: 'left'
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'car_color_page') 
+                                    root.toggle_layout(self,'test_page4') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
-                                text: "test 2"
+                                text: "test 5"
                                 #bold: True
                                 halign: 'left'
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'car_color_page') 
+                                    root.toggle_layout(self,'test_page5') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
-                                text: "test 2"
+                                text: "test 6"
                                 #bold: True
                                 halign: 'left'
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'car_color_page') 
+                                    root.toggle_layout(self,'test_page6') 
 
                     BoxLayout:
                         id:car_color_page
@@ -349,6 +349,125 @@
                             color: 0.37, 0.37, 0.37, 0.37
                             # Bind the color change to a function in Python
                             on_color: app.carColor = self.color
+
+                    BoxLayout:
+                        id:test_page1
+                        orientation: "vertical"
+                        spacing: 0
+                        padding: 0  
+                        opacity:0                        
+                        size_hint_x: 0                  
+
+                        Label:
+                            text: "test_page 1"
+                            font_size: 22
+                            size_hint_y: None
+                            height: '25dp'
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'middle'
+
+                    BoxLayout:
+                        id:test_page2
+                        orientation: "vertical"
+                        spacing: 0
+                        padding: 0  
+                        opacity:0                        
+                        size_hint_x: 0                  
+
+                        Label:
+                            text: "test_page 2"
+                            font_size: 22
+                            size_hint_y: None
+                            height: '25dp'
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'middle'
+
+                    BoxLayout:
+                        id:test_page3
+                        orientation: "vertical"
+                        spacing: 0
+                        padding: 0  
+                        opacity:0                        
+                        size_hint_x: 0                  
+
+                        Label:
+                            text: "test_page 3"
+                            font_size: 22
+                            size_hint_y: None
+                            height: '25dp'
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'middle'
+
+                    BoxLayout:
+                        id:test_page4
+                        orientation: "vertical"
+                        spacing: 0
+                        padding: 0  
+                        opacity:0                        
+                        size_hint_x: 0                  
+
+                        Label:
+                            text: "test_page 4"
+                            font_size: 22
+                            size_hint_y: None
+                            height: '25dp'
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'middle'
+
+                    BoxLayout:
+                        id:test_page4
+                        orientation: "vertical"
+                        spacing: 0
+                        padding: 0  
+                        opacity:0                        
+                        size_hint_x: 0                  
+
+                        Label:
+                            text: "test_page 4"
+                            font_size: 22
+                            size_hint_y: None
+                            height: '25dp'
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'middle'
+
+                    BoxLayout:
+                        id:test_page5
+                        orientation: "vertical"
+                        spacing: 0
+                        padding: 0  
+                        opacity:0                        
+                        size_hint_x: 0                  
+
+                        Label:
+                            text: "test_page 5"
+                            font_size: 22
+                            size_hint_y: None
+                            height: '25dp'
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'middle'
+
+                    BoxLayout:
+                        id:test_page6
+                        orientation: "vertical"
+                        spacing: 0
+                        padding: 0  
+                        opacity:0                        
+                        size_hint_x: 0                  
+
+                        Label:
+                            text: "test_page 6"
+                            font_size: 22
+                            size_hint_y: None
+                            height: '25dp'
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'middle'
 
                 Widget:
                     size_hint_y: None
