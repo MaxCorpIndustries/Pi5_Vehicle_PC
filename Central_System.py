@@ -206,7 +206,9 @@ class MainLayout(BoxLayout):
         except:
             pass #this was likely the close button being hit (has no id)
             #self.ids.screen_menu
-        extra = screenid
+
+        
+        extra = self.ids[screenid]
         if extra.size_hint_x > 0:
             anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
             for widget in self.walk():
