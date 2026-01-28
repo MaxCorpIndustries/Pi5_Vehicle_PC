@@ -216,19 +216,21 @@ class MainLayout(BoxLayout):
         try:
             for pageObject in pagesArray:
                 if((pageObject.name == str(pageid)) or (pageid=="All")):
-                    if((pageObject.dynamic) or (screenid == "All")):
+                    if((pageObject.dynamic)):
                         #go through all menus that are not this one and minimize them
                         for menuid in pageObject.menus:
-                            
+
                             thisMenu = self.ids[menuid]
-                            
-                            if((menuid == screenid) or (screenid == "All")): # The all condition makes it close all if screenid=All
-                                if thisMenu.size_hint_x > 0:
-                                    anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
-                                else:
-                                    anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')        
-                            else:
+                            if(screenid == "All"): # close all screens (switching page usually)
                                 anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
+                            else:
+                                if((menuid == screenid)): 
+                                    if thisMenu.size_hint_x > 0:
+                                        anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
+                                    else:
+                                        anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')        
+                                else:
+                                    anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
                                 
                             anim.start(thisMenu)
         except: #likely a page with no pageObject
