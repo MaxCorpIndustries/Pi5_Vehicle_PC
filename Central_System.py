@@ -215,14 +215,14 @@ class MainLayout(BoxLayout):
         # FIND PAGE IN pagesArray
         try:
             for pageObject in pagesArray:
-                if(pageObject.name == str(pageid)):
+                if((pageObject.name == str(pageid)) or (pageid=="All")):
                     if(pageObject.dynamic):
                         #go through all menus that are not this one and minimize them
                         for menuid in pageObject.menus:
                             
                             thisMenu = self.ids[menuid]
                             
-                            if(menuid == screenid):
+                            if((menuid == screenid) or (screenid != "All")): # The all condition makes it close all if screenid=All
                                 if thisMenu.size_hint_x > 0:
                                     anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
                                 else:
@@ -235,40 +235,41 @@ class MainLayout(BoxLayout):
             pass
 
 
-
+        
         # SPECIFICALLY FOR CAMERA SCREEN, DISABLED NON SELECTED CAMERAS
         #--------------------------------------------------------------
-        cam = None
-        try:
-            cameraId = buttonType.camera_id_string
-            # find camera item in self.cameras array
-            for cameraObject in self.cameras:
-                if(cameraObject.name == cameraId):
-                    cam = cameraObject        
-            self.menu_text = cam.location
+        if(self != None):
+            cam = None
+            try:
+                cameraId = buttonType.camera_id_string
+                # find camera item in self.cameras array
+                for cameraObject in self.cameras:
+                    if(cameraObject.name == cameraId):
+                        cam = cameraObject        
+                self.menu_text = cam.location
 
-        except:
-            pass #this was likely the close button being hit (has no id)
+            except:
+                pass #this was likely the close button being hit (has no id)
 
 
-        extra = self.ids[screenid]
-        
-        if extra.size_hint_x > 0:
-            anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
-            for widget in self.walk():
-                if widget.__class__.__name__ == "CameraButtons":
-                    widget.opacity = 1
-                    widget.disabled = False
-        else:
-            anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')
-            for widget in self.walk():
-                if widget.__class__.__name__ == "CameraButtons":
-                    if widget is not buttonType:
-                        widget.opacity = 0
-                        widget.disabled = True
-                    buttonType.opacity=1
-                    
-        anim.start(extra)
+            extra = self.ids[screenid]
+            
+            if extra.size_hint_x > 0:
+                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
+                for widget in self.walk():
+                    if widget.__class__.__name__ == "CameraButtons":
+                        widget.opacity = 1
+                        widget.disabled = False
+            else:
+                anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')
+                for widget in self.walk():
+                    if widget.__class__.__name__ == "CameraButtons":
+                        if widget is not buttonType:
+                            widget.opacity = 0
+                            widget.disabled = True
+                        buttonType.opacity=1
+                        
+            anim.start(extra)
 
             
 class MainApp(App):
@@ -286,6 +287,8 @@ class MainApp(App):
         sm = self.root.ids.screen_manager
         screen_order = ['cameras','about','music','knight','settings']
 
+        toggle_layout(None,None,"All","All")
+        
         current_index = screen_order.index(sm.current)
         target_index = screen_order.index(screen_name)
 
