@@ -219,11 +219,13 @@ class MainLayout(BoxLayout):
                     if(pageObject.dynamic):
                         #go through all menus that are not this one and minimize them
                         for menuid in pageObject.menus:
+                            
                             thisMenu = self.ids[menuid]
+                            
                             if(thisMenu == screenid):
-                                anim = Animation(size_hint_x=5, opacity=1,disabled=True, d=0.3)
+                                anim = Animation(size_hint_x=5, opacity=1,disabled=True, d=0.3, t='out_quad')
                             else:
-                                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.01)
+                                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.01, t='out_quad')
                             anim.start(thisMenu)
         except: #likely a page with no pageObject
             pass
