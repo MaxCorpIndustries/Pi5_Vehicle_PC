@@ -212,18 +212,6 @@ class MainLayout(BoxLayout):
     
     def toggle_layout(self,buttonType,screenid,pageid):
 
-        cam = None
-        try:
-            cameraId = buttonType.camera_id_string
-            # find camera item in self.cameras array
-            for cameraObject in self.cameras:
-                if(cameraObject.name == cameraId):
-                    cam = cameraObject        
-            self.menu_text = cam.location
-        except:
-            pass #this was likely the close button being hit (has no id)
-            #self.ids.screen_menu
-
         # FIND PAGE IN pagesArray
         try:
             for pageObject in pagesArray:
@@ -232,28 +220,49 @@ class MainLayout(BoxLayout):
                         #go through all menus that are not this one and minimize them
                         for menuid in pageObject.menus:
                             thisMenu = self.ids[menuid]
-                            anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.001)
+                            if(thisMenu == screenid):
+                                anim = Animation(size_hint_x=5, opacity=1,disabled=True, d=0.3)
+                            else:
+                                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.01)
                             anim.start(thisMenu)
         except: #likely a page with no pageObject
             pass
 
-        extra = self.ids[screenid]
-        if extra.size_hint_x > 0:
-            anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
-            for widget in self.walk():
-                if widget.__class__.__name__ == "CameraButtons":
-                    widget.opacity = 1
-                    widget.disabled = False
-        else:
-            anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')
-            for widget in self.walk():
-                if widget.__class__.__name__ == "CameraButtons":
-                    if widget is not buttonType:
-                        widget.opacity = 0
-                        widget.disabled = True
+
+
+        # SPECIFICALLY FOR CAMERA SCREEN, DISABLED NON SELECTED CAMERAS
+        #--------------------------------------------------------------
+        cam = None
+        try:
+            cameraId = buttonType.camera_id_string
+            # find camera item in self.cameras array
+            for cameraObject in self.cameras:
+                if(cameraObject.name == cameraId):
+                    cam = cameraObject        
+            self.menu_text = cam.location
+
+            extra = self.ids[screenid]
+            
+            if extra.size_hint_x > 0:
+                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
+                for widget in self.walk():
+                    if widget.__class__.__name__ == "CameraButtons":
+                        widget.opacity = 1
+                        widget.disabled = False
+            else:
+                anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')
+                for widget in self.walk():
+                    if widget.__class__.__name__ == "CameraButtons":
+                        if widget is not buttonType:
+                            widget.opacity = 0
+                            widget.disabled = True
+                        buttonType.opacity=1
                         
-                    buttonType.opacity=1
-        anim.start(extra)
+            anim.start(extra)
+        except:
+            pass #this was likely the close button being hit (has no id)
+
+
 
             
 class MainApp(App):
