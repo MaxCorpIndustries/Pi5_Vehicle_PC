@@ -222,13 +222,13 @@ class MainLayout(BoxLayout):
 
                             thisMenu = self.ids[menuid]
                             if(screenid == "All"): # close all screens (switching page usually)
-                                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
+                                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.01, t='out_quad')
                             else:
                                 if((menuid == screenid)): 
                                     if thisMenu.size_hint_x > 0:
                                         anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
                                     else:
-                                        anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')        
+                                        anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.01, t='out_quad')        
                                 else:
                                     anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
                                 
