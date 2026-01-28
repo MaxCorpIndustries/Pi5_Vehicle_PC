@@ -79,7 +79,7 @@
              
                         Image:
                             source: 'icons/topdown_tintable.png' 
-                            color: 1, 0.5, 0.5, 1 # This tints the image to solid green
+                            color: app.global_clr # This tints the image to solid green
                             allow_stretch: False
                             fit_mode: "contain"
                             padding:10
@@ -241,6 +241,7 @@
                             size: self.size
 
                 BoxLayout:
+                    id:car_color
                     orientation: "vertical"
                     spacing: 0
                     padding: 0   
@@ -249,7 +250,7 @@
                     ColorPicker:
                         id: color_picker
                         # Bind the color change to a function in Python
-                        on_color: root.on_color_change(self, self.color)
+                        on_color: app.global_clr = self.color
 
                 Widget:
                     size_hint_y: None

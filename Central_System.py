@@ -83,6 +83,7 @@ class MainLayout(BoxLayout):
     startVideoOnBoot=BooleanProperty(True)
     menu_text = StringProperty("Default Message")
     
+    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -223,13 +224,10 @@ class MainLayout(BoxLayout):
                     buttonType.opacity=1
         anim.start(extra)    
 
-    def on_color_change(self, picker, color):
-            # Access the color in Python
-            print("Selected Color:", color)
-            print("Hex:", picker.hex_color)
             
 class MainApp(App):
-
+    
+    carColor=ColorProperty([0.5, 0.5, 0.5, 1])  # Default to grey
     icons_visible = BooleanProperty(True)
     #gif_handler = ObjectProperty(Image(source='loading.gif', anim_delay=0.1))
     def build(self):
