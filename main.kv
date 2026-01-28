@@ -106,42 +106,42 @@
                             camera_id_string: "1_LEFTCAM"
                             pos_hint: {'x': 0.7, 'top': 0.2 if not self.disabled else 0.42}
                             on_release: 
-                                root.toggle_layout(self,'screen_menu')  
+                                root.toggle_layout(self,'screen_menu','cameras')  
 
                         CameraButtons:
                             text:"2"
                             camera_id_string: "2_RIGTCAM"
                             pos_hint: {'x': 0.7, 'top': 0.85 if not self.disabled else 0.6}
                             on_release: 
-                                root.toggle_layout(self,'screen_menu')   
+                                root.toggle_layout(self,'screen_menu','cameras')   
 
                         CameraButtons:
                             text:"3"
                             camera_id_string: "3_REARCAM"
                             pos_hint: {'x': 0.1 if not self.disabled else 0.05 , 'top': 0.5}
                             on_release: 
-                                root.toggle_layout(self,'screen_menu')                
+                                root.toggle_layout(self,'screen_menu','cameras')                
                
                         CameraButtons:
                             text:"4"
                             camera_id_string: "4_BMPRCAM"
                             pos_hint: {'x': 0.8 if not self.disabled else 0.7, 'top': 0.5}
                             on_release: 
-                                root.toggle_layout(self,'screen_menu')                        
+                                root.toggle_layout(self,'screen_menu','cameras')                        
                                 
                         CameraButtons:
                             text:"5"
                             camera_id_string: "5_DASHCAM"
                             pos_hint: {'x': 0.5, 'top': 0.5}
                             on_release: 
-                                root.toggle_layout(self,'screen_menu')     
+                                root.toggle_layout(self,'screen_menu','cameras')     
 
                         CameraButtons:
                             text:"6"
                             camera_id_string: "6_CLUSCAM"
                             pos_hint: {'x': 0.55, 'top': 0.7 if not self.disabled else 0.55}
                             on_release: 
-                                root.toggle_layout(self,'screen_menu')       
+                                root.toggle_layout(self,'screen_menu','cameras')       
 
                     BoxLayout:
 						id: screen_menu
@@ -199,7 +199,7 @@
                                 valign: 'center'
                                 size_hint_x: 0.5                                
                                 on_release: 
-                                    root.toggle_layout(self,'screen_menu') 
+                                    root.toggle_layout(self,'screen_menu','cameras') 
                             
                 #BoxLayout:
                     #orientation: "horizontal"
@@ -274,7 +274,7 @@
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'car_color_page') 
+                                    root.toggle_layout(self,'car_color_page','settings') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
@@ -284,7 +284,7 @@
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'test_page1') 
+                                    root.toggle_layout(self,'test_page1','settings') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
@@ -294,7 +294,7 @@
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'test_page2') 
+                                    root.toggle_layout(self,'test_page2','settings') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
@@ -304,7 +304,7 @@
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'test_page3') 
+                                    root.toggle_layout(self,'test_page3','settings') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
@@ -314,7 +314,7 @@
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'test_page4') 
+                                    root.toggle_layout(self,'test_page4','settings') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
@@ -324,7 +324,7 @@
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'test_page5') 
+                                    root.toggle_layout(self,'test_page5','settings') 
 
                             RoundedButton:
                                 #icon_source: 'stop.png'
@@ -334,7 +334,7 @@
                                 #valign: 'center'
                                 #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'test_page6') 
+                                    root.toggle_layout(self,'test_page6','settings') 
 
                     BoxLayout:
                         id:car_color_page

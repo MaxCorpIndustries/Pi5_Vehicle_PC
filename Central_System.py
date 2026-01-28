@@ -33,6 +33,22 @@ from kivy.uix.widget import Widget
 
 Window.borderless = True
 
+
+# The PageDetails object allows the system to know what submenus to close and which to open
+# when a button is hit on the page (otherwise they stack on top of each other)
+class PageDetails():
+    def __init__(self,name,menus,dynamic):
+        self.name=name
+        self.dynamic=dynamic    
+        self.menus=menus
+
+
+# Create pages (cameras is a dynamic system that only allows one at a time anyway)
+pagesArray = [
+    PageDetails('settings',False,['car_color_page','test_page1','test_page2','test_page3','test_page4','test_page5','test_page6'])
+    PageDetails('cameras',True,['screen_menu'])
+]
+
 class CameraButtons(Button):
     normal_color = ListProperty([0.5, 0.5, 0.5, 1])
     down_color = ListProperty([0.3, 0.3, 0.3, 1])
@@ -194,8 +210,9 @@ class MainLayout(BoxLayout):
         return [0, 0, 0, 1]
 
     
-    def toggle_layout(self,buttonType,screenid):
+    def toggle_layout(self,buttonType,screenid,pageid):
 
+        cam = None
         try:
             cameraId = buttonType.camera_id_string
             # find camera item in self.cameras array
@@ -207,7 +224,22 @@ class MainLayout(BoxLayout):
             pass #this was likely the close button being hit (has no id)
             #self.ids.screen_menu
 
-        
+        # FIND PAGE IN pagesArray
+        try:
+            for pageObject in pagesArray:
+                if(pageObject.name == str(pageid)):
+                    if(pageObject.dynamic):
+                        #go through all menus that are not this one and minimize them
+                        for menuid in pageObject.menus:
+                            if(menuid != screenid):
+                                #close the other menus
+                                thisMenu = self.ids[menuid]
+                                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
+                                anim.start(thisMenu)
+                    pass
+        except: #likely a page with no pageObject
+            pass
+
         extra = self.ids[screenid]
         if extra.size_hint_x > 0:
             anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
@@ -224,13 +256,14 @@ class MainLayout(BoxLayout):
                         widget.disabled = True
                         
                     buttonType.opacity=1
-        anim.start(extra)    
+        anim.start(extra)
 
             
 class MainApp(App):
     carShineColorOffset = NumericProperty(0.1)
     carColor=ColorProperty([0.5, 0.5, 0.5, 1])  # Default to grey
-    icons_visible = BooleanProperty(True)
+    icons_visible = BooleanProperty(True)    
+    
     #gif_handler = ObjectProperty(Image(source='loading.gif', anim_delay=0.1))
     def build(self):
         self.title = "CARPC SYSTEM"
