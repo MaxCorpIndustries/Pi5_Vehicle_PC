@@ -38,13 +38,6 @@ class CameraButtons(Button):
     down_color = ListProperty([0.3, 0.3, 0.3, 1])
     camera_id_string = StringProperty("")
 
-
-class ColorWidget(Widget):
-    # The 'color' property will store the RGBA values (0-1 range)
-    widget_color = ListProperty((1, 1, 1, 1)) # Default to white
-
-
-
 class KivyCamera(Image):
     def start(self, capture, fps=30):
         self.capture = capture
