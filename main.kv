@@ -346,9 +346,16 @@
                         opacity:0                        
                         size_hint_x: 0  
                         
-                        ColorPicker:
-                            id: color_picker
-                            color: app.carColor
+                        BoxLayout:
+                            id: car_color_page
+                            orientation: "vertical"
+                            spacing: 0
+                            padding: 0  
+                            opacity:0                        
+                            size_hint_x: 0                          
+                            ColorPicker:
+                                id: color_picker
+                                color: app.carColor
 
                         canvas.before:
                             Color:
