@@ -37,7 +37,7 @@ Window.borderless = True
 # The PageDetails object allows the system to know what submenus to close and which to open
 # when a button is hit on the page (otherwise they stack on top of each other)
 class PageDetails():
-    def __init__(self,name,menus,dynamic):
+    def __init__(self,name,dynamic,menus):
         self.name=name
         self.dynamic=dynamic    
         self.menus=menus
