@@ -45,7 +45,7 @@ class PageDetails():
 
 # Create pages (cameras is a dynamic system that only allows one at a time anyway)
 pagesArray = [
-    PageDetails('settings',False,['car_color_page','test_page1','test_page2','test_page3','test_page4','test_page5','test_page6'])
+    PageDetails('settings',False,['car_color_page','test_page1','test_page2','test_page3','test_page4','test_page5','test_page6']),
     PageDetails('cameras',True,['screen_menu'])
 ]
 
