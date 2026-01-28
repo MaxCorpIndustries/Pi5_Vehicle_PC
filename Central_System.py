@@ -229,7 +229,6 @@ class MainLayout(BoxLayout):
                         
                     buttonType.opacity=1
         anim.start(extra)    
-    pass
 
     def on_color_change(self, picker, color):
             # Access the color in Python
