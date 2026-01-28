@@ -199,7 +199,7 @@
                                 valign: 'center'
                                 size_hint_x: 0.5                                
                                 on_release: 
-                                    root.toggle_layout(self,self.ids.screen_menu) 
+                                    root.toggle_layout(self,'screen_menu') 
                             
                 #BoxLayout:
                     #orientation: "horizontal"
@@ -269,7 +269,7 @@
                             valign: 'center'
                             size_hint_x: 0.5                                
                             on_release: 
-                                root.toggle_layout(self,self.ids.car_color_page) 
+                                root.toggle_layout(self,'car_color_page') 
 
                     BoxLayout:
                         id:car_color_page
