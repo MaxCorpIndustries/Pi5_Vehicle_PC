@@ -194,7 +194,7 @@ class MainLayout(BoxLayout):
         return [0, 0, 0, 1]
 
     
-    def toggle_layout(self,buttonType):
+    def toggle_layout(self,buttonType,screenid):
 
         try:
             cameraId = buttonType.camera_id_string
@@ -205,8 +205,8 @@ class MainLayout(BoxLayout):
             self.menu_text = cam.name
         except:
             pass #this was likely the close button being hit (has no id)
-            
-        extra = self.ids.screen_menu
+            #self.ids.screen_menu
+        extra = screenid
         if extra.size_hint_x > 0:
             anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
             for widget in self.walk():

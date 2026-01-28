@@ -106,42 +106,42 @@
                             camera_id_string: "1_LEFTCAM"
                             pos_hint: {'x': 0.7, 'top': 0.2 if not self.disabled else 0.42}
                             on_release: 
-                                root.toggle_layout(self)  
+                                root.toggle_layout(self,self.ids.screen_menu)  
 
                         CameraButtons:
                             text:"2"
                             camera_id_string: "2_RIGTCAM"
                             pos_hint: {'x': 0.7, 'top': 0.85 if not self.disabled else 0.6}
                             on_release: 
-                                root.toggle_layout(self)   
+                                root.toggle_layout(self,self.ids.screen_menu)   
 
                         CameraButtons:
                             text:"3"
                             camera_id_string: "3_REARCAM"
                             pos_hint: {'x': 0.1 if not self.disabled else 0.05 , 'top': 0.5}
                             on_release: 
-                                root.toggle_layout(self)                
+                                root.toggle_layout(self,self.ids.screen_menu)                
                
                         CameraButtons:
                             text:"4"
                             camera_id_string: "4_BMPRCAM"
                             pos_hint: {'x': 0.8 if not self.disabled else 0.7, 'top': 0.5}
                             on_release: 
-                                root.toggle_layout(self)                        
+                                root.toggle_layout(self,self.ids.screen_menu)                        
                                 
                         CameraButtons:
                             text:"5"
                             camera_id_string: "5_DASHCAM"
                             pos_hint: {'x': 0.5, 'top': 0.5}
                             on_release: 
-                                root.toggle_layout(self)     
+                                root.toggle_layout(self,self.ids.screen_menu)     
 
                         CameraButtons:
                             text:"6"
                             camera_id_string: "6_CLUSCAM"
                             pos_hint: {'x': 0.55, 'top': 0.7 if not self.disabled else 0.55}
                             on_release: 
-                                root.toggle_layout(self)       
+                                root.toggle_layout(self,self.ids.screen_menu)       
 
                     BoxLayout:
 						id: screen_menu
@@ -199,7 +199,7 @@
                                 valign: 'center'
                                 size_hint_x: 0.5                                
                                 on_release: 
-                                    root.toggle_layout(self) 
+                                    root.toggle_layout(self,self.ids.screen_menu) 
                             
                 #BoxLayout:
                     #orientation: "horizontal"
@@ -248,19 +248,41 @@
                         Rectangle:
                             pos: self.pos
                             size: self.size
-
                 BoxLayout:
-                    id:car_color
-                    orientation: "vertical"
+                    orientation: "horizontal"
                     spacing: 0
                     padding: 0   
-                    size_hint_y: 1                   
+                    size_hint_y: 1       
+                    
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: 0
+                        padding: 0   
+                        size_hint_y: 0.1
 
-                    ColorPicker:
-                        id: color_picker
-                        color: 0.37, 0.37, 0.37, 0.37
-                        # Bind the color change to a function in Python
-                        on_color: app.carColor = self.color
+                        RoundedButton:
+                            #icon_source: 'stop.png'
+                            text: "Car Color"
+                            bold: True
+                            font_size: 64
+                            halign: 'center'
+                            valign: 'center'
+                            size_hint_x: 0.5                                
+                            on_release: 
+                                root.toggle_layout(self,self.ids.car_color_page) 
+
+                    BoxLayout:
+                        id:car_color_page
+                        orientation: "vertical"
+                        spacing: 0
+                        padding: 0   
+                        size_hint_y: 1                   
+
+                        ColorPicker:
+                            id: color_picker
+                            color: 0.37, 0.37, 0.37, 0.37
+                            # Bind the color change to a function in Python
+                            on_color: app.carColor = self.color
 
                 Widget:
                     size_hint_y: None
