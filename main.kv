@@ -254,13 +254,14 @@
                     padding: 0   
                     #size_hint_y: 1       
                     ScrollView:
+                        do_scroll_x: False
+                        do_scroll_y: True                    
                         GridLayout:
                             orientation: "vertical"
                             spacing: 10
                             padding: 10   
                             size_hint_x: 1
-                            do_scroll_x: False
-                            do_scroll_y: True
+
                             row_force_default: True                        
                             cols: 1
                             
@@ -273,36 +274,6 @@
                                 #size_hint_x: 1
                                 on_release: 
                                     root.toggle_layout(self,'car_color_page') 
-                                    
-                            RoundedButton:
-                                #icon_source: 'stop.png'
-                                text: "test"
-                                #bold: True
-                                halign: 'left'
-                                #valign: 'center'
-                                #size_hint_x: 1
-                                on_release: 
-                                    root.toggle_layout(self,'car_color_page')                                 
-
-                            RoundedButton:
-                                #icon_source: 'stop.png'
-                                text: "test"
-                                #bold: True
-                                halign: 'left'
-                                #valign: 'center'
-                                #size_hint_x: 1
-                                on_release: 
-                                    root.toggle_layout(self,'car_color_page')     
-                                    
-                            RoundedButton:
-                                #icon_source: 'stop.png'
-                                text: "test"
-                                #bold: True
-                                halign: 'left'
-                                #valign: 'center'
-                                #size_hint_x: 1
-                                on_release: 
-                                    root.toggle_layout(self,'car_color_page')                                     
 
                     BoxLayout:
                         id:car_color_page
