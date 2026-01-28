@@ -272,6 +272,8 @@ class MainLayout(BoxLayout):
                         buttonType.opacity=1
                         
             anim.start(extra)
+
+
             
 class MainApp(App):
     carShineColorOffset = NumericProperty(0.5)
