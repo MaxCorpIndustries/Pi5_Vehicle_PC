@@ -19,7 +19,7 @@ from kivy.core.window import Window
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.animation import Animation
-from kivy.properties import ListProperty, StringProperty, BooleanProperty,ColorProperty#,ObjectProperty
+from kivy.properties import ListProperty, StringProperty, BooleanProperty,ColorProperty, NumericProperty#,ObjectProperty
 from kivy.factory import Factory
 
 from functools import partial
@@ -226,7 +226,7 @@ class MainLayout(BoxLayout):
 
             
 class MainApp(App):
-    
+    carShineColorOffset = NumericProperty(0.1)
     carColor=ColorProperty([0.5, 0.5, 0.5, 1])  # Default to grey
     icons_visible = BooleanProperty(True)
     #gif_handler = ObjectProperty(Image(source='loading.gif', anim_delay=0.1))
