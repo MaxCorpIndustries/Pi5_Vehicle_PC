@@ -109,10 +109,44 @@ class MainLayout(BoxLayout):
                 cameraObject = CoreCams.testRTSP_Ping(cameraObject)
                 self.cameras[index] = cameraObject
         '''
-        new_color = self.get_cam_color(cam_id)        
+        def check_camera_task():
+            camera_to_test = None
+            cam_index = -1
+            for index, cameraObject in enumerate(self.cameras):
+                if cameraObject.name == cam_id:
+
+                    camera_to_test = cameraObject
+                    cam_index = index
+                    break
+                
+            if camera_to_test:
+                # Perform the blocking network call in this background thread
+                updated_cam = CoreCams.testRTSP_Ping(camera_to_test)
+                
+                # Use Clock.schedule_once to push the UI update back to the main thread
+                Clock.schedule_once(lambda dt: self.apply_ui_update(cam_id, updated_cam, cam_index))
+
+            # Start the thread
+            threading.Thread(target=check_camera_task, daemon=True).start()
+
+    def apply_ui_update(self, cam_id, updated_cam, index):
+        # This runs on the MAIN thread
+        '''
         for widget in self.walk():
             if getattr(widget, 'camera_id_string', None) == cam_id:
                 widget.normal_color = new_color
+        '''            
+        self.cameras[index] = updated_cam
+        new_color = self.get_cam_color(cam_id)
+        
+        # Optimization: Instead of walking the whole tree, 
+        # consider storing references to your buttons in a dictionary
+        for widget in self.walk():
+            if getattr(widget, 'camera_id_string', None) == cam_id:
+                widget.normal_color = new_color
+
+        new_color = self.get_cam_color(cam_id)
+
 
     def update_videostatus(self, cameraArray, dt):
         self.cameras=CoreCams.updateCameraStatus(cameraArray)
