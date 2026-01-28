@@ -223,9 +223,13 @@ class MainLayout(BoxLayout):
                             thisMenu = self.ids[menuid]
                             
                             if(menuid == screenid):
-                                anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')
+                                if thisMenu.size_hint_x > 0:
+                                    anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
+                                else:
+                                    anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')        
                             else:
-                                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.01, t='out_quad')
+                                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
+                                
                             anim.start(thisMenu)
         except: #likely a page with no pageObject
             pass
@@ -243,28 +247,28 @@ class MainLayout(BoxLayout):
                     cam = cameraObject        
             self.menu_text = cam.location
 
-            extra = self.ids[screenid]
-            
-            if extra.size_hint_x > 0:
-                anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
-                for widget in self.walk():
-                    if widget.__class__.__name__ == "CameraButtons":
-                        widget.opacity = 1
-                        widget.disabled = False
-            else:
-                anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')
-                for widget in self.walk():
-                    if widget.__class__.__name__ == "CameraButtons":
-                        if widget is not buttonType:
-                            widget.opacity = 0
-                            widget.disabled = True
-                        buttonType.opacity=1
-                        
-            anim.start(extra)
         except:
             pass #this was likely the close button being hit (has no id)
 
 
+        extra = self.ids[screenid]
+        
+        if extra.size_hint_x > 0:
+            anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
+            for widget in self.walk():
+                if widget.__class__.__name__ == "CameraButtons":
+                    widget.opacity = 1
+                    widget.disabled = False
+        else:
+            anim = Animation(size_hint_x=5, opacity=1,disabled=False, d=0.3, t='out_quad')
+            for widget in self.walk():
+                if widget.__class__.__name__ == "CameraButtons":
+                    if widget is not buttonType:
+                        widget.opacity = 0
+                        widget.disabled = True
+                    buttonType.opacity=1
+                    
+        anim.start(extra)
 
             
 class MainApp(App):
