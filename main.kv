@@ -182,11 +182,15 @@
                             size_hint_y:0.15
                                    
                             RoundedButton:
-                                icon_source: 'icons/cameras_button.png'
+                                icon_source: 'icons/start.png'
                                 on_release: app.on_start()
                                 
                             RoundedButton:
                                 icon_source: 'icons/stop.png'
+                                on_release: app.stopcamPreview()
+
+                            RoundedButton:
+                                icon_source: 'icons/reboot.png'
                                 on_release: app.stopcamPreview()
                             
                             RoundedButton:
@@ -341,14 +345,36 @@
                         spacing: 0
                         padding: 0  
                         opacity:0                        
-                        size_hint_x: 0                  
-
+                        size_hint_x: 0  
+                        
                         ColorPicker:
                             id: color_picker
                             color: 0.37, 0.37, 0.37, 0.37
                             # Bind the color change to a function in Python
                             on_color: app.carColor = self.color
 
+                        canvas.before:
+                            Color:
+                                #rgba: 0.15, 0.15, 0.15, 1  # This will make the background solid red                
+                                rgba: 0, 0, 0, 1  # This will make the background solid red                
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size   
+
+                        BoxLayout:
+                            orientation: "horizontal"
+                            spacing: 0
+                            padding: 0  
+                            opacity:0                        
+                            size_hint_x: 0 
+                            
+                            RoundedButton:
+                                icon_source: 'icons/reset.png'
+                                on_release: app.on_start()
+                                
+                            RoundedButton:
+                                icon_source: 'icons/save.png'
+                                on_release: app.stopcamPreview()                                
                     BoxLayout:
                         id:test_page1
                         orientation: "vertical"
