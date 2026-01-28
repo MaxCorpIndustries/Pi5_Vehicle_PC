@@ -277,7 +277,7 @@ class MainLayout(BoxLayout):
             
 class MainApp(App):
     carShineColorOffset = NumericProperty(0.5)
-    carColor=ColorProperty([0.5, 0.5, 0.5, 1])  # Default to grey
+    carColor=ColorProperty([0.37, 0.37, 0.37, 1])  # Default to grey
     icons_visible = BooleanProperty(True)    
     
     #gif_handler = ObjectProperty(Image(source='loading.gif', anim_delay=0.1))
