@@ -258,7 +258,8 @@
                         do_scroll_y: True                    
                         GridLayout:
                             size_hint_x: 1
-                            size_hint_y: 1
+                            size_hint_y: None #must be done for scrolling
+                            height: self.minimum_height
                             row_default_height: '100dp'
                             row_force_default: True
                             spacing: 10
