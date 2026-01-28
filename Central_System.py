@@ -273,6 +273,14 @@ class MainLayout(BoxLayout):
                         
             anim.start(extra)
 
+    def start_anim(self, widget):
+        # Create the animation sequence
+        anim = Animation(x=200, y=200, duration=1, t='out_bounce')
+        anim += Animation(size=(300, 300), duration=1)
+        
+        # Apply it to the image passed as an argument
+        anim.start(widget)
+
             
 class MainApp(App):
     carShineColorOffset = NumericProperty(0.5)

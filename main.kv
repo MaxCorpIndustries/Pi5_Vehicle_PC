@@ -10,7 +10,7 @@
 		transition: SlideTransition(duration=0.25)
 		
         Screen:
-			name: "cameras"
+			name: cameras
             BoxLayout:
                 orientation: "vertical"
                 spacing: 10
@@ -46,7 +46,7 @@
                         font_size: 28
                         color: 0, 0, 0, 1
                         normal_color: 0.1, 1, 0.1, 1
-                        on_release: app.on_start()
+                        on_release: root.start_anim('road') #app.on_start()
 
                     RoundedButton:
                         text: 'Reset All'
@@ -75,8 +75,18 @@
                             Rectangle:
                                 pos: self.pos
                                 size: self.size
-            
-             
+                       
+                        Image:
+                            id: road
+                            source: 'icons/road.jpg' 
+                            allow_stretch: False
+                            #fit_mode: "contain"
+                            #padding:10
+                            size_hint: None, None
+                            size: 2048, 1024
+                            pos: 0, 0                         
+                            keep_ratio: True             
+                 
                         Image:
                             source: 'icons/topdown_tintable_body.png' 
                             color: app.carColor # This tints the image to solid green
