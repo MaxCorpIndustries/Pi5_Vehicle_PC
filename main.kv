@@ -258,15 +258,15 @@
                         orientation: "vertical"
                         spacing: 0
                         padding: 0   
-                        size_hint_y: 0.1
+                        size_hint_y: 1
 
                         RoundedButton:
                             #icon_source: 'stop.png'
                             text: "Car Color"
-                            bold: True
+                            #bold: True
                             #halign: 'center'
                             #valign: 'center'
-                            size_hint_x: 1
+                            #size_hint_x: 1
                             on_release: 
                                 root.toggle_layout(self,'car_color_page') 
 
@@ -275,7 +275,7 @@
                         orientation: "vertical"
                         spacing: 0
                         padding: 0   
-                        size_hint_y: 0                   
+                        size_hint_y: 0.01                  
 
                         ColorPicker:
                             id: color_picker
