@@ -219,7 +219,7 @@ class MainLayout(BoxLayout):
             for cameraObject in self.cameras:
                 if(cameraObject.name == cameraId):
                     cam = cameraObject        
-            self.menu_text = cam.name
+            self.menu_text = cam.location
         except:
             pass #this was likely the close button being hit (has no id)
             #self.ids.screen_menu
@@ -232,7 +232,7 @@ class MainLayout(BoxLayout):
                         #go through all menus that are not this one and minimize them
                         for menuid in pageObject.menus:
                             thisMenu = self.ids[menuid]
-                            anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.01, t='out_quad')
+                            anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.001)
                             anim.start(thisMenu)
         except: #likely a page with no pageObject
             pass
