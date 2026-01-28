@@ -78,12 +78,19 @@
             
              
                         Image:
-                            source: 'icons/topdown_tintable.png' 
+                            source: 'icons/topdown_tintable_body.png' 
                             color: app.carColor # This tints the image to solid green
                             allow_stretch: False
                             fit_mode: "contain"
                             padding:10
                             keep_ratio: True 
+
+                        Image:
+                            source: 'icons/topdown_tintable_shine.png' 
+                            allow_stretch: False
+                            fit_mode: "contain"
+                            padding:10
+                            keep_ratio: True      
             
                         Image:
                             source: 'icons/topdown_tintable_lights.png' 
@@ -91,6 +98,7 @@
                             fit_mode: "contain"
                             padding:10
                             keep_ratio: True 
+                       
                             
                         CameraButtons:
                             text:"1"
