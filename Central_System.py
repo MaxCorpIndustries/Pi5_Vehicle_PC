@@ -230,6 +230,7 @@ class MainLayout(BoxLayout):
                 if(pageObject.name == str(pageid)):
                     print('page found!: ' + pageObject.name)
                     if(pageObject.dynamic):
+                        print('page is dynamic!')
                         #go through all menus that are not this one and minimize them
                         for menuid in pageObject.menus:
                             if(menuid != screenid):
