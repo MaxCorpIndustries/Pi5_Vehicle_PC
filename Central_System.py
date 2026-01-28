@@ -287,7 +287,7 @@ class MainApp(App):
         sm = self.root.ids.screen_manager
         screen_order = ['cameras','about','music','knight','settings']
 
-        toggle_layout(None,None,"All","All")
+        self.root.toggle_layout(None,None,"All","All")
         
         current_index = screen_order.index(sm.current)
         target_index = screen_order.index(screen_name)
