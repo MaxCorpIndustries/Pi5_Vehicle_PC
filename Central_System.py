@@ -222,7 +222,7 @@ class MainLayout(BoxLayout):
                             
                             thisMenu = self.ids[menuid]
                             
-                            if(thisMenu == screenid):
+                            if(menuid == screenid):
                                 anim = Animation(size_hint_x=5, opacity=1,disabled=True, d=0.3, t='out_quad')
                             else:
                                 anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.01, t='out_quad')
