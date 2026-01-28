@@ -247,18 +247,10 @@
                     size_hint_y:0.15                    
                     color_widget_id: color_widget_instance
 
-                    # Add the custom ColorWidget instance
-                    ColorWidget:
-                        id: color_widget_instance
-                        size_hint_y: None
-                        height: 200
-
-                    # Add the standard Kivy ColorPicker widget
                     ColorPicker:
-                        # Bind the 'color' property of the ColorPicker to the 'widget_color'
-                        # property of the ColorWidget using its id
-                        color: color_widget_instance.widget_color
-                        size_hint_y: 1
+                        id: color_picker
+                        # Bind the color change to a function in Python
+                        on_color: root.on_color_change(self, self.color)
 
                 Widget:  # spacer
 

@@ -231,7 +231,11 @@ class MainLayout(BoxLayout):
         anim.start(extra)    
     pass
 
-
+    def on_color_change(self, picker, color):
+            # Access the color in Python
+            print("Selected Color:", color)
+            print("Hex:", picker.hex_color)
+            
 class MainApp(App):
 
     icons_visible = BooleanProperty(True)
