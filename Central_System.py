@@ -275,7 +275,7 @@ class MainLayout(BoxLayout):
 
             
 class MainApp(App):
-    carShineColorOffset = NumericProperty(0.1)
+    carShineColorOffset = NumericProperty(0.5)
     carColor=ColorProperty([0.5, 0.5, 0.5, 1])  # Default to grey
     icons_visible = BooleanProperty(True)    
     
