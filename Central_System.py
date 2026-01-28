@@ -216,13 +216,13 @@ class MainLayout(BoxLayout):
         try:
             for pageObject in pagesArray:
                 if((pageObject.name == str(pageid)) or (pageid=="All")):
-                    if(pageObject.dynamic):
+                    if((pageObject.dynamic) or (screenid == "All")):
                         #go through all menus that are not this one and minimize them
                         for menuid in pageObject.menus:
                             
                             thisMenu = self.ids[menuid]
                             
-                            if((menuid == screenid) or (screenid != "All")): # The all condition makes it close all if screenid=All
+                            if((menuid == screenid) or (screenid == "All")): # The all condition makes it close all if screenid=All
                                 if thisMenu.size_hint_x > 0:
                                     anim = Animation(size_hint_x=0, opacity=0,disabled=True, d=0.3, t='out_quad')
                                 else:
