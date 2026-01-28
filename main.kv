@@ -244,14 +244,12 @@
                     orientation: "vertical"
                     spacing: 0
                     padding: 0   
-                    size_hint_y:0.15                    
+                    size_hint_y: 1                   
 
                     ColorPicker:
                         id: color_picker
                         # Bind the color change to a function in Python
                         on_color: root.on_color_change(self, self.color)
-
-                Widget:  # spacer
 
                 Widget:
                     size_hint_y: None
