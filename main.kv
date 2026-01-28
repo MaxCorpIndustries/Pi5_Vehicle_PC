@@ -352,7 +352,7 @@
                             # Bind the color change to a function in Python
                             on_color: app.carColor = self.color
 
-                        canvas.before:
+                        canvas:
                             Color:
                                 #rgba: 0.15, 0.15, 0.15, 1  # This will make the background solid red                
                                 rgba: 0, 0, 0, 1  # This will make the background solid red                
@@ -449,23 +449,6 @@
                             valign: 'middle'
 
                         Widget:  # spacer    
-
-                    BoxLayout:
-                        id:test_page4
-                        orientation: "vertical"
-                        spacing: 0
-                        padding: 0  
-                        opacity:0                        
-                        size_hint_x: 0                  
-
-                        Label:
-                            text: "test_page 4"
-                            font_size: 22
-                            size_hint_y: None
-                            height: '25dp'
-                            text_size: self.size
-                            halign: 'left'
-                            valign: 'middle'
 
                     BoxLayout:
                         id:test_page5
