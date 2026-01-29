@@ -142,7 +142,7 @@ class MainLayout(BoxLayout):
         camIndex=0
         for index, cameraObject in enumerate(self.cameras):
             if(cameraObject.name == cam_id):
-                return ("Status: " + self.cameras[index].cam_status)
+                return self.cameras[index].cam_status
 
         return "No Data"
         
@@ -167,7 +167,7 @@ class MainLayout(BoxLayout):
 
             case "-3": # Camera has never recorded since first boot
                 self.cameras[camIndex].cam_status = "Camera Pending Start"
-                return [0   , 0     , 0     , 1]
+                return [0.1   , 0.1     , 1     , 1]
             
             case "-2": # unknown state
                 self.cameras[camIndex].cam_status = "Camera Status Unknown"
@@ -197,10 +197,14 @@ class MainLayout(BoxLayout):
         self.cameras[camIndex].cam_status = "Impossible Condition Detected"
         return [0, 0, 0, 1]
 
+
     def update_videostatus(self, dt):
         self.cameras=CoreCams.updateCameraStatus(self.cameras)
         if(self.selected_cam != None):
-            self.cam_status = self.selected_cam.cam_status
+            self.cam_status = ("Status: " + self.selected_cam.cam_status)
+        else:
+            self.cam_status = "Please wait..."
+
     
     def toggle_layout(self,buttonType,screenid,pageid):
 
