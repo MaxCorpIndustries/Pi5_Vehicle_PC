@@ -113,7 +113,7 @@ class MainLayout(BoxLayout):
         else:
             raise ValueError("Camera config could not be found")
 
-        self.update_videostatus(self.cameras)
+        self.cameras=self.update_videostatus(self.cameras)
 
         #update status values consistently
         for cameraObject in self.cameras:            
