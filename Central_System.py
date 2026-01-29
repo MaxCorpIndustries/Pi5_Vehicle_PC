@@ -142,7 +142,7 @@ class MainLayout(BoxLayout):
         camIndex=0
         for index, cameraObject in enumerate(self.cameras):
             if(cameraObject.name == cam_id):
-                return self.cameras[index].cam_status
+                return ("Status: " + self.cameras[index].cam_status)
 
         return "No Data"
         
