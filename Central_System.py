@@ -100,6 +100,7 @@ class MainLayout(BoxLayout):
     menu_text = StringProperty("Default Message")
     selected_cam = ObjectProperty(None)
     cam_status = StringProperty("Default Message")
+    cam_type = StringProperty("Default Message")
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -204,8 +205,10 @@ class MainLayout(BoxLayout):
         self.cameras=CoreCams.updateCameraStatus(self.cameras)
         if(self.selected_cam != None):
             self.cam_status = ("Status: " + self.selected_cam.cam_status)
+            self.cam_type = (self.selected_cam.camType)
         else:
-            self.cam_status = "Please wait..."
+            self.cam_status = "[LOADING]"
+            self.cam_type = "[LOADING]"
 
     
     def toggle_layout(self,buttonType,screenid,pageid):
