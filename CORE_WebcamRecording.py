@@ -387,8 +387,12 @@ def updateCameraStatus(cameraArray):
                     case _:
                         cameraObject.StatusValue=-2 # means unknown state (catch all)      
         else:
-            # Attempt to reconnect to disconnected device
+            # Attempt to reconnect to disconnected device            
             cameraObject.StatusValue=0 # means disconnected state
+
+            # Re-ping camera to check connectivity
+            cameraObject = testRTSP_Ping(cameraObject)
+
                 
     return cameraArray
 

@@ -114,17 +114,14 @@ class MainLayout(BoxLayout):
             raise ValueError("Camera config could not be found")
         
         #update status values consistently
-        for a in self.cameras:
-            Clock.schedule_interval(partial(self.update_button_color, a.name), 20)
+        for cameraObject in self.cameras:
+            check_camera_status(cameraObject.name)
+            
+            Clock.schedule_interval(partial(self.update_button_color, cameraObject.name), 2)
             
         Clock.schedule_interval(partial(self.update_videostatus, self.cameras), 8)
 
     def update_button_color(self, cam_id, dt):
-        
-        for index, cameraObject in enumerate(self.cameras):
-            if(cameraObject.name == cam_id):
-                cameraObject = CoreCams.testRTSP_Ping(cameraObject)
-                self.cameras[index] = cameraObject
         
         def check_camera_task():
             camera_to_test = None
