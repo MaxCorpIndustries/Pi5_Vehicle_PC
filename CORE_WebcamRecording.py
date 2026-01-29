@@ -108,7 +108,7 @@ def testRTSP_Ping(cameraObject):
     match (cameraObject.camType):
         case "RTSP":
             try:
-                pingOutput = subprocess.run(["ping","-c","1",str(cameraObject.ping)], check=True,stdout=DEVNULL,stderr=DEVNULL)
+                pingOutput = subprocess.run(["ping","-c","1","-W","1",str(cameraObject.ping)], check=True,stdout=DEVNULL,stderr=DEVNULL)
                 cameraObject.readytoload = True
             except:
                 pass
