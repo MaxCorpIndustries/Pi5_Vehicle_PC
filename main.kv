@@ -141,6 +141,16 @@
                             on_release: 
                                 root.toggle_layout(self,'screen_menu','cameras')       
 
+                    Widget:
+                        size_hint_x: None
+                        width: 2
+                        canvas:
+                            Color:
+                                rgb: 1, 1, 1
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+
                     BoxLayout:
 						id: screen_menu
                         orientation: "vertical"
@@ -333,7 +343,7 @@
 
                     Widget:
                         size_hint_x: None
-                        height: 2
+                        width: 2
                         canvas:
                             Color:
                                 rgb: 1, 1, 1
