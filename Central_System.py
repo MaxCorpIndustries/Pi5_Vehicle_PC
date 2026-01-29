@@ -113,7 +113,7 @@ class MainLayout(BoxLayout):
         else:
             raise ValueError("Camera config could not be found")
 
-        self.cameras=self.update_videostatus(self.cameras)
+        self.cameras= self.update_videostatus(self.cameras)
 
         #update status values consistently
         for cameraObject in self.cameras:            
@@ -165,7 +165,7 @@ class MainLayout(BoxLayout):
         
     def update_videostatus(self, cameraArray):
         self.cameras=CoreCams.updateCameraStatus(cameraArray)
-        
+        return self.cameras
 
     def update_videostatus_clock(self, cameraArray, dt):
         self.cameras=CoreCams.updateCameraStatus(cameraArray)

@@ -345,7 +345,7 @@ def updateCameraStatus(cameraArray):
     for cameraObject in cameraArray:
         # Re-ping camera to check connectivity
         cameraObject = testRTSP_Ping(cameraObject)
-        print(cameraObject.name + ' ' + str(cameraObject.readytoload))
+        #print(cameraObject.name + ' ' + str(cameraObject.readytoload))
         
     # Checks and restarts to do every cyle:
     for cameraObject in cameraArray:
@@ -394,8 +394,6 @@ def updateCameraStatus(cameraArray):
         else:
             # Attempt to reconnect to disconnected device            
             cameraObject.StatusValue=0 # means disconnected state
-
-    print(cameraArray)
                 
     return cameraArray
 
