@@ -171,7 +171,7 @@ class MainLayout(BoxLayout):
 
             case "-3": # Camera has never recorded since first boot
                 self.cameras[camIndex].cam_status = "Camera Pending Start"
-                return [0.1   , 0.1     , 1     , 1]
+                return [0.99, 0.69  , 0.14  , 1]
             
             case "-2": # unknown state
                 self.cameras[camIndex].cam_status = "Camera Status Unknown"
@@ -187,7 +187,7 @@ class MainLayout(BoxLayout):
             
             case "1": # currently recording
                 self.cameras[camIndex].cam_status = "Camera Recording"
-                return [0   , 1     , 0     , 1]
+                return [0.52, 0.81  , 0.25  , 1]
 
             case "2": #recording completed (restarting)
                 self.cameras[camIndex].cam_status = "Camera Recording Completed"
