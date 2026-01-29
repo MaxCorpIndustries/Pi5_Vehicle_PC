@@ -119,7 +119,9 @@ class MainLayout(BoxLayout):
         for cameraObject in self.cameras:            
             Clock.schedule_interval(partial(self.update_button_color, cameraObject.name), 2)
             
-        Clock.schedule_interval(partial(self.update_videostatus, self.cameras), 8)
+        Clock.schedule_interval(partial(self.update_videostatus_clock, self.cameras), 8)
+
+
 
     def update_button_color(self, cam_id, dt):
         
@@ -160,9 +162,12 @@ class MainLayout(BoxLayout):
                 widget.normal_color = new_color
 
         new_color = self.get_cam_color(cam_id)
+        
+    def update_videostatus(self, cameraArray):
+        self.cameras=CoreCams.updateCameraStatus(cameraArray)
+        
 
-
-    def update_videostatus(self, cameraArray, dt):
+    def update_videostatus_clock(self, cameraArray, dt):
         self.cameras=CoreCams.updateCameraStatus(cameraArray)
         
                 
