@@ -171,14 +171,14 @@
                         
                         Label:
                             text: root.menu_text if app.root else "[NO DATA]"
-                            font_size: 40  
+                            font_size: 50  
                             font_name: "fonts/lcd_main.ttf"
                             color: 1,0.5,0.5
                             padding: 10
                             text_size: self.size
                             size_hint_y:0.25
                             halign: 'center'
-                            valign: 'middle'
+                            valign: 'top'
 
                         Widget:
                             size_hint_y: None
@@ -385,11 +385,11 @@
                                     pos: self.pos
                                     size: self.size
                                     
-                        BoxLayout:
+                        BoxLayout:-
                             orientation: "horizontal"
                             spacing: 0
-                            padding: 0  
-                            size_hint_y: 0.15 
+                            padding: 5  
+                            size_hint_y: 0.2 
                             
                             RoundedButton:
                                 icon_source: 'icons/reset.png'
