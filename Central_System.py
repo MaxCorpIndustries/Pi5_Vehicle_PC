@@ -147,11 +147,11 @@ class MainLayout(BoxLayout):
 
     def apply_ui_update(self, cam_id, updated_cam, index):
         # This runs on the MAIN thread
-        '''
+        
         for widget in self.walk():
             if getattr(widget, 'camera_id_string', None) == cam_id:
                 widget.normal_color = new_color
-        '''            
+                   
         self.cameras[index] = updated_cam
         new_color = self.get_cam_color(cam_id)
         
