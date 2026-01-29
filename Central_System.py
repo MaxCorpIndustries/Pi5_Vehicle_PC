@@ -114,33 +114,29 @@ class MainLayout(BoxLayout):
             raise ValueError("Camera config could not be found")
 
         #perform initial camera check
-        self.cameras= self.update_videostatus(self.cameras)
+        self.update_videostatus()
 
         #update status values consistently
         for cameraObject in self.cameras:
-            print(cameraObject.name + ' Checking Active')
-            Clock.schedule_interval(partial(self.update_button_color, cameraObject.name), 2)
+            Clock.schedule_interval(partial(self.update_button_color, cameraObject.name), 5)
             
-        Clock.schedule_interval(partial(self.update_videostatus_clock, self.cameras), 8)
+        Clock.schedule_interval(partial(self.update_videostatus), 8)
 
+    def update_button_color(self, cam_id, dt):
 
-    def apply_ui_update(self, cam_id, updated_cam, index):
-                   
-        self.cameras[index] = updated_cam
-        new_color = self.get_cam_color(cam_id)
+        for index, cameraObject in enumerate(self.cameras):
+            if(cameraObject.name == cam_id):
+                cameraObject = CoreCams.testRTSP_Ping(cameraObject)
+                self.cameras[index] = cameraObject
 
+        new_color = self.get_cam_color(cam_id)        
         for widget in self.walk():
             if getattr(widget, 'camera_id_string', None) == cam_id:
                 widget.normal_color = new_color
 
-        new_color = self.get_cam_color(cam_id)
         
-    def update_videostatus(self, cameraArray):
-        self.cameras=CoreCams.updateCameraStatus(cameraArray)
-        return self.cameras
-
-    def update_videostatus_clock(self, cameraArray, dt):
-        self.cameras=CoreCams.updateCameraStatus(cameraArray)
+    def update_videostatus(self, **kwargs):
+        self.cameras=CoreCams.updateCameraStatus(self.cameras)
         
                 
     def get_cam_color(self, cam_id):
