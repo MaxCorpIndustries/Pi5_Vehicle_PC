@@ -114,9 +114,7 @@ class MainLayout(BoxLayout):
             raise ValueError("Camera config could not be found")
         
         #update status values consistently
-        for cameraObject in self.cameras:
-            check_camera_status(cameraObject.name)
-            
+        for cameraObject in self.cameras:            
             Clock.schedule_interval(partial(self.update_button_color, cameraObject.name), 2)
             
         Clock.schedule_interval(partial(self.update_videostatus, self.cameras), 8)
