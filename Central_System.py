@@ -164,7 +164,7 @@ class MainLayout(BoxLayout):
 
         if(pickedCamera.readytoload == False):
             self.cameras[camIndex].cam_status = "Camera Not Detected"
-            return [0.1, 0.1, 0.1, 1]
+            return [0.2, 0.2, 0.2, 1]
 
         match str(pickedCamera.StatusValue):
 
