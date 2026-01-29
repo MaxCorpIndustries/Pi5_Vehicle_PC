@@ -132,7 +132,7 @@ class MainLayout(BoxLayout):
                 widget.normal_color = new_color
 
         
-    def update_videostatus(self, **kwargs):
+    def update_videostatus(self, dt):
         self.cameras=CoreCams.updateCameraStatus(self.cameras)
         
                 
