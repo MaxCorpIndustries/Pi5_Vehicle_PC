@@ -83,7 +83,7 @@ def initializeInternalNetwork():
     # This function allows the pi to create an "internal network" 
     #so the system can use rtsp streams without needing an internet connection
 
-    useFixedIP = ["nmcli","con","mod","netplan-eth0","ipv4.addresses","192.168.1.200/24","ipv4.method","manual"]
+    useFixedIP = ["nmcli","con","mod","netplan-eth0","ipv4.method","manual","ipv4.addresses","192.168.1.200/24","ipv6.method","ignore"]
     
     setUpIP = ["ip","link","set","eth0","up"]
     try:

@@ -120,6 +120,7 @@ class MainLayout(BoxLayout):
             Clock.schedule_interval(partial(self.update_button_color, cameraObject.name), 10)
             
         Clock.schedule_interval(partial(self.update_videostatus), 8)
+        Clock.schedule_interval(partial(self.repeating_network_initiation), 20)
 
 
     def update_button_color(self, cam_id, dt):
@@ -135,7 +136,10 @@ class MainLayout(BoxLayout):
             if getattr(widget, 'camera_id_string', None) == cam_id:
                 widget.normal_color = new_color
         
- 
+
+    def repeating_network_initiation(self, dt):
+        CoreCams.initializeInternalNetwork()
+        print('re-initiated networking')
 
     def get_cam_info(self, cam_id):
 
