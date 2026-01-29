@@ -341,7 +341,11 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
 # this runs every cycle and updates the system on the status of camera feeds
 # this one can ONLY be run by a clock function in the __init__ as it passes a datetime value
 def updateCameraStatus(cameraArray):
-    
+
+    for cameraObject in cameraArray:
+        # Re-ping camera to check connectivity
+        cameraObject = testRTSP_Ping(cameraObject)
+        
     # Checks and restarts to do every cyle:
     for cameraObject in cameraArray:
         if(cameraObject.readytoload == True):
@@ -389,9 +393,6 @@ def updateCameraStatus(cameraArray):
         else:
             # Attempt to reconnect to disconnected device            
             cameraObject.StatusValue=0 # means disconnected state
-
-            # Re-ping camera to check connectivity
-            cameraObject = testRTSP_Ping(cameraObject)
 
                 
     return cameraArray
