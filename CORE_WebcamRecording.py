@@ -345,7 +345,7 @@ def updateCameraStatus(cameraArray):
     for cameraObject in cameraArray:
         # Re-ping camera to check connectivity
         cameraObject = testRTSP_Ping(cameraObject)
-        ping(cameraObject.name + ' ' + str(cameraObject.readytoload))
+        print(cameraObject.name + ' ' + str(cameraObject.readytoload))
         
     # Checks and restarts to do every cyle:
     for cameraObject in cameraArray:
