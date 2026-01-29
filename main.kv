@@ -174,7 +174,7 @@
                             orientation: "horizontal"
                             spacing: 0
                             padding: 0   
-                            size_hint_y:1
+                            size_hint_y:0.25
                             
                             Label:
                                 text: root.cam_status if app.root else "[NO DATA]"
@@ -331,6 +331,16 @@
                                 on_release: 
                                     root.toggle_layout(self,'test_page6','settings') 
 
+                    Widget:
+                        size_hint_x: None
+                        height: 2
+                        canvas:
+                            Color:
+                                rgb: 1, 1, 1
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+
                     BoxLayout:
                         id: car_color_page
                         orientation: "vertical"
@@ -344,7 +354,17 @@
                             color: [0.37, 0.37, 0.37, 0.37]
                             size_hint_y:1
                             on_color: app.carColor = self.color
-
+                        
+                        Widget:
+                            size_hint_y: None
+                            height: 2
+                            canvas:
+                                Color:
+                                    rgb: 1, 1, 1
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                                    
                         BoxLayout:
                             orientation: "horizontal"
                             spacing: 0
