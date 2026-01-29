@@ -36,6 +36,7 @@ class Camera:
         self.fps=fps
         self.resolution_y=resolution_y
         self.resolution_x=resolution_x
+        self.cam_status = ""        # The human readable status of this camera. Used for UI ONLY
 
 #The following are the planned cameras and their locations:
 #┌──────────┬───────────────┬───────────────┬───────────────────┬───────────────────────┐

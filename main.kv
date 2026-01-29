@@ -167,7 +167,16 @@
                                 Rectangle:
                                     pos: self.pos
                                     size: self.size
-                            
+ 
+                        Label:
+                            text: root.cam_status if app.root else "[NO DATA]"
+                            font_size: 30     
+                            padding: 10
+                            text_size: self.size
+                            size_hint_y:0.12
+                            halign: 'center'
+                            valign: 'middle'
+ 
                         BoxLayout:
                             orientation: "horizontal"
                             spacing: 0
@@ -685,16 +694,16 @@
     padding:10
     opacity: 1
     
-    status_text: app.root.get_cam_info(self.camera_id_string)[1]
+    status_text: app.root.get_cam_info(self.camera_id_string)
     
     #normal_color: [0.5, 0.5, 0.5, 1] # Default Gray
     down_color: [0.3, 0.3, 0.3, 1]   # Darker Gray
     camera_id_string: ""
     
-    normal_color: app.root.get_cam_info(self.camera_id_string)[0] if (app.root and self.camera_id_string) else [0.5, 0.5, 0.5, 1]
+    normal_color: app.root.get_cam_color(self.camera_id_string) if (app.root and self.camera_id_string) else [0.5, 0.5, 0.5, 1]
 
 
-    on_camera_id_string: if app.root: self.normal_color = app.root.get_cam_info(self.camera_id_string)[0]
+    on_camera_id_string: if app.root: self.normal_color = app.root.get_cam_color(self.camera_id_string)
     
     size_hint_y: 0.15 if not self.disabled else 0.13    
     size_hint_x: 0.15 if not self.disabled else 0.28

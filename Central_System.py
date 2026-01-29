@@ -19,7 +19,7 @@ from kivy.core.window import Window
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.animation import Animation
-from kivy.properties import ListProperty, StringProperty, BooleanProperty,ColorProperty, NumericProperty#,ObjectProperty
+from kivy.properties import ListProperty, StringProperty, BooleanProperty,ColorProperty, NumericProperty,ObjectProperty
 from kivy.factory import Factory
 
 from functools import partial
@@ -98,7 +98,9 @@ class MainLayout(BoxLayout):
 
     startVideoOnBoot=BooleanProperty(True)
     menu_text = StringProperty("Default Message")
-    
+    selected_cam = ObjectProperty(None)
+    cam_status = StringProperty("Default Message")
+
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -127,63 +129,78 @@ class MainLayout(BoxLayout):
                 cameraObject = CoreCams.testRTSP_Ping(cameraObject)
                 self.cameras[index] = cameraObject
 
-        new_color = self.get_cam_info(cam_id)[0]
-        new_status = self.get_cam_info(cam_id)[1]
+        new_color = self.get_cam_color(cam_id)
         
         for widget in self.walk():
             if getattr(widget, 'camera_id_string', None) == cam_id:
                 widget.normal_color = new_color
-                widget.status_text  = new_status
-
-
-
         
-    def update_videostatus(self, dt):
-        self.cameras=CoreCams.updateCameraStatus(self.cameras)
-        
+ 
+
     def get_cam_info(self, cam_id):
+
+        camIndex=0
+        for index, cameraObject in enumerate(self.cameras):
+            if(cameraObject.name == cam_id):
+                return self.cameras[index].cam_status
+
+        return "No Data"
         
-        # find camera item in self.cameras array
-        for cameraObject in self.cameras:
+    def get_cam_color(self, cam_id):
+        
+        camIndex=0
+        for index, cameraObject in enumerate(self.cameras):
             if(cameraObject.name == cam_id):
                 pickedCamera = cameraObject
+                camIndex=index
             
         #if the cameras was not found in camera.ini, make it this unique color
         if(pickedCamera == None):
-            return [[1, 1, 1, 1],"Camera Not Initialized"]
+            self.cameras[camIndex].cam_status = "Camera Not Initialized"
+            return [1, 1, 1, 1]
 
         if(pickedCamera.readytoload == False):
-            return [[0.515, 0.23, 0.215, 1],"Camera Not Detected"]
+            self.cameras[camIndex].cam_status = "Camera Not Detected"
+            return [0.515, 0.23, 0.215, 1]
 
-
-        print(cameraObject.name + ' Status Value: '+ str(pickedCamera.StatusValue))
         match str(pickedCamera.StatusValue):
 
             case "-3": # Camera has never recorded since first boot
-                return [[0   , 0     , 0     , 1],"Camera Pending Start"]
+                self.cameras[camIndex].cam_status = "Camera Pending Start"
+                return [0   , 0     , 0     , 1]
             
             case "-2": # unknown state
-                return [[0.2 , 0.4   , 1     , 1],"Camera Status Unknown"]
+                self.cameras[camIndex].cam_status = "Camera Status Unknown"
+                return [0.2 , 0.4   , 1     , 1]
 
             case "-1": # failure
-                return [[1   , 0.2   , 0     , 1],"Camera Recording FAILURE"]
+                self.cameras[camIndex].cam_status = "Camera Recording FAILURE"
+                return [1   , 0.2   , 0     , 1]
 
             case "0": #disconnected
-                return [[0.4 , 0.4   , 0.4   , 1],"Camera Disconnected"]
+                self.cameras[camIndex].cam_status = "Camera Disconnected"
+                return [0.4 , 0.4   , 0.4   , 1]
             
             case "1": # currently recording
-                return [[0   , 1     , 0     , 1],"Camera Recording"]
+                self.cameras[camIndex].cam_status = "Camera Recording"
+                return [0   , 1     , 0     , 1]
 
             case "2": #recording completed (restarting)
-                return [[1   , 0.5   , 0     , 1],"Camera Recording Completed"]
+                self.cameras[camIndex].cam_status = "Camera Recording Completed"
+                return [1   , 0.5   , 0     , 1]
 
             case _: #default is -5, and gets overwritten quickly. This status means it's effectively stuck
-                return [[0.75 , 0.75 , 0.75  , 1],"Camera Not Initialized"]
+                self.cameras[camIndex].cam_status = "Camera Not Initialized"
+                return [0.75 , 0.75 , 0.75  , 1]
             
         #should never be here
-        return [[0, 0, 0, 1],"Impossible Condition Detected"]
+        self.cameras[camIndex].cam_status = "Impossible Condition Detected"
+        return [0, 0, 0, 1]
 
-
+    def update_videostatus(self, dt):
+        self.cameras=CoreCams.updateCameraStatus(self.cameras)
+        if(self.selected_cam != None):
+            self.cam_status = self.selected_cam.cam_status
     
     def toggle_layout(self,buttonType,screenid,pageid):
 
@@ -224,6 +241,7 @@ class MainLayout(BoxLayout):
                     if(cameraObject.name == cameraId):
                         cam = cameraObject        
                 self.menu_text = cam.location
+                self.selected_cam = cam
 
             except:
                 pass #this was likely the close button being hit (has no id)
