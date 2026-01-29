@@ -178,7 +178,7 @@
                             
                             Label:
                                 text: root.cam_status if app.root else "[NO DATA]"
-                                font_size: 30
+                                font_size: 25
                                 font_name: "fonts/lcd_main.ttf"                            
                                 padding: 10
                                 text_size: self.size
@@ -187,8 +187,8 @@
                                 valign: 'middle'
                                 
                             Label:
-                                text: root.cam_status if app.root else "[NO DATA]"
-                                font_size: 30
+                                text: root.selected_cam.name if app.root else "[NO DATA]"
+                                font_size: 25
                                 font_name: "fonts/lcd_main.ttf"                            
                                 padding: 10
                                 text_size: self.size
