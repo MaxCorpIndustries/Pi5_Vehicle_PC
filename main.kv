@@ -170,23 +170,32 @@
                                     pos: self.pos
                                     size: self.size
  
-                        Label:
-                            text: root.cam_status if app.root else "[NO DATA]"
-                            font_size: 20
-                            font_name: "fonts/lcd_main.ttf"                            
-                            padding: 10
-                            color: root.cam_status_color if app.root else [1,1,1,1]
-                            text_size: self.size
-                            size_hint_y:0.12
-                            halign: 'left'
-                            valign: 'middle'
- 
                         BoxLayout:
                             orientation: "horizontal"
                             spacing: 0
                             padding: 0   
                             size_hint_y:1
                             
+                            Label:
+                                text: root.cam_status if app.root else "[NO DATA]"
+                                font_size: 30
+                                font_name: "fonts/lcd_main.ttf"                            
+                                padding: 10
+                                text_size: self.size
+                                size_hint_y:0.12
+                                halign: 'left'
+                                valign: 'middle'
+                                
+                            Label:
+                                text: root.cam_status if app.root else "[NO DATA]"
+                                font_size: 30
+                                font_name: "fonts/lcd_main.ttf"                            
+                                padding: 10
+                                text_size: self.size
+                                size_hint_y:0.12
+                                halign: 'right'
+                                valign: 'middle'
+                                
                         BoxLayout:
                             orientation: "horizontal"
                             spacing: 0

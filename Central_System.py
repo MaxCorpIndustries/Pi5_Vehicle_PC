@@ -100,7 +100,6 @@ class MainLayout(BoxLayout):
     menu_text = StringProperty("Default Message")
     selected_cam = ObjectProperty(None)
     cam_status = StringProperty("Default Message")
-    cam_status_color = ListProperty([0, 0, 0, 1])
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -131,7 +130,6 @@ class MainLayout(BoxLayout):
                 self.cameras[index] = cameraObject
 
         new_color = self.get_cam_color(cam_id)
-        cam_status_color=new_color
         for widget in self.walk():
             if getattr(widget, 'camera_id_string', None) == cam_id:
                 widget.normal_color = new_color
@@ -250,6 +248,7 @@ class MainLayout(BoxLayout):
                         cam = cameraObject        
                 self.menu_text = cam.location
                 self.selected_cam = cam
+                
 
             except:
                 pass #this was likely the close button being hit (has no id)
