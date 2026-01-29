@@ -115,9 +115,10 @@ class MainLayout(BoxLayout):
 
         #update status values consistently
         for cameraObject in self.cameras:
-            Clock.schedule_interval(partial(self.update_button_color, cameraObject.name), 5)
+            Clock.schedule_interval(partial(self.update_button_color, cameraObject.name), 10)
             
         Clock.schedule_interval(partial(self.update_videostatus), 8)
+
 
     def update_button_color(self, cam_id, dt):
 
@@ -126,17 +127,21 @@ class MainLayout(BoxLayout):
                 cameraObject = CoreCams.testRTSP_Ping(cameraObject)
                 self.cameras[index] = cameraObject
 
-        new_color = self.get_cam_color(cam_id)        
+        new_color = self.get_cam_info(cam_id)[0]
+        new_status = self.get_cam_info(cam_id)[1]
+        
         for widget in self.walk():
             if getattr(widget, 'camera_id_string', None) == cam_id:
                 widget.normal_color = new_color
+                widget.status_text  = new_status
+
+
 
         
     def update_videostatus(self, dt):
         self.cameras=CoreCams.updateCameraStatus(self.cameras)
         
-                
-    def get_cam_color(self, cam_id):
+    def get_cam_info(self, cam_id):
         
         # find camera item in self.cameras array
         for cameraObject in self.cameras:
@@ -145,38 +150,39 @@ class MainLayout(BoxLayout):
             
         #if the cameras was not found in camera.ini, make it this unique color
         if(pickedCamera == None):
-            return [1, 1, 1, 1]
+            return [[1, 1, 1, 1],"Camera Not Initialized"]
 
         if(pickedCamera.readytoload == False):
-            return [0.515, 0.23, 0.215, 1]
+            return [[0.515, 0.23, 0.215, 1],"Camera Not Detected"]
 
 
         print(cameraObject.name + ' Status Value: '+ str(pickedCamera.StatusValue))
         match str(pickedCamera.StatusValue):
 
-            case "-3": # unknown state
-                return [0   , 0     , 0         , 1]
+            case "-3": # Camera has never recorded since first boot
+                return [[0   , 0     , 0     , 1],"Camera Pending Start"]
             
             case "-2": # unknown state
-                return [0.2 , 0.4   , 1     , 1]
+                return [[0.2 , 0.4   , 1     , 1],"Camera Status Unknown"]
 
             case "-1": # failure
-                return [1   , 0.2   , 0     , 1]
+                return [[1   , 0.2   , 0     , 1],"Camera Recording FAILURE"]
 
             case "0": #disconnected
-                return [0.4 , 0.4   , 0.4   , 1]  
+                return [[0.4 , 0.4   , 0.4   , 1],"Camera Disconnected"]
             
             case "1": # currently recording
-                return [0   , 1     , 0     , 1]
+                return [[0   , 1     , 0     , 1],"Camera Recording"]
 
             case "2": #recording completed (restarting)
-                return [1   , 0.5   , 0     , 1]
+                return [[1   , 0.5   , 0     , 1],"Camera Recording Completed"]
 
-            case _:
-                return [0.75 , 0.75 , 0.75  , 1]
+            case _: #default is -5, and gets overwritten quickly. This status means it's effectively stuck
+                return [[0.75 , 0.75 , 0.75  , 1],"Camera Not Initialized"]
             
         #should never be here
-        return [0, 0, 0, 1]
+        return [[0, 0, 0, 1],"Impossible Condition Detected"]
+
 
     
     def toggle_layout(self,buttonType,screenid,pageid):

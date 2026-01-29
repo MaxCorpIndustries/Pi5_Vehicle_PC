@@ -342,11 +342,6 @@ def InitializeVideoProcessASYNC(cameraObject,currentdirectory):
 # this one can ONLY be run by a clock function in the __init__ as it passes a datetime value
 def updateCameraStatus(cameraArray):
 
-    for cameraObject in cameraArray:
-        # Re-ping camera to check connectivity
-        cameraObject = testRTSP_Ping(cameraObject)
-        #print(cameraObject.name + ' ' + str(cameraObject.readytoload))
-        
     # Checks and restarts to do every cyle:
     for cameraObject in cameraArray:
         if(cameraObject.readytoload == True):
@@ -387,7 +382,7 @@ def updateCameraStatus(cameraArray):
                         cameraObject.StatusValue=-1 # means failure of some kind
 
                     case "Not Set":
-                        cameraObject.StatusValue=-3 # means a single instance of PingCameras hasn't run yet
+                        cameraObject.StatusValue=-3 # means a single instance of recording hasn't run yet
                         
                     case _:
                         cameraObject.StatusValue=-2 # means unknown state (catch all)      
