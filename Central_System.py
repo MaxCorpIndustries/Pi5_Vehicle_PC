@@ -113,50 +113,22 @@ class MainLayout(BoxLayout):
         else:
             raise ValueError("Camera config could not be found")
 
+        #perform initial camera check
         self.cameras= self.update_videostatus(self.cameras)
 
         #update status values consistently
-        for cameraObject in self.cameras:            
+        for cameraObject in self.cameras:
+            print(cameraObject.name + ' Checking Active')
             Clock.schedule_interval(partial(self.update_button_color, cameraObject.name), 2)
             
         Clock.schedule_interval(partial(self.update_videostatus_clock, self.cameras), 8)
 
 
-
-    def update_button_color(self, cam_id, dt):
-        
-        def check_camera_task():
-            camera_to_test = None
-            cam_index = -1
-            for index, cameraObject in enumerate(self.cameras):
-                if cameraObject.name == cam_id:
-
-                    camera_to_test = cameraObject
-                    cam_index = index
-                    break
-                
-            if camera_to_test:
-                # Perform the blocking network call in this background thread
-                updated_cam = CoreCams.testRTSP_Ping(camera_to_test)
-                
-                # Use Clock.schedule_once to push the UI update back to the main thread
-                Clock.schedule_once(lambda dt: self.apply_ui_update(cam_id, updated_cam, cam_index))
-
-            # Start the thread
-            threading.Thread(target=check_camera_task, daemon=True).start()
-
     def apply_ui_update(self, cam_id, updated_cam, index):
-        # This runs on the MAIN thread
-        
-        for widget in self.walk():
-            if getattr(widget, 'camera_id_string', None) == cam_id:
-                widget.normal_color = new_color
                    
         self.cameras[index] = updated_cam
         new_color = self.get_cam_color(cam_id)
-        
-        # Optimization: Instead of walking the whole tree, 
-        # consider storing references to your buttons in a dictionary
+
         for widget in self.walk():
             if getattr(widget, 'camera_id_string', None) == cam_id:
                 widget.normal_color = new_color
@@ -184,7 +156,9 @@ class MainLayout(BoxLayout):
 
         if(pickedCamera.readytoload == False):
             return [0.515, 0.23, 0.215, 1]
-        
+
+
+        print(cameraObject.name + ' Status Value: '+ str(pickedCamera.StatusValue))
         match str(pickedCamera.StatusValue):
 
             case "-3": # unknown state
@@ -278,6 +252,7 @@ class MainLayout(BoxLayout):
 
             
 class MainApp(App):
+    
     carShineColorOffset = NumericProperty(0.5)
     carColor=ColorProperty([0.37, 0.37, 0.37, 1])  # Default to grey
     icons_visible = BooleanProperty(True)    
