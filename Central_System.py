@@ -179,7 +179,7 @@ class MainLayout(BoxLayout):
 
             case "0": #disconnected
                 self.cameras[camIndex].cam_status = "Camera Disconnected"
-                return [0.4 , 0.4   , 0.4   , 1]
+                return [0.8 , 0.4   , 0.4   , 1]
             
             case "1": # currently recording
                 self.cameras[camIndex].cam_status = "Camera Recording"
