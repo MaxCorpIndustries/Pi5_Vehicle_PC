@@ -268,73 +268,38 @@
                             padding: 10                        
                             cols: 1
                             
-                            RoundedButton:
-                                #icon_source: 'stop.png'
+                            SettingsButton:
                                 text: "Car Color"
-                                #bold: True
-                                halign: 'left'
-                                #valign: 'center'
-                                #size_hint_x: 1
                                 on_release: 
                                     root.toggle_layout(self,'car_color_page','settings') 
 
-                            RoundedButton:
-                                #icon_source: 'stop.png'
+                            SettingsButton:
                                 text: "test 1"
-                                #bold: True
-                                halign: 'left'
-                                #valign: 'center'
-                                #size_hint_x: 1
                                 on_release: 
                                     root.toggle_layout(self,'test_page1','settings') 
 
-                            RoundedButton:
-                                #icon_source: 'stop.png'
+                            SettingsButton:
                                 text: "test 2"
-                                #bold: True
-                                halign: 'left'
-                                #valign: 'center'
-                                #size_hint_x: 1
                                 on_release: 
                                     root.toggle_layout(self,'test_page2','settings') 
-
-                            RoundedButton:
-                                #icon_source: 'stop.png'
+                                    
+                                                                SettingsButton:
                                 text: "test 3"
-                                #bold: True
-                                halign: 'left'
-                                #valign: 'center'
-                                #size_hint_x: 1
                                 on_release: 
                                     root.toggle_layout(self,'test_page3','settings') 
-
-                            RoundedButton:
-                                #icon_source: 'stop.png'
+                                    
+                            SettingsButton:
                                 text: "test 4"
-                                #bold: True
-                                halign: 'left'
-                                #valign: 'center'
-                                #size_hint_x: 1
                                 on_release: 
-                                    root.toggle_layout(self,'test_page4','settings') 
+                                    root.toggle_layout(self,'test_page4','settings')                                     
 
-                            RoundedButton:
-                                #icon_source: 'stop.png'
+                            SettingsButton:
                                 text: "test 5"
-                                #bold: True
-                                halign: 'left'
-                                #valign: 'center'
-                                #size_hint_x: 1
                                 on_release: 
                                     root.toggle_layout(self,'test_page5','settings') 
 
-                            RoundedButton:
-                                #icon_source: 'stop.png'
+                            SettingsButton:
                                 text: "test 6"
-                                #bold: True
-                                halign: 'left'
-                                #valign: 'center'
-                                #size_hint_x: 1
                                 on_release: 
                                     root.toggle_layout(self,'test_page6','settings') 
 
@@ -689,6 +654,28 @@
             color: root.icon_color if root.icon_color else (1, 1, 1, 1)
      
 
+
+# ----------------- CUSTOM ROUNDED BUTTON -----------------
+<SettingsButton@Button>:
+    text: ""
+    radius: [30] 
+    font_size: self.width * 0.1
+	color: 1, 1, 1, 1
+	normal_color: 0, 0, 0, 1
+	down_color: 0.8, 0.8, 0.8, 1
+	halign: 'left'
+
+    background_color: 0, 0, 0, 0
+    background_normal: ""
+    
+    canvas.before:
+        Color:
+            rgba: self.normal_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: self.radius if self.radius else [14] 
+
 <CameraButtons@Button>:
     text: ""
     radius: [30]
@@ -696,7 +683,6 @@
     text_size: self.size
     font_size: '32sp'
     padding:10
-    
     opacity: 1
     
     #normal_color: [0.5, 0.5, 0.5, 1] # Default Gray
