@@ -112,7 +112,9 @@ class MainLayout(BoxLayout):
             self.cameras = CoreCams.ConstructCameraObjects(cameraConfig)
         else:
             raise ValueError("Camera config could not be found")
-        
+
+        self.update_videostatus(self.cameras)
+
         #update status values consistently
         for cameraObject in self.cameras:            
             Clock.schedule_interval(partial(self.update_button_color, cameraObject.name), 2)

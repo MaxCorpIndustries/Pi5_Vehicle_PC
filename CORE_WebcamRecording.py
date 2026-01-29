@@ -123,7 +123,7 @@ def testRTSP_Ping(cameraObject):
             except:
                pass
             
-    print(cameraObject.name)
+    #print(cameraObject.name)
     
     return cameraObject
                     
