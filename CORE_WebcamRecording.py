@@ -110,20 +110,54 @@ def testRTSP_Ping(cameraObject):
     match (cameraObject.camType):
         case "RTSP":
             try:
-                pingOutput = subprocess.run(["ping","-c","1","-W","1",str(cameraObject.ping)], check=True,stdout=DEVNULL,stderr=DEVNULL)
-                cameraObject.readytoload = True
+                command = ["ping","-c","1","-W","1",str(cameraObject.ping)]
+                process = await asyncio.create_subprocess_exec(
+                    command,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
+                
+                stdout, stderr = await process.communicate()
+
+                if process.returncode != 0:
+                    print("ping failed")
+                    print(stderr.decode())
+                else:
+                    cameraObject.readytoload = True
+                
             except:
                 pass
                 
         case "USB":
             try:
-                process_1 = subprocess.run(["v4l2-ctl", "--list-devices" ],check=True,capture_output=True,text=True)
-                pingOutput = subprocess.run(["grep", "-A", "1",str(cameraObject.ping)],input = process_1.stdout,check=True,capture_output=True,text=True)
+
+                command = ["v4l2-ctl", "--list-devices" ]
+                process = await asyncio.create_subprocess_exec(
+                    command,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
+                
+                stdout1, stderr1 = await proc1.communicate()
+
+                if process.returncode == 0:
+                    command = ["grep", "-A", "1",str(cameraObject.ping)]
+                    process = await asyncio.create_subprocess_exec(
+                        command,
+                        stdout=asyncio.subprocess.PIPE,
+                        stderr=asyncio.subprocess.PIPE
+                    )
+                    
+                    stdout1, stderr1 = await proc1.communicate()
+             
+                
+                pingOutput = subprocess.run(,input = process_1.stdout,check=True,capture_output=True,text=True)
                 if(cameraObject.accessURL in str(pingOutput)):
                     cameraObject.readytoload = True 
             except:
                pass
-            
+
+    stdout, stderr = await process.communicate()            
     #print(cameraObject.name)
     
     return cameraObject
