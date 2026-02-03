@@ -6,6 +6,9 @@ This system should include the following features as the MVP:
 - Working screen output of the camera system
 - Working aux or bluetooth integration with the phone 
 
+## DEMO Gif
+![alt text](https://github.com/MaxCorpIndustries/Pi5_Vehicle_PC/blob/main/CarPC_UI_Alpha1.gif)
+
 ## Planned Cameras and Locations
 
 | CAM # | Camera Comms | Camera Make   | Video Specs        | Vehicle Location                                  |
